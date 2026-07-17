@@ -1,0 +1,13 @@
+<!-- PLACEHOLDER WORDMARK.
+     Replace with the real 180 Method logo exported as SVG.
+     The live site only has a 581x430 PNG, which will look soft on retina —
+     ask the brand/design owner for the original vector.
+     Keep the filename so no code needs to change. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 108" fill="none" role="img" aria-label="180 Method">
+  <g fill="#DCE576">
+    <text x="140" y="62" text-anchor="middle" font-family="Orbitron, Arial Black, sans-serif" font-weight="900" font-size="52" letter-spacing="2">180</text>
+    <text x="140" y="92" text-anchor="middle" font-family="Orbitron, Arial, sans-serif" font-weight="500" font-size="21" letter-spacing="9">METHOD</text>
+  </g>
+  <ellipse cx="140" cy="52" rx="122" ry="26" stroke="#DCE576" stroke-width="5" fill="none" transform="rotate(-7 140 52)"/>
+  <path d="M22 40 l-9 5 l9 5" stroke="#DCE576" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>

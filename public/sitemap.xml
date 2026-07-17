@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- No <?xml-stylesheet?> here on purpose. A stylesheet PI pointing at a
+     missing XSL file makes browsers render a blank page — the exact bug that
+     hit the ALC sitemap. If you add one, ship the XSL with it. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://180method.in/</loc><priority>1.0</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://180method.in/about</loc><priority>0.8</priority></url>
+  <url><loc>https://180method.in/services</loc><priority>0.9</priority></url>
+  <url><loc>https://180method.in/team</loc><priority>0.8</priority></url>
+  <url><loc>https://180method.in/counselling</loc><priority>0.8</priority></url>
+  <url><loc>https://180method.in/reviews</loc><priority>0.7</priority></url>
+  <url><loc>https://180method.in/faqs</loc><priority>0.7</priority></url>
+  <url><loc>https://180method.in/media-features</loc><priority>0.6</priority></url>
+  <url><loc>https://180method.in/contact</loc><priority>0.9</priority></url>
+</urlset>

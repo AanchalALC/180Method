@@ -1,0 +1,138 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------------------
+   BRAND FONTS — drop real files into /public/fonts and these take over.
+   If absent, @font-face fails silently and the Google fallbacks in
+   tailwind.config.js are used. See public/fonts/README.md.
+--------------------------------------------------------------------------- */
+@font-face {
+  font-family: 'Radio Stars';
+  src: url('/fonts/RadioStars.woff2') format('woff2');
+  font-weight: 400 700; font-display: swap; font-style: normal;
+}
+@font-face {
+  font-family: 'Gabriel Sans';
+  src: url('/fonts/GabrielSans-Regular.woff2') format('woff2');
+  font-weight: 400; font-display: swap; font-style: normal;
+}
+@font-face {
+  font-family: 'Gabriel Sans';
+  src: url('/fonts/GabrielSans-Medium.woff2') format('woff2');
+  font-weight: 500; font-display: swap; font-style: normal;
+}
+@font-face {
+  font-family: 'Gabriel Sans';
+  src: url('/fonts/GabrielSans-Bold.woff2') format('woff2');
+  font-weight: 700; font-display: swap; font-style: normal;
+}
+
+@layer base {
+  :root { --header-h: 78px; }
+
+  * { @apply border-paper-300/60; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  /* Lenis owns scrolling; stop native smooth fighting it. */
+  html.lenis, html.lenis body { height: auto; }
+  html.lenis { scroll-behavior: auto; }
+  .lenis.lenis-smooth { scroll-behavior: auto !important; }
+
+  body {
+    @apply bg-paper-100 text-ink font-sans text-fluid-base antialiased;
+    overflow-x: clip; /* guards the mobile horizontal-scroll bug (audit G12) */
+    font-feature-settings: 'kern' 1, 'liga' 1;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display uppercase tracking-tight;
+    text-wrap: balance;
+    /* Display faces have tight metrics; this stops descenders being shaved. */
+    padding-bottom: 0.06em;
+  }
+
+  p { text-wrap: pretty; }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-forest ring-offset-2 ring-offset-paper rounded-sm;
+  }
+  .on-dark :focus-visible { @apply ring-lime ring-offset-ink-900; }
+
+  ::selection { @apply bg-lime text-ink; }
+
+  section[id], div[id], article[id] { scroll-margin-top: calc(var(--header-h) + 1rem); }
+}
+
+@layer components {
+  .container-x { @apply container; }
+
+  .eyebrow {
+    @apply font-display text-fluid-xs uppercase tracking-[0.24em] text-forest-600;
+  }
+  .on-dark .eyebrow { @apply text-lime; }
+
+  .link-underline { @apply relative inline-block; }
+  .link-underline::after {
+    content: '';
+    @apply absolute left-0 -bottom-0.5 h-px w-full origin-right scale-x-0 bg-current transition-transform duration-500 ease-brand;
+  }
+  .link-underline:hover::after,
+  .link-underline:focus-visible::after { @apply origin-left scale-x-100; }
+
+  /* Fine grain — lifts the compressed WhatsApp-export photography. */
+  .grain::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    opacity: 0.16; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Green duotone. Pushes mixed-quality photos toward one palette — the single
+     highest-leverage trick available while the photography is WhatsApp exports. */
+  .duotone { position: relative; isolation: isolate; }
+  .duotone > img { filter: grayscale(1) contrast(1.06) brightness(0.92); }
+  .duotone::before {
+    content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(150deg, #275442 0%, #0B0D0B 100%);
+    mix-blend-mode: color;
+  }
+  .duotone::after {
+    content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background: linear-gradient(150deg, rgba(220,229,118,0.14), transparent 55%);
+    mix-blend-mode: screen;
+  }
+
+  .skip-link {
+    @apply absolute left-4 -top-24 z-[100] rounded-full bg-lime px-5 py-3 font-display text-sm uppercase tracking-wider text-ink transition-all focus:top-4;
+  }
+
+  /* Hairline rule that draws itself in on scroll. */
+  .rule { @apply h-px w-full bg-current opacity-15; }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+  /* Optical fix: display caps sit high in the em box. */
+  .display-tight { line-height: 0.9; }
+}
+
+/* ---------------------------------------------------------------------------
+   REDUCED MOTION — a static, complete page. No parallax, marquee, or counters.
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .animate-marquee, .animate-marquee-slow, .animate-marquee-fast, .animate-orbit-spin {
+    animation: none !important;
+  }
+}

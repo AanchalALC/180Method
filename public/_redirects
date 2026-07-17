@@ -1,0 +1,28 @@
+# ---------------------------------------------------------------------------
+# Netlify / Cloudflare Pages redirects.
+#
+# 1. Legacy WordPress URLs. These are LIVE AND INDEXED on 180method.in today.
+#    301 = permanent, which is what we want: we are never going back to the
+#    Elementor URLs. Passes the ranking on to the new path.
+# ---------------------------------------------------------------------------
+/aboutus              /about            301
+/aboutus/             /about            301
+/contactus            /contact          301
+/contactus/           /contact          301
+/mediafeatures        /media-features   301
+/mediafeatures/       /media-features   301
+/faq                  /faqs             301
+/faq/                 /faqs             301
+
+# /blog currently 404s on the live site but is linked from the homepage cards
+# and may be indexed. Send it home until the Blog is actually built.
+# 302 (temporary) on purpose — a 301 here would be a lie we'd have to undo.
+/blog                 /                 302
+/blog/*               /                 302
+
+# ---------------------------------------------------------------------------
+# 2. SPA fallback. MUST BE LAST.
+#    Without this, deep links like /services reload into a 404 because the host
+#    looks for a /services/index.html that doesn't exist.
+# ---------------------------------------------------------------------------
+/*                    /index.html       200
