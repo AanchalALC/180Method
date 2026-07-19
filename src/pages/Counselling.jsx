@@ -7,7 +7,6 @@ import {
   RevealGroup,
   RevealItem,
   SectionHeading,
-  PageHero,
 } from '@/components/ui/Primitives'
 import { site, links } from '@/data/site'
 
@@ -16,6 +15,10 @@ import { site, links } from '@/data/site'
    Copy is unchanged from the live page (it's good and the outline keeps it),
    with one fix: audit C1 — "Send us a mesage in Whatsapp" is misspelled on the
    live site, in two places.
+
+   HERO: bespoke, replaces <PageHero> so the photo shows in its REAL colours,
+   matching Home / About / Services / Team. `.grain` (film texture only, not
+   colour) is kept.
    ========================================================================== */
 
 const points = [
@@ -33,6 +36,76 @@ const points = [
   },
 ]
 
+/* ---------------------------------------------------------------------------
+   HERO — bespoke, replaces <PageHero> so the photo shows in its REAL colours.
+   Mirrors ServicesHero / TeamHero exactly (PageHero lays a heavier colour wash
+   across the whole photo; this does not).
+
+     • Dark `ink` base (bg-ink-950).
+     • Image is RAW / full-colour — `.grain` film texture only, NO `.duotone`,
+       NO wash over the whole photo.
+     • Scrims are CORNER-ONLY: both gradients fade to transparent, so they only
+       darken the bottom-left where the eyebrow / H1 / lede sit. The rest of the
+       photo stays clean and in colour.
+         - want MORE photo visible → lower the /80 and /65 stops
+         - text hard to read on a bright shot → raise them
+     • Headline is REAL HTML <h1> (never baked into the image) — one H1, SEO-safe.
+     • Hero image is eager + fetchPriority="high" — it's the LCP element.
+
+   HEIGHT: min-h-[72svh] — matches Services / Team. Nudge to taste.
+   NOTE: the eyebrow is long ("In partnership with Another Light Counselling"),
+   so its row is flex-wrap to stay tidy on narrow widths.
+--------------------------------------------------------------------------- */
+function CounsellingHero() {
+  return (
+    <section className="on-dark relative isolate flex min-h-[72svh] items-end overflow-hidden bg-ink-950 pb-16 pt-[calc(var(--header-h)+2.5rem)]">
+      <div className="absolute inset-0 -z-10">
+        {/* Raw photo — `.grain` texture only, no `.duotone`, no colour wash. */}
+        <div className="grain absolute inset-0">
+          <img
+            src="/images/home/counselling-room2.jpeg"
+            alt=""                                 /* decorative — the H1 carries the meaning */
+            className="h-full w-full object-cover"
+            width={1920}
+            height={1080}
+            loading="eager"
+            fetchPriority="high"
+          />
+        </div>
+
+        {/* CORNER-ONLY SCRIMS — both fade to transparent, so they only darken the
+            bottom-left where the text sits. The rest of the photo stays clean and
+            in full colour. Lower the /80 and /65 stops to show more photo. */}
+        <div className="absolute inset-0 z-[3] bg-gradient-to-t from-ink-950/80 via-ink-950/20 to-transparent" />
+        <div className="absolute inset-0 z-[3] bg-gradient-to-r from-ink-950/65 via-ink-950/5 to-transparent" />
+      </div>
+
+      <div className="container-x relative">
+        <Reveal>
+          <p className="eyebrow mb-5 flex flex-wrap items-center gap-3">
+            <span className="inline-block h-px w-10 bg-lime" aria-hidden="true" />
+            In partnership with {site.partner.name}
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.08}>
+          <h1 className="max-w-5xl font-display text-fluid-3xl uppercase leading-[0.95] tracking-tight text-paper [text-shadow:0_2px_28px_rgba(11,13,11,0.65)]">
+            A more human approach to transformation
+          </h1>
+        </Reveal>
+
+        <Reveal delay={0.16}>
+          <p className="mt-6 max-w-3xl text-fluid-lg leading-relaxed text-paper-100/75 [text-shadow:0_1px_18px_rgba(11,13,11,0.75)]">
+            Whether you’re beginning your fitness journey or returning after a
+            break, this integrated approach helps you move forward with clarity,
+            confidence, and support.
+          </p>
+        </Reveal>
+      </div>
+    </section>
+  )
+}
+
 export default function Counselling() {
   return (
     <>
@@ -42,12 +115,7 @@ export default function Counselling() {
         path="/counselling"
       />
 
-      <PageHero
-        eyebrow={`In partnership with ${site.partner.name}`}
-        title="A more human approach to transformation"
-        lede="Whether you’re beginning your fitness journey or returning after a break, this integrated approach helps you move forward with clarity, confidence, and support."
-        image="/images/home/counselling-room.jpg"
-      />
+      <CounsellingHero />
 
       <Section tone="paper">
         <div className="container-x">

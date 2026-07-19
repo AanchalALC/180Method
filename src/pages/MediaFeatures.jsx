@@ -22,6 +22,14 @@ import { links } from '@/data/site'
    So this page leads with 3 real stories and lists the reprints underneath
    each one. Fifteen cards with three headlines repeated five times each would
    look like padding, because it would be padding.
+
+   LOGO CAROUSEL: now uses the SAME white-card treatment as the homepage
+   PressStrip (white cards, larger logos, a scoped `group/logo` hover, and a
+   lime link-chip affordance). Deliberately kept on `tone="ink"`: the white
+   cards read better on dark, AND this section is the page's dark anchor between
+   two light sections — flipping it light would make three light slabs in a row
+   (against the section-rhythm rule). The old `brightness-0 invert` silhouette
+   treatment is gone; logos show full colour inside the white cards.
    ========================================================================== */
 
 function FeatureCard({ feature }) {
@@ -125,23 +133,42 @@ export default function MediaFeatures() {
         </div>
       </Section>
 
+      {/* DARK ANCHOR — logo carousel, same white-card treatment as the homepage. */}
       <Section tone="ink" className="py-section-sm">
         <div className="container-x">
           <Reveal>
-            <p className="eyebrow mb-8 text-center">As featured in</p>
+            <p className="eyebrow mb-10 flex items-center justify-center gap-3">
+              <span className="inline-block h-px w-8 bg-lime/50" aria-hidden="true" />
+              As featured in
+              <span className="inline-block h-px w-8 bg-lime/50" aria-hidden="true" />
+            </p>
           </Reveal>
         </div>
+
         <Marquee speed="slow">
-          {pressLogos.map((logo) => (
-            <img
-              key={logo.name}
-              src={logo.logo}
-              alt={logo.name}
-              loading="lazy"
-              width={400}
-              height={200}
-              className="h-8 w-auto object-contain opacity-50 brightness-0 invert transition-opacity duration-500 hover:opacity-90 md:h-10"
-            />
+          {pressLogos.map((logo, i) => (
+            <a
+              key={`${logo.name}-${i}`}
+              href={logo.url || '/media-features'}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Read the ${logo.name} feature (opens in a new tab)`}
+              className="group/logo relative flex h-28 w-64 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-ink/[0.08] bg-white px-8 shadow-[0_12px_30px_-20px_rgba(0,0,0,0.5)] transition-[transform,box-shadow,border-color] duration-500 ease-brand hover:-translate-y-1.5 hover:border-lime/50 hover:shadow-[0_26px_60px_-28px_rgba(220,229,118,0.4)]"
+            >
+              {/* Persistent affordance — subtle at rest, lime on hover. Scoped to THIS card only. */}
+              <span className="absolute right-3 top-3 grid h-6 w-6 place-items-center rounded-full bg-forest-600/10 text-forest-600 opacity-60 transition-[background-color,color,opacity] duration-500 ease-brand group-hover/logo:bg-lime group-hover/logo:text-ink group-hover/logo:opacity-100">
+                <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+              </span>
+
+              <img
+                src={logo.logo}
+                alt={logo.name}
+                loading="lazy"
+                width={400}
+                height={200}
+                className="h-16 w-auto max-w-full object-contain md:h-20"
+              />
+            </a>
           ))}
         </Marquee>
       </Section>

@@ -15,7 +15,7 @@ export const team = [
     role: 'Co-founder & Head Trainer',
     bio: 'TODO(180 team): 40–60 word bio. Cover training philosophy, years of experience, and specialisms (functional, Hyrox-style, assessments).',
     credentials: 'TODO: certifications',
-    image: '/images/team/arya-talwalkar.jpg',
+    image: '/images/team/arya-talwalkar.jpeg',
     bioPending: true,
   },
   {
@@ -25,7 +25,7 @@ export const team = [
     role: 'Co-founder & Head Therapist',
     bio: 'TODO(180 team): 40–60 word bio. Can be reused from another-light.com / aanchalnarang.in — confirm with Aanchal first.',
     credentials: 'TODO: qualifications',
-    image: '/images/team/aanchal-narang.jpg',
+    image: '/images/team/aanchal-narang.png',
     link: { label: 'Another Light Counselling', href: 'https://another-light.com' },
     bioPending: true,
   },
@@ -36,7 +36,7 @@ export const team = [
     role: 'Fitness Coach',
     bio: 'TODO(180 team): 40–60 word bio. Also need a surname — the live site lists first name only.',
     credentials: 'TODO: certifications',
-    image: '/images/team/kartik.jpg',
+    image: '/images/team/kartik.png',
     bioPending: true,
   },
   {
@@ -46,7 +46,7 @@ export const team = [
     role: 'Nutritionist, Dietician & Lifestyle Coach',
     bio: 'TODO(180 team): 40–60 word bio + qualifications. "Dr." on a nutrition page should be backed by a stated credential.',
     credentials: 'TODO: qualifications',
-    image: '/images/team/moyna-vakil.jpg',
+    image: '/images/team/moyna-vakil.jpeg',
     bioPending: true,
   },
   {
@@ -56,7 +56,7 @@ export const team = [
     role: 'Fitness Coach',
     bio: 'TODO(180 team): 40–60 word bio.',
     credentials: 'TODO: certifications',
-    image: '/images/team/vishal-hunari.jpg',
+    image: '/images/team/vishal-hunari.png',
     bioPending: true,
   },
 ]
