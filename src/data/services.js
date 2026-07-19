@@ -26,7 +26,7 @@ export const services = [
       'Body toning',
     ],
     tagline: 'You don’t need to have an ideal body to start your journey. We help you build it.',
-    image: '/images/services/personal-training.jpg',
+    image: '/images/services/personal-training.jpeg',
     imageAlt: 'A 180 Method trainer coaching a client through a strength movement',
     cta: whatsappLink(
       'Hi, I want to book Personal Training with 180 Method. Please share the available slots and pricing.'
@@ -39,7 +39,7 @@ export const services = [
     pointsLabel: 'Benefits',
     points: ['More fun', 'Shared motivation', 'Cost-effective', 'Same expert guidance'],
     tagline: 'Cry, laugh and… work out with whoever you want.',
-    image: '/images/services/buddy-training.jpg',
+    image: '/images/services/buddy-training.jpeg',
     imageAlt: 'Two people training together with a 180 Method coach',
     cta: whatsappLink(
       'Hi, I want to book Buddy Training with 180 Method for two people. Please share slots, pricing, and how to get started.'
@@ -57,7 +57,7 @@ export const services = [
       'Fun, high-motivation environment',
     ],
     tagline: 'Doesn’t mean you need to fit in — you won’t be judged.',
-    image: '/images/services/group-training.jpg',
+    image: '/images/services/group-training.jpeg',
     imageAlt: 'A full group training session in progress on the 180 Method floor',
     cta: whatsappLink(
       "Hi, I'm interested in Focused Group Training with 180 Method. Please share batch timings, fees, and next start date."
@@ -75,7 +75,7 @@ export const services = [
     ],
     note: 'Our nutrition plans focus on building habits you can actually sustain.',
     tagline: 'Cheat meals are not always bad.',
-    image: '/images/services/nutrition.jpg',
+    image: '/images/services/nutrition.jpeg',
     imageAlt: 'Dr. Moyna Vakil in a nutrition consultation with a client',
     // NOTE: the live site's version of this link is malformed ("&?type=").
     // whatsappLink() builds it with URLSearchParams so it is always valid.
@@ -98,7 +98,7 @@ export const services = [
       'Find support for mental health concerns',
     ],
     tagline: 'Because a strong mind creates a strong body.',
-    image: '/images/services/counselling.jpg',
+    image: '/images/services/counselling.jpeg',
     imageAlt: 'The counselling room at 180 Method',
     cta: whatsappLink(
       "Hi, I'm interested in Counselling and Mental Wellbeing support through 180 Method. Please share how sessions work, availability, and pricing."

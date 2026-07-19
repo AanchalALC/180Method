@@ -7,7 +7,6 @@ import {
   RevealGroup,
   RevealItem,
   SectionHeading,
-  PageHero,
 } from '@/components/ui/Primitives'
 import { services, whoWeServe } from '@/data/services'
 import { cn } from '@/lib/cn'
@@ -24,6 +23,80 @@ import { cn } from '@/lib/cn'
    - The Nutrition WhatsApp link is built by whatsappLink(), so the malformed
      "&?type=" query (audit S2) cannot recur
    ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   HERO — bespoke, replaces <PageHero> so the photo shows in its REAL colours.
+   Mirrors AboutHero exactly (PageHero lays a heavier colour wash across the
+   whole photo; this does not).
+
+     • Dark `ink` base (bg-ink-950).
+     • Image is RAW / full-colour — `.grain` film texture only, NO `.duotone`,
+       NO wash over the whole photo.
+     • Scrims are CORNER-ONLY: both gradients fade to transparent, so they only
+       darken the bottom-left where the eyebrow / H1 / lede sit. The rest of the
+       photo stays clean and in colour.
+         - want MORE photo visible → lower the /80 and /65 stops
+         - text hard to read on a bright shot → raise them
+     • Headline is REAL HTML <h1> (never baked into the image) — one H1, SEO-safe.
+     • Hero image is eager + fetchPriority="high" — it's the LCP element.
+
+   HEIGHT: min-h-[72svh] — taller than the ~58vh inner-page default so the raw
+   photo has room to read, matching About's baseline. About was later pushed to
+   84svh because its hero copy is long; this lede is shorter, so 72svh sits
+   better here. Nudge to taste (→ 84svh to match About one-for-one).
+
+   TITLE SIZE: text-fluid-3xl — matches About's current headline size.
+   NOTE: "Train with the best" is short, so text-fluid-4xl also reads well if
+   you want it bolder — swap the one class.
+--------------------------------------------------------------------------- */
+function ServicesHero() {
+  return (
+    <section className="on-dark relative isolate flex min-h-[72svh] items-end overflow-hidden bg-ink-950 pb-16 pt-[calc(var(--header-h)+2.5rem)]">
+      <div className="absolute inset-0 -z-10">
+        {/* Raw photo — `.grain` texture only, no `.duotone`, no colour wash. */}
+        <div className="grain absolute inset-0">
+          <img
+            src="/images/services/hero.jpeg"
+            alt=""                                 /* decorative — the H1 carries the meaning */
+            className="h-full w-full object-cover"
+            width={1920}
+            height={1080}
+            loading="eager"
+            fetchPriority="high"
+          />
+        </div>
+
+        {/* CORNER-ONLY SCRIMS — both fade to transparent, so they only darken the
+            bottom-left where the text sits. The rest of the photo stays clean and
+            in full colour. Lower the /80 and /65 stops to show more photo. */}
+        <div className="absolute inset-0 z-[3] bg-gradient-to-t from-ink-950/80 via-ink-950/20 to-transparent" />
+        <div className="absolute inset-0 z-[3] bg-gradient-to-r from-ink-950/65 via-ink-950/5 to-transparent" />
+      </div>
+
+      <div className="container-x relative">
+        <Reveal>
+          <p className="eyebrow mb-5 flex items-center gap-3">
+            <span className="inline-block h-px w-10 bg-lime" aria-hidden="true" />
+            Our services
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.08}>
+          <h1 className="max-w-5xl font-display text-fluid-3xl uppercase leading-[0.95] tracking-tight text-paper [text-shadow:0_2px_28px_rgba(11,13,11,0.65)]">
+            Train with the best
+          </h1>
+        </Reveal>
+
+        <Reveal delay={0.16}>
+          <p className="mt-6 max-w-3xl text-fluid-lg leading-relaxed text-paper-100/75 [text-shadow:0_1px_18px_rgba(11,13,11,0.75)]">
+            Five ways in. All of them personalised, all of them built around the
+            same idea — that the body and the mind are the same project.
+          </p>
+        </Reveal>
+      </div>
+    </section>
+  )
+}
 
 function WhoWeServe() {
   return (
@@ -67,7 +140,8 @@ function ServiceBlock({ service, index }) {
       id={service.slug}
       className={cn('grid items-center gap-10 lg:grid-cols-2 lg:gap-16', flip && 'lg:[direction:rtl]')}
     >
-      <Reveal className="duotone grain relative aspect-[4/3] overflow-hidden rounded-5xl lg:[direction:ltr]">
+      {/* Raw photo — no `.duotone`, shows true colours. `.grain` is film texture only. */}
+      <Reveal className="grain relative aspect-[4/3] overflow-hidden rounded-5xl lg:[direction:ltr]">
         <img
           src={service.image}
           alt={service.imageAlt}
@@ -157,12 +231,7 @@ export default function Services() {
         path="/services"
       />
 
-      <PageHero
-        eyebrow="Our services"
-        title="Train with the best"
-        lede="Five ways in. All of them personalised, all of them built around the same idea — that the body and the mind are the same project."
-        image="/images/services/hero.jpg"
-      />
+      <ServicesHero />
 
       <WhoWeServe />
 

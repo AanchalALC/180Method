@@ -1,43 +1,83 @@
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion'
 import { ArrowUpRight, ArrowRight } from 'lucide-react'
 
 import { Seo, Counter, Marquee, Stars } from '@/components/ui/Widgets'
 import {
   Button, Section, Reveal, RevealGroup, RevealItem, SectionHeading, SplitHeading, TickerBand,
 } from '@/components/ui/Primitives'
-import { pillars, journey, stats } from '@/data/home'
+import { pillars, journey, stats, heroSlides } from '@/data/home'
 import { reviews, formatDate } from '@/data/reviews'
 import { pressLogos } from '@/data/media'
 import { site, links } from '@/data/site'
 import { EASE, viewport, fadeUp } from '@/lib/motion'
 
 /* ---------------------------------------------------------------------------
-   HERO
-   The headline is REAL TEXT over the image, not baked into it — the live site
-   bakes it in, which is what drives the 12.2s LCP and hides the H1 from Google
-   (audit PF2). Height capped at 88svh, not 100vh (final draft, note 1).
+   HERO — 3-image cross-fade carousel  (LEFT AS-IS, per request)
+   The hero is the ONE place that keeps a treatment, because the headline sits
+   over the photo and needs contrast. Everywhere else on the page the images
+   now show RAW — no `.duotone`, no colour layer.
+     • Headline stays REAL TEXT over the images, never baked in (audit PF2).
+     • Only the FIRST slide is eager + fetchPriority="high" (LCP element).
+     • Cross-fade is opacity only; the slow zoom is transform (scale) only.
+     • Auto-advance + zoom disabled under prefers-reduced-motion; dots still work.
+   The scrims below only darken the bottom-left corner where the text sits —
+   the rest of the photo stays clean and in colour.
 --------------------------------------------------------------------------- */
 function Hero() {
   const ref = useRef(null)
+  const reduceMotion = useReducedMotion()
+  const [active, setActive] = useState(0)
+
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '16%'])
+
+  useEffect(() => {
+    if (reduceMotion || heroSlides.length < 2) return
+    const id = setInterval(() => {
+      setActive((i) => (i + 1) % heroSlides.length)
+    }, 5500)
+    return () => clearInterval(id)
+  }, [reduceMotion])
 
   return (
     <section
       ref={ref}
       className="on-dark relative isolate flex min-h-[88svh] items-end overflow-hidden bg-ink-950 pb-16 pt-[var(--header-h)]"
     >
-      <motion.div style={{ y }} className="duotone grain absolute inset-0 -z-10">
-        <img
-          src="/images/home/hero.jpg"
-          alt=""
-          className="h-[116%] w-full object-cover opacity-60"
-          loading="eager" fetchPriority="high" width={1920} height={1080}
-        />
-        <div className="absolute inset-0 z-[3] bg-gradient-to-t from-ink-950 via-ink-950/70 to-ink-950/20" />
-        <div className="absolute inset-0 z-[3] bg-gradient-to-r from-ink-950/85 via-ink-950/30 to-transparent" />
+      <motion.div style={{ y }} className="absolute inset-0 -z-10">
+        {heroSlides.map((slide, i) => (
+          <div
+            key={slide.src}
+            aria-hidden={active === i ? undefined : true}
+            /* No `.duotone` — the photo keeps its TRUE colours. `.grain` is only
+               a faint film texture, not a colour. */
+            className="grain absolute inset-0 transition-opacity duration-[1200ms] ease-brand"
+            style={{ opacity: active === i ? 1 : 0 }}
+          >
+            <motion.img
+              src={slide.src}
+              alt=""                                 /* decorative — the H1 carries the meaning */
+              className="h-[116%] w-full object-cover"
+              width={1920}
+              height={1080}
+              loading={i === 0 ? 'eager' : 'lazy'}
+              fetchPriority={i === 0 ? 'high' : 'auto'}
+              animate={reduceMotion ? {} : { scale: active === i ? 1.06 : 1 }}
+              transition={{ duration: 7, ease: 'linear' }}
+            />
+          </div>
+        ))}
+
+        {/* TEXT-ONLY SCRIMS — these do NOT wash the whole image. Both fade fully
+            to transparent, so they only darken the bottom-left corner where the
+            headline, subtext and buttons sit. The rest of the photo (plates,
+            window, subject on the right) stays clean and in full colour.
+            To show more photo: lower the /85 and /70 stops.
+            To read text better on bright shots: raise them. */}
+        <div className="absolute inset-0 z-[3] bg-gradient-to-t from-ink-950/85 via-ink-950/30 to-transparent" />
+        <div className="absolute inset-0 z-[3] bg-gradient-to-r from-ink-950/70 via-ink-950/10 to-transparent" />
       </motion.div>
 
       <div className="container-x relative">
@@ -48,14 +88,15 @@ function Hero() {
           </p>
         </Reveal>
 
-        {/* Two lines, so "TRAIN BODIES" lands as its own hit. */}
-        <SplitHeading as="h1" text="We don’t just" className="block max-w-5xl text-fluid-4xl text-paper" />
-        <SplitHeading text="train bodies" className="block max-w-5xl text-fluid-4xl text-lime" delay={0.18} as="p" />
+        {/* Two lines, so "TRAIN BODIES" lands as its own hit. Text-shadow on
+            the letters (not the photo) keeps them legible. */}
+        <SplitHeading as="h1" text="We don’t just" className="block max-w-5xl text-fluid-4xl text-paper [text-shadow:0_2px_28px_rgba(11,13,11,0.65)]" />
+        <SplitHeading text="train bodies" className="block max-w-5xl text-fluid-4xl text-lime [text-shadow:0_2px_28px_rgba(11,13,11,0.65)]" delay={0.18} as="p" />
 
         <motion.p
           initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.55, duration: 0.8, ease: EASE }}
-          className="mt-7 max-w-xl text-fluid-lg leading-relaxed text-paper-100/75"
+          className="mt-7 max-w-xl text-fluid-lg leading-relaxed text-paper-100/75 [text-shadow:0_1px_18px_rgba(11,13,11,0.75)]"
         >
           We transform lifestyles by combining fitness, nutrition, and psychology into one powerful,
           sustainable system.
@@ -69,15 +110,36 @@ function Hero() {
           <Button href={links.whatsapp} variant="lime" size="lg" icon={ArrowUpRight}>Get started</Button>
           <Button to="/about" variant="outlineLight" size="lg">Read more</Button>
         </motion.div>
+
+        {/* Carousel dots — active pill is lime; inactive are faint on the dark hero. */}
+        {heroSlides.length > 1 && (
+          <div className="mt-10 flex items-center gap-2.5" role="tablist" aria-label="Hero images">
+            {heroSlides.map((slide, i) => (
+              <button
+                key={slide.src}
+                type="button"
+                role="tab"
+                aria-selected={active === i}
+                aria-label={`Show hero image ${i + 1} of ${heroSlides.length}`}
+                onClick={() => setActive(i)}
+                className="h-2.5 rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-lime"
+              >
+                <span
+                  className={`block h-full rounded-full transition-all duration-500 ease-brand ${
+                    active === i ? 'w-8 bg-lime' : 'w-2.5 bg-paper/40 hover:bg-paper/70'
+                  }`}
+                />
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )
 }
 
 /* ---------------------------------------------------------------------------
-   VENN
-   The outline asks for it by name: "Remove '+' from physical, mental and
-   nutrition. Make venn diagram."
+   VENN — "Remove '+' from physical, mental and nutrition. Make venn diagram."
 --------------------------------------------------------------------------- */
 function VennDiagram() {
   const lobes = [
@@ -132,9 +194,8 @@ function VennDiagram() {
   )
 }
 
-/* Cycles each pillar's three theme words — the outline asks for "animated text
-   as per the following theme" (Regulated → Discipline → Consistent). All three
-   stay in the DOM for screen readers and Google; the motion is decoration. */
+/* Cycles each pillar's three theme words (Regulated → Discipline → Consistent).
+   All stay in the DOM for screen readers and Google; the motion is decoration. */
 function PillarWords({ words }) {
   return (
     <div className="relative mt-5 h-6 overflow-hidden" aria-hidden="true">
@@ -177,7 +238,8 @@ function Pillars() {
                 to={pillar.href}
                 className="group relative flex h-full flex-col overflow-hidden rounded-4xl border border-ink/10 bg-paper transition-all duration-500 ease-brand hover:-translate-y-1.5 hover:border-forest-600 hover:shadow-[0_28px_70px_-30px_rgba(11,13,11,0.4)]"
               >
-                <div className="duotone relative aspect-[4/3] overflow-hidden">
+                {/* Raw photo — no `.duotone`, shows true colours. */}
+                <div className="relative aspect-[4/3] overflow-hidden">
                   <img
                     src={pillar.image} alt={pillar.imageAlt} loading="lazy" width={1200} height={900}
                     className="h-full w-full object-cover transition-transform duration-[900ms] ease-brand group-hover:scale-105"
@@ -204,11 +266,10 @@ function Pillars() {
 }
 
 /* ---------------------------------------------------------------------------
-   JOURNEY
-   Final draft: "All 5 cards should look simpler and crisp altogether instead of
-   scattered." One numbered rail with a scroll-driven progress line. The live
-   site links each step to "#" — a dead link (audit H6). Nothing here is
-   clickable, because nothing here should be.
+   JOURNEY — kept dark on purpose (one of two dark anchors; the lime rail on
+   black is a signature moment). "All 5 cards should look simpler and crisp
+   altogether instead of scattered" (final draft) — one numbered rail.
+   Step thumbnails are RAW (no `.duotone`, no dimming) and a bit bigger now.
 --------------------------------------------------------------------------- */
 function Journey() {
   const ref = useRef(null)
@@ -216,7 +277,6 @@ function Journey() {
 
   return (
     <Section tone="ink" className="overflow-hidden">
-      {/* Green glow, so the black section isn't a flat void. */}
       <div className="absolute -left-40 top-1/4 h-[32rem] w-[32rem] rounded-full bg-forest-600/20 blur-[120px]" aria-hidden="true" />
 
       <div className="container-x relative">
@@ -248,10 +308,11 @@ function Journey() {
                   <p className="mt-2 max-w-2xl leading-relaxed text-paper-100/55">{step.copy}</p>
                 </div>
 
-                <div className="duotone hidden h-24 w-32 shrink-0 overflow-hidden rounded-2xl lg:block">
+                {/* Bigger raw thumbnail — no `.duotone`, no dimming. Shows from tablet (md) up. */}
+                <div className="hidden h-28 w-44 shrink-0 overflow-hidden rounded-2xl md:block lg:h-32 lg:w-52">
                   <img
-                    src={step.image} alt="" loading="lazy" width={400} height={300}
-                    className="h-full w-full object-cover opacity-60 transition-all duration-700 ease-brand group-hover:scale-105 group-hover:opacity-100"
+                    src={step.image} alt="" loading="lazy" width={520} height={400}
+                    className="h-full w-full object-cover transition-transform duration-700 ease-brand group-hover:scale-105"
                   />
                 </div>
               </motion.li>
@@ -267,8 +328,8 @@ function Journey() {
   )
 }
 
-/* Counters. The live site ships these at 0 / 0 (audit H5); the real numbers are
-   in the outline. Full words, not "PT"/"GT" — also from the outline. */
+/* Counters on forest — lime numbers still pop, and this breaks the black run
+   after the dark Journey with a strong hue shift (black → green). */
 function Stats() {
   return (
     <Section tone="forest" className="overflow-hidden py-section-sm">
@@ -329,17 +390,19 @@ function HomeReviews() {
   )
 }
 
-/* ALC integration. The final draft asks for this to be less text-heavy, better
-   laid out, and renamed from "A More Human Approach to Transformation". */
+/* ALC integration on forestDeep — the second (and last) dark anchor.
+   Final draft: less text-heavy, better laid out, renamed from
+   "A More Human Approach to Transformation". */
 function CounsellingTeaser() {
   return (
     <Section tone="forestDeep" className="overflow-hidden">
       <div className="container-x">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal className="relative order-2 lg:order-1">
-            <div className="duotone grain relative aspect-[4/5] overflow-hidden rounded-5xl sm:aspect-[5/4] lg:aspect-[4/5]">
+            {/* Raw photo — no `.duotone`, no `.grain`. Shows true colours. */}
+            <div className="relative aspect-[4/5] overflow-hidden rounded-5xl sm:aspect-[5/4] lg:aspect-[4/5]">
               <img
-                src="/images/home/counselling-room.jpg"
+                src="/images/home/counselling-room.jpeg"
                 alt="The counselling room at the 180 Method studio"
                 loading="lazy" width={1200} height={1500}
                 className="h-full w-full object-cover"
@@ -382,33 +445,58 @@ function CounsellingTeaser() {
   )
 }
 
-/* Press strip. Logos link out where we have an article; the rest are plain
-   images rather than dead links. */
+/* ---------------------------------------------------------------------------
+   PRESS STRIP — light surface (paperDeep). Removes the third near-black slab
+   and lets the page end light before the dark footer.
+
+   WARM ACCENTS (the browns, on request): each logo sits in a `sand`-tinted card
+   hairlined with `charcoal`, with a warm charcoal shadow on hover — the two
+   benched brand tokens used strictly as TINTS on a light surface, never as a
+   section background. Logos are bigger and every one links out in a new tab;
+   URLs live in `media.js`, with a safe fallback to /media-features (no dead `#`).
+--------------------------------------------------------------------------- */
 function PressStrip() {
   return (
-    <Section tone="ink" className="py-section-sm">
+    <Section tone="paperDeep" className="py-section-sm">
       <div className="container-x">
-        <Reveal><p className="eyebrow mb-8 text-center">180 Bulletin — as featured in</p></Reveal>
+        <Reveal>
+          <p className="eyebrow mb-10 flex items-center justify-center gap-3 text-forest-600">
+            <span className="inline-block h-px w-8 bg-forest-600/40" aria-hidden="true" />
+            180 Bulletin — as featured in
+            <span className="inline-block h-px w-8 bg-forest-600/40" aria-hidden="true" />
+          </p>
+        </Reveal>
       </div>
 
       <Marquee className="py-2">
-        {pressLogos.map((logo) => {
-          const img = (
+        {pressLogos.map((logo, i) => (
+          <a
+            key={`${logo.name}-${i}`}
+            href={logo.url || '/media-features'}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Read the ${logo.name} feature (opens in a new tab)`}
+            className="group/logo relative flex h-28 w-64 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-ink/[0.08] bg-white px-8 shadow-[0_12px_30px_-20px_rgba(11,13,11,0.35)] transition-[transform,box-shadow,border-color] duration-500 ease-brand hover:-translate-y-1.5 hover:border-forest-600/40 hover:shadow-[0_26px_60px_-28px_rgba(39,84,66,0.5)]"
+          >
+            {/* Persistent affordance — subtle at rest, lime on hover. Scoped to THIS card only. */}
+            <span className="absolute right-3 top-3 grid h-6 w-6 place-items-center rounded-full bg-forest-600/10 text-forest-600 opacity-60 transition-[background-color,color,opacity] duration-500 ease-brand group-hover/logo:bg-lime group-hover/logo:text-ink group-hover/logo:opacity-100">
+              <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+            </span>
+
             <img
-              src={logo.logo} alt={logo.name} loading="lazy" width={400} height={200}
-              className="h-9 w-auto object-contain opacity-45 brightness-0 invert transition-opacity duration-500 hover:opacity-100 md:h-11"
+              src={logo.logo}
+              alt={logo.name}
+              loading="lazy"
+              width={400}
+              height={200}
+              className="h-16 w-auto max-w-full object-contain md:h-20"
             />
-          )
-          return logo.url ? (
-            <a key={logo.name} href={logo.url} target="_blank" rel="noopener noreferrer" aria-label={`Read the ${logo.name} feature`}>{img}</a>
-          ) : (
-            <div key={logo.name}>{img}</div>
-          )
-        })}
+          </a>
+        ))}
       </Marquee>
 
-      <div className="container-x mt-8 text-center">
-        <Reveal><Button to="/media-features" variant="outlineLime" icon={ArrowRight}>Explore our media features</Button></Reveal>
+      <div className="container-x mt-10 text-center">
+        <Reveal><Button to="/media-features" variant="outline" icon={ArrowRight}>Explore our media features</Button></Reveal>
       </div>
     </Section>
   )

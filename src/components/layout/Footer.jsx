@@ -37,7 +37,7 @@ export default function Footer() {
       <div className="container-x py-section-sm">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-4">
-            <img src="/images/logo-lime.svg" alt={site.name} width={140} height={54} className="h-10 w-auto" />
+            <img src="/images/logo-lime.png" alt={site.name} width={140} height={54} className="h-10 w-auto" />
             <p className="mt-6 max-w-sm leading-relaxed text-paper-100/55">
               At 180 Method, we meet you exactly where you are — physically, mentally, and emotionally —
               and support you forward with intention.

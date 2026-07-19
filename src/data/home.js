@@ -13,7 +13,7 @@ export const pillars = [
     heading: 'Fitness',
     copy: 'Smart training tailored to your body and goals.',
     words: ['Regulated', 'Discipline', 'Consistent'],
-    image: '/images/home/pillar-fitness.jpg',
+    image: '/images/home/pillar-fitness.png',
     imageAlt: 'A personal training session on the 180 Method floor',
     href: '/services#personal-training',
   },
@@ -23,7 +23,7 @@ export const pillars = [
     heading: 'Psychology',
     copy: 'Mental and emotional support to help you stay consistent.',
     words: ['Aware', 'Resilient', 'Grounded'],
-    image: '/images/home/pillar-psychology.jpg',
+    image: '/images/home/pillar-psychology.png',
     imageAlt: 'A counsellor mid-session in the 180 Method counselling room',
     href: '/counselling',
   },
@@ -33,7 +33,7 @@ export const pillars = [
     heading: 'Nutrition',
     copy: 'Sustainable eating habits, not crash diets.',
     words: ['Flexible', 'Simple', 'Sustainable'],
-    image: '/images/home/pillar-nutrition.jpg',
+    image: '/images/home/pillar-nutrition.png',
     imageAlt: 'Dr. Moyna Vakil in a nutrition consultation',
     href: '/services#nutrition-support',
   },
@@ -47,31 +47,31 @@ export const journey = [
     n: '01',
     title: 'Getting to Know You',
     copy: 'We begin with a deep understanding of your body, lifestyle, habits, stress levels, injuries, mindset and more.',
-    image: '/images/home/step-assessment.jpg',
+    image: '/images/home/step-assessment.png',
   },
   {
     n: '02',
     title: 'Your Personal Blueprint',
     copy: 'A personalised plan is built with experts across training, nutrition, and mental well-being — aligned to your goals and routine.',
-    image: '/images/home/step-blueprint.jpg',
+    image: '/images/home/step-blueprint.png',
   },
   {
     n: '03',
     title: 'Get Started',
     copy: 'Train in a focused, supportive environment where technique, safety, and confidence come first.',
-    image: '/images/home/step-training.jpg',
+    image: '/images/home/step-training.png',
   },
   {
     n: '04',
     title: 'Track. Refine. Improve.',
     copy: 'Progress is measured, reviewed, and optimised regularly — ensuring consistent growth without plateaus.',
-    image: '/images/home/step-tracking.jpg',
+    image: '/images/home/step-tracking.png',
   },
   {
     n: '05',
     title: 'A Healthier Lifestyle',
     copy: 'Strength, energy, confidence, and will become your lifelong companions.',
-    image: '/images/home/step-community.jpg',
+    image: '/images/home/step-community.png',
   },
 ]
 
@@ -83,6 +83,12 @@ export const journey = [
 export const stats = [
   { value: 13200, label: 'Personal Training sessions', suffix: '+' },
   { value: 5000, label: 'Group Training sessions', suffix: '+' },
+]
+
+export const heroSlides = [
+  { src: '/images/home/hero-1.jpeg' }, // wide-angle studio interior
+  { src: '/images/home/hero-2.jpeg' }, // Arya coaching a client, mid-session
+  { src: '/images/home/hero-3.jpeg' }, // full group-training session, wide
 ]
 
 /* About → "How this shows up". Replaces "Values we live by" and "What makes us
