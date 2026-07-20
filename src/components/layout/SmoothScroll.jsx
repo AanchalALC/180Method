@@ -1,12 +1,8 @@
 import { useEffect } from 'react'
 import Lenis from 'lenis'
 import { usePrefersReducedMotion } from '@/lib/useReducedMotion'
+import { setLenis } from '@/lib/lenis'
 
-/* Lenis smooth scroll.
-   Skipped entirely under prefers-reduced-motion — hijacking the scroll of
-   someone who asked for less motion is exactly the wrong move. Also skipped
-   for touch devices by default (`smoothTouch: false`), because native
-   momentum scrolling on phones is better than anything we'd emulate. */
 export default function SmoothScroll({ children }) {
   const reduced = usePrefersReducedMotion()
 
@@ -19,6 +15,7 @@ export default function SmoothScroll({ children }) {
       smoothWheel: true,
       smoothTouch: false,
     })
+    setLenis(lenis)               // ← share it
 
     let rafId
     const raf = (time) => {
@@ -30,6 +27,7 @@ export default function SmoothScroll({ children }) {
     return () => {
       cancelAnimationFrame(rafId)
       lenis.destroy()
+      setLenis(null)              // ← clear on unmount
     }
   }, [reduced])
 

@@ -1,4 +1,5 @@
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, ArrowRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { Seo } from '@/components/ui/Widgets'
 import {
   Button,
@@ -13,19 +14,20 @@ import { links } from '@/data/site'
 
 /* ============================================================================
    TEAM
-   Audit T1: the live page has names and roles but NO photos and NO bios, and
-   the cards sit on top of the logo as a placeholder.
+   The grid now links each card to its individual profile at /team/:slug.
 
-   Rather than invent bios, any member with `bioPending: true` renders a quiet
-   "profile coming soon" state. It looks deliberate instead of broken, and it
-   gives the 180 team a visible reason to send the copy. Fill in `bio` +
-   `credentials` in src/data/team.js and set bioPending: false — the card
-   upgrades itself.
+   Data shape (src/data/team.js):
+     • published:false  → card is NOT linked and the member is kept out of the
+       sitemap. Used for Aanchal until her mental-health wording is signed off
+       in writing (§9). Her card still shows; it just doesn't navigate.
+     • image:null       → no headshot yet → lime monogram (initials), so the
+       card reads deliberate instead of broken. Used for Vishal until a photo
+       arrives. Fill `image` in the data and the card upgrades itself.
+     • blurb            → one-line summary shown under the card.
 
-   IMAGES: shown RAW — no `.duotone`, no colour layer over the photography,
-   matching Home / About / Services. `.grain` (film texture only, not colour)
-   is kept. The card's bottom gradient is NOT a colour layer — it's the scrim
-   the white name/role text sits on, so it stays.
+   IMAGES: shown RAW — no `.duotone`, no colour layer, matching the rest of the
+   site. `.grain` (film texture only) is kept. The card's bottom gradient is a
+   legibility scrim for the white name/role text, NOT a colour layer, so it stays.
    ========================================================================== */
 
 /* ---------------------------------------------------------------------------
@@ -96,62 +98,83 @@ function TeamHero() {
   )
 }
 
+/* Initials for the no-photo monogram fallback. Strips a leading "Dr." so
+   "Dr. Moyna Vakil" → "MV", "Vishal Hunari" → "VH", single names → one letter. */
+function initials(name) {
+  const parts = name.replace(/^Dr\.\s+/i, '').trim().split(/\s+/)
+  const first = parts[0]?.[0] ?? ''
+  const last = parts.length > 1 ? parts[parts.length - 1][0] : ''
+  return (first + last).toUpperCase()
+}
+
 function TeamCard({ member }) {
+  const linked = member.published !== false
+  const Wrapper = linked ? Link : 'div'
+  const wrapperProps = linked ? { to: `/team/${member.slug}` } : {}
+
   return (
     <RevealItem className="group">
-      {/* Raw photo — no `.duotone`, shows true colours. `.grain` is film texture
-          only. The bottom gradient below is a legibility scrim for the name/role
-          text, NOT a colour layer, so it stays. */}
-      <div className="grain relative aspect-[4/5] overflow-hidden rounded-4xl bg-paper-200">
-        <img
-          src={member.image}
-          alt={`${member.name}, ${member.role} at 180 Method`}
-          loading="lazy"
-          width={800}
-          height={1000}
-          className="h-full w-full object-cover transition-transform duration-[900ms] ease-brand group-hover:scale-[1.04]"
-        />
-        <div className="absolute inset-0 z-[3] bg-gradient-to-t from-ink-950 via-ink-950/25 to-transparent" />
+      <Wrapper
+        {...wrapperProps}
+        className={`block ${linked ? 'cursor-pointer' : ''} focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-lime`}
+      >
+        {/* Photo (raw, `.grain` only) OR lime monogram when no image yet. The
+            bottom gradient is a legibility scrim, not a colour layer. */}
+        <div className="grain relative aspect-[4/5] overflow-hidden rounded-4xl bg-paper-200">
+          {member.image ? (
+            <img
+              src={member.image}
+              alt={`${member.name}, ${member.role} at 180 Method`}
+              loading="lazy"
+              width={800}
+              height={1000}
+              className="h-full w-full object-cover transition-transform duration-[900ms] ease-brand group-hover:scale-[1.04]"
+            />
+          ) : (
+            <div className="grid h-full w-full place-items-center bg-forest-600">
+              <span className="font-display text-fluid-4xl uppercase tracking-tight text-lime">
+                {initials(member.name)}
+              </span>
+            </div>
+          )}
 
-        <div className="absolute inset-x-0 bottom-0 z-[4] p-6">
-          <p className="font-display text-fluid-lg uppercase leading-none text-paper">
-            {member.name}
-          </p>
-          <p className="mt-1.5 text-fluid-xs text-lime">
-            {member.role}
-            <span className="text-paper-200/50"> · {member.pronouns}</span>
-          </p>
+          <div className="absolute inset-0 z-[3] bg-gradient-to-t from-ink-950 via-ink-950/25 to-transparent" />
+
+          {/* Clickable affordance — only on linked cards. */}
+          {linked && (
+            <span className="absolute right-4 top-4 z-[4] grid h-9 w-9 place-items-center rounded-full bg-ink-950/50 text-paper opacity-0 backdrop-blur-sm transition-all duration-500 ease-brand group-hover:bg-lime group-hover:text-ink group-hover:opacity-100">
+              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+            </span>
+          )}
+
+          <div className="absolute inset-x-0 bottom-0 z-[4] p-6">
+            <p className="font-display text-fluid-lg uppercase leading-none text-paper">
+              {member.name}
+            </p>
+            <p className="mt-1.5 text-fluid-xs text-lime">
+              {member.role}
+              <span className="text-paper-200/50"> · {member.pronouns}</span>
+            </p>
+          </div>
         </div>
-      </div>
 
-      <div className="px-1 pt-5">
-        {member.bioPending ? (
-          <p className="text-fluid-sm italic leading-relaxed text-ink/35">
-            Full profile coming soon.
-          </p>
-        ) : (
-          <>
-            <p className="leading-relaxed text-ink/70">{member.bio}</p>
-            {member.credentials && (
-              <p className="mt-3 font-display text-fluid-xs uppercase tracking-[0.14em] text-ink/45">
-                {member.credentials}
-              </p>
-            )}
-          </>
-        )}
+        <div className="px-1 pt-5">
+          {member.blurb && (
+            <p className="leading-relaxed text-ink/70">{member.blurb}</p>
+          )}
 
-        {member.link && (
-          <a
-            href={member.link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="link-underline mt-4 inline-flex items-center gap-1.5 font-display text-fluid-xs uppercase tracking-[0.14em] text-forest-600"
-          >
-            {member.link.label}
-            <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-          </a>
-        )}
-      </div>
+          {linked ? (
+            <span className="link-underline mt-4 inline-flex items-center gap-1.5 font-display text-fluid-xs uppercase tracking-[0.14em] text-forest-600">
+              View profile
+              <ArrowRight className="h-3.5 w-3.5 transition-transform duration-500 ease-brand group-hover:translate-x-1" aria-hidden="true" />
+            </span>
+          ) : (
+            <p className="mt-4 font-display text-fluid-xs uppercase tracking-[0.14em] text-ink/35">
+              Profile coming soon
+            </p>
+          )}
+        </div>
+      </Wrapper>
     </RevealItem>
   )
 }
