@@ -3,7 +3,7 @@ import { ArrowUpRight, ArrowLeft } from 'lucide-react'
 
 import { Seo } from '@/components/ui/Widgets'
 import {
-  Button, Section, Reveal, RevealGroup, RevealItem, SectionHeading,
+  Button, Section, Reveal, RevealGroup, RevealItem, SectionHeading, TagRow,
 } from '@/components/ui/Primitives'
 import { team } from '@/data/team'
 import { links } from '@/data/site'
@@ -11,8 +11,32 @@ import { links } from '@/data/site'
 /* ============================================================================
    TEAM MEMBER — /team/:slug
    One data-driven page for every member. Reads from team.js; renders only the
-   sections that have data, so a lean profile (Vishal) and a rich one (Arya)
+   sections that have data, so a lean profile (Kartik) and a rich one (Arya)
    both look intentional.
+
+   ---------------------------------------------------------------------------
+   POINT OF VIEW (Naveen's note — the first/third person clash)
+   ---------------------------------------------------------------------------
+   THE MEMBER SPEAKS on this page. Every heading over their own content is
+   first person: "Your goals, my support", "How we'll train together",
+   "A little more about me". The SITE speaks in exactly two places — the hero
+   meta line (role · pronouns) and the closing CTA — and even there it never
+   narrates the member in third person. "How Arya works" and "A little more
+   about Arya" are gone; the CTA is now an instruction to the visitor
+   ("Train with Arya"), not narration about him.
+
+   The approach heading and the CTA verb come from team.js, so Aanchal and
+   Moyna get "work / talk" instead of "train" without a single name being
+   hardcoded here.
+
+   ---------------------------------------------------------------------------
+   TAGS (Naveen's note — "the title colour and the tag colours all blend in")
+   ---------------------------------------------------------------------------
+   The old local <Chips> component painted every pill the same flat outline in
+   ink, directly under an ink heading. It is replaced by the shared <TagRow>,
+   which cycles four brand combinations. The three rows deliberately start on
+   different colours (see the `cycle` props below) so two rows on the same page
+   never open with the same pill.
 
    • Name: surname rendered in `lime` — the palette's loud accent — over `ink`.
    • Photo: raw, no `.duotone`. No image → lime monogram (initials).
@@ -32,6 +56,12 @@ function initials(name) {
   const first = parts[0]?.[0] ?? ''
   const last = parts.length > 1 ? parts[parts.length - 1][0] : ''
   return (first + last).toUpperCase()
+}
+
+/* Credentials may be { title, issuer } or a plain string (older data).
+   Normalising here means neither shape can break the page. */
+function normaliseCredential(c) {
+  return typeof c === 'string' ? { title: c, issuer: null } : c
 }
 
 /* Surname in lime. Single-word names go fully lime. */
@@ -59,7 +89,7 @@ function Portrait({ member }) {
           width={800}
           height={800}
           loading="eager"
-          fetchPriority="high"
+          fetchpriority="high"
           className="h-full w-full object-cover"
         />
       </div>
@@ -75,32 +105,40 @@ function Portrait({ member }) {
   )
 }
 
-function Chips({ items, accent = 'forest' }) {
-  const hover =
-    accent === 'lime'
-      ? 'hover:border-transparent hover:bg-lime hover:text-ink'
-      : 'hover:border-transparent hover:bg-forest-600 hover:text-paper'
-  return (
-    <RevealGroup className="flex flex-wrap gap-2.5" gap={0.04}>
-      {items.map((item) => (
-        <RevealItem key={item}>
-          <span
-            className={`inline-block rounded-full border border-ink/15 px-5 py-2.5 font-display text-fluid-xs uppercase tracking-[0.12em] text-ink transition-colors duration-500 ${hover}`}
-          >
-            {item}
-          </span>
-        </RevealItem>
-      ))}
-    </RevealGroup>
-  )
-}
-
 function Fact({ label, value }) {
   if (!value) return null
   return (
     <RevealItem>
       <p className="eyebrow mb-1.5 text-lime">{label}</p>
       <p className="font-display text-fluid-base uppercase tracking-tight text-paper">{value}</p>
+    </RevealItem>
+  )
+}
+
+/* ---------------------------------------------------------------------------
+   CREDENTIAL — issuer badge + credential title.
+
+   Naveen asked for certification logos pulled from the internet. Not doing
+   that: ACSM / Reebok / ISSTD / TISS marks are trademarks with published usage
+   rules, they'd arrive at mismatched resolutions, and a commercial site is
+   exactly where that gets noticed. The awarding body set in forest + lime
+   carries the same authenticity signal, scales perfectly, and is ours to use.
+   If the client wants real logos, request the official brand kit from each
+   body — that's a separate task with a slow dependency.
+
+   TUNING: drop `bg-forest-600 text-lime` to `bg-lime text-ink` if the column
+   reads too dark next to the hobby tags.
+--------------------------------------------------------------------------- */
+function Credential({ credential }) {
+  const { title, issuer } = normaliseCredential(credential)
+  return (
+    <RevealItem as="li" className="rounded-2xl border border-ink/10 bg-paper p-5">
+      {issuer && (
+        <span className="mb-3 inline-block rounded-full bg-forest-600 px-3 py-1 font-display text-fluid-xs uppercase tracking-[0.14em] text-lime">
+          {issuer}
+        </span>
+      )}
+      <p className="leading-relaxed text-ink/80">{title}</p>
     </RevealItem>
   )
 }
@@ -115,6 +153,10 @@ export default function TeamMember() {
   const fname = firstName(member.name)
   const hasProfessional =
     (member.specialisations?.length ?? 0) > 0 || (member.clientGroups?.length ?? 0) > 0
+
+  // Site voice, second person — never third-person narration about the member.
+  const ctaVerb = member.ctaVerb ?? 'Train'
+  const ctaHeading = ctaVerb === 'Talk' ? `Talk to ${fname}` : `${ctaVerb} with ${fname}`
 
   return (
     <>
@@ -178,20 +220,26 @@ export default function TeamMember() {
         </div>
       </Section>
 
-      {/* PROFESSIONAL — paper. Specialisations + who they work with. */}
+      {/* PROFESSIONAL — paper. Specialisations + who they work with.
+          Headings are first person: the member is speaking. */}
       {hasProfessional && (
         <Section tone="paper">
           <div className="container-x space-y-14">
             {member.specialisations?.length > 0 && (
               <div>
-                <SectionHeading eyebrow="Areas of specialisation" title="What I offer" size="lg" />
-                <div className="mt-8"><Chips items={member.specialisations} accent="forest" /></div>
+                <SectionHeading eyebrow="Areas of specialisation" title="Your goals, my support" size="lg" />
+                <div className="mt-8">
+                  <TagRow items={member.specialisations} />
+                </div>
               </div>
             )}
             {member.clientGroups?.length > 0 && (
               <div>
                 <SectionHeading eyebrow="Who I work with" title="If you have a body, you qualify" />
-                <div className="mt-8"><Chips items={member.clientGroups} accent="lime" /></div>
+                {/* Starts on `forest` so this row doesn't open with lime like the one above it. */}
+                <div className="mt-8">
+                  <TagRow items={member.clientGroups} cycle={['forest', 'aloe', 'lime', 'quiet']} />
+                </div>
               </div>
             )}
           </div>
@@ -202,17 +250,21 @@ export default function TeamMember() {
       {(member.philosophy || member.keyLearning) && (
         <Section tone="forestDeep">
           <div className="container-x">
-            <SectionHeading eyebrow="My approach" title={`How ${fname} works`} size="lg" />
+            <SectionHeading
+              eyebrow="My approach"
+              title={member.approachTitle ?? 'How we’ll work together'}
+              size="lg"
+            />
             <div className="mt-10 grid gap-8 lg:grid-cols-2">
               {member.philosophy && (
                 <Reveal className="border-l-2 border-lime pl-6">
-                  <p className="eyebrow mb-3 text-lime">Training philosophy</p>
+                  <p className="eyebrow mb-3 text-lime">My philosophy</p>
                   <p className="text-fluid-lg leading-relaxed text-paper-100/85">{member.philosophy}</p>
                 </Reveal>
               )}
               {member.keyLearning && (
                 <Reveal delay={0.1} className="border-l-2 border-lime pl-6">
-                  <p className="eyebrow mb-3 text-lime">A key learning</p>
+                  <p className="eyebrow mb-3 text-lime">What I’ve learned</p>
                   <p className="text-fluid-lg leading-relaxed text-paper-100/85">{member.keyLearning}</p>
                 </Reveal>
               )}
@@ -243,10 +295,7 @@ export default function TeamMember() {
               <SectionHeading eyebrow="Qualifications" title="Certified & trained" />
               <RevealGroup as="ul" className="mt-8 space-y-3" gap={0.05}>
                 {member.credentials.map((c) => (
-                  <RevealItem as="li" key={c} className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-forest-600" aria-hidden="true" />
-                    <span className="leading-relaxed text-ink/75">{c}</span>
-                  </RevealItem>
+                  <Credential key={normaliseCredential(c).title} credential={c} />
                 ))}
               </RevealGroup>
             </div>
@@ -255,8 +304,11 @@ export default function TeamMember() {
           <div className="lg:col-span-7">
             {member.hobbies?.length > 0 && (
               <>
-                <SectionHeading eyebrow="Off the floor" title={`A little more about ${fname}`} />
-                <div className="mt-8"><Chips items={member.hobbies} accent="forest" /></div>
+                <SectionHeading eyebrow="Off the floor" title="A little more about me" />
+                {/* Starts on `aloe` — third distinct opening colour on the page. */}
+                <div className="mt-8">
+                  <TagRow items={member.hobbies} cycle={['aloe', 'lime', 'quiet', 'forest']} />
+                </div>
               </>
             )}
 
@@ -283,11 +335,11 @@ export default function TeamMember() {
         </div>
       </Section>
 
-      {/* CTA — ink. */}
+      {/* CTA — ink. Site voice, addressed to the visitor. */}
       <Section tone="ink" className="py-section-sm">
         <div className="container-x text-center">
           <Reveal>
-            <h2 className="text-fluid-xl leading-tight text-paper">Ready to train with {fname}?</h2>
+            <h2 className="text-fluid-xl leading-tight text-paper">{ctaHeading}</h2>
             <p className="mx-auto mt-3 max-w-lg leading-relaxed text-paper-200/60">
               Message us on WhatsApp and we’ll get you started — no pressure, no judgement.
             </p>

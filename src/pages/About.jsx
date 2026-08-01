@@ -7,6 +7,7 @@ import {
   RevealGroup,
   RevealItem,
   SectionHeading,
+  TagRow,
 } from '@/components/ui/Primitives'
 import { aboutIntro, vision, mission, howThisShowsUp, brandValues } from '@/data/home'
 import { links } from '@/data/site'
@@ -41,7 +42,7 @@ import { links } from '@/data/site'
          - want MORE photo visible → lower the /80 and /65 stops
          - text hard to read on a bright shot → raise them
      • Headline is REAL HTML <h1> (never baked into the image) — one H1, SEO-safe.
-     • Hero image is eager + fetchPriority="high" — it's the LCP element.
+     • Hero image is eager + fetchpriority="high" — it's the LCP element.
 
    SPACING (matches home, so the text reads GROUPED not spread):
      • Headline uses leading-[0.95] — without it a wrapping display headline
@@ -78,7 +79,7 @@ function AboutHero() {
             width={1920}
             height={1080}
             loading="eager"
-            fetchPriority="high"
+            fetchpriority="high"
           />
         </div>
 
@@ -215,15 +216,9 @@ function WhoWeAre() {
           <div className="lg:col-span-4">
             <SectionHeading eyebrow="Who we are" title="Six words we hold ourselves to" />
           </div>
-          <RevealGroup className="flex flex-wrap gap-3 lg:col-span-8" gap={0.06}>
-            {brandValues.map((value) => (
-              <RevealItem key={value}>
-                <span className="inline-block rounded-full border border-ink/15 px-6 py-3 font-display text-fluid-sm uppercase tracking-[0.14em] text-ink transition-colors duration-500 hover:border-transparent hover:bg-forest-600 hover:text-paper">
-                  {value}
-                </span>
-              </RevealItem>
-            ))}
-          </RevealGroup>
+          {/* No gap override — `cn` is a plain joiner, not tailwind-merge, so a
+              second gap-* here would just sit alongside TagRow's own. */}
+          <TagRow items={brandValues} size="lg" className="lg:col-span-8" />
         </div>
       </div>
     </Section>

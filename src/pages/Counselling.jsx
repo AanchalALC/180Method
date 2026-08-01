@@ -50,7 +50,7 @@ const points = [
          - want MORE photo visible → lower the /80 and /65 stops
          - text hard to read on a bright shot → raise them
      • Headline is REAL HTML <h1> (never baked into the image) — one H1, SEO-safe.
-     • Hero image is eager + fetchPriority="high" — it's the LCP element.
+     • Hero image is eager + fetchpriority="high" — it's the LCP element.
 
    HEIGHT: min-h-[72svh] — matches Services / Team. Nudge to taste.
    NOTE: the eyebrow is long ("In partnership with Another Light Counselling"),
@@ -69,7 +69,7 @@ function CounsellingHero() {
             width={1920}
             height={1080}
             loading="eager"
-            fetchPriority="high"
+            fetchpriority="high"
           />
         </div>
 
@@ -160,7 +160,8 @@ export default function Counselling() {
           <div className="mx-auto max-w-2xl text-center">
             <SectionHeading
               eyebrow="Talk to us"
-              title="Get in touch today and let’s work together"
+              title="A conversation can change more than you think"
+              lede="Take the first step with qualified mental health professionals from Another Light Counselling, integrated into the holistic approach of The 180 Method."
               align="center"
             />
             <Reveal delay={0.1}>

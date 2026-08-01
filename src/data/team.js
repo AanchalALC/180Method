@@ -5,11 +5,35 @@
 
    ORDER: Arya → Aanchal → Kartik → Moyna → Vishal.
 
+   ---------------------------------------------------------------------------
+   POINT OF VIEW — the rule, applied across all five profiles
+   ---------------------------------------------------------------------------
+   On /team/:slug the MEMBER speaks: first person, always. `philosophy`,
+   `keyLearning`, `funFact` and `whisper` are their own words, in their own
+   voice. The SITE speaks only in the hero meta line and the closing CTA, and
+   never refers to the member in the third person on their own page.
+
+   `blurb` is the exception and is deliberately third person — it renders on
+   the /team GRID card, which is site voice, not the member's.
+
+   Two fields exist purely to keep that rule true without hardcoding names in
+   the component:
+     approachTitle  first-person heading for the approach section. Trainers get
+                    "How we'll train together"; Aanchal and Moyna don't train
+                    anyone, so they get "work together".
+     ctaVerb        'Train' | 'Work' | 'Talk' — drives "Train with Arya" /
+                    "Talk to Aanchal". Keeps the CTA an instruction to the
+                    visitor rather than narration about the member.
+
+   ---------------------------------------------------------------------------
+   CREDENTIALS are objects, not strings: { title, issuer }.
+   `issuer` renders as a small badge above the credential — the authenticity
+   signal Naveen asked for, WITHOUT scraping trademarked logos off the web.
+   Leave `issuer: null` where the awarding body isn't stated. Never guess one.
+   ---------------------------------------------------------------------------
+
    published:false  → card is NOT linked and the member is kept OUT of the
-                      sitemap. Used for Aanchal until her mental-health wording
-                      is signed off in writing (§9). The page still renders if
-                      you hit the URL directly, but its content is deliberately
-                      non-clinical, so nothing sensitive is exposed pre-sign-off.
+                      sitemap.
 
    PHOTOS: raw headshots, no Canva template ring. Square, ≥800×800, exported to
    /public/images/team/<slug>.jpeg (WebP later). A member with no `image`
@@ -22,13 +46,15 @@ export const team = [
     name: 'Arya Talwalkar',
     role: 'Co-founder & Head Trainer',
     pronouns: 'he/him',
-    image: '/images/team/arya-talwalkar.jpeg',
+    image: '/images/team/arya-talwalkar.jfif',
     published: true,
     experience: '7 years',
     mode: 'In-person (Bandra) & online',
     sessionLength: '60 min',
     languages: ['English', 'Hindi', 'Marathi'],
     blurb: 'Seven years turning training into a healthier, happier way to live — body and mind.',
+    approachTitle: 'How we’ll train together',
+    ctaVerb: 'Train',
     specialisations: [
       'Personal Training', 'Group Training', 'Rehab', 'Prehab', 'HIIT',
       'Pilates', 'Nutrition foundation', 'Mobility', 'Flexibility',
@@ -39,10 +65,10 @@ export const team = [
       'Injury recovery', 'Anyone looking to uplift their lifestyle',
     ],
     credentials: [
-      'ACSM Certified Personal Trainer',
-      'ACSM Certified Nutritionist',
-      'REHAB+ Certified Rehab Specialist',
-      'Reebok Core Certified Pilates Instructor',
+      { title: 'Certified Personal Trainer', issuer: 'ACSM' },
+      { title: 'Certified Nutritionist', issuer: 'ACSM' },
+      { title: 'Certified Rehab Specialist', issuer: 'REHAB+' },
+      { title: 'Core Certified Pilates Instructor', issuer: 'Reebok' },
     ],
     philosophy: 'I train people to live a healthier, happier life — physically, mentally, and in every single way possible.',
     keyLearning: 'You don’t always need to “go hard or go home.” As long as you know when to do either, you’re good.',
@@ -56,33 +82,39 @@ export const team = [
   {
     /* ------------------------------------------------------------------------
        AANCHAL — HELD FOR WRITTEN SIGN-OFF (§9, highest-risk item).
-       published:false → card unlinked, kept out of sitemap.
+
+       ⚠️ THIS IS CURRENTLY published:true AND THE STANDING RULE SAYS IT SHOULD
+       NOT BE. Either attach her written approval to the ticket, or set this
+       back to false before deploy. I have NOT changed the value — flipping it
+       silently either way is the wrong call. Decide, then edit this one line.
+
        The clinical "concerns" list from her PDF (CSA, self-harm, eating
        disorder, psychosis, perpetrators, etc.) is DELIBERATELY NOT reproduced
        here — it belongs on Another Light Counselling, not a fitness site, and
        needs Aanchal's written approval. This page shows only her qualifications
        and voice, and routes people to ALC for support areas.
-       Do NOT set published:true or add support-area copy without Aanchal's
-       written sign-off.
+       Do NOT add support-area copy without Aanchal's written sign-off.
     ------------------------------------------------------------------------ */
     slug: 'aanchal',
     name: 'Aanchal',
     role: 'Co-founder & Head Therapist',
     pronouns: 'she/they',
-    image: '/images/team/aanchal-narang.png',
+    image: '/images/team/aanchal-narang.jpeg',
     published: true,
     experience: null,
     mode: 'Counselling delivered via Another Light Counselling',
     languages: ['English', 'Hindi', 'Urdu'],
     blurb: 'Head Therapist and founder of Another Light Counselling — the mental-health backbone of the 180 Method.',
+    approachTitle: 'How we’ll work together',
+    ctaVerb: 'Talk',
     specialisations: [],          // intentionally empty — see note above
     clientGroups: [],
     credentials: [
-      'Master’s in Applied (Clinical) Psychology — TISS',
-      'EMDR Therapy, Levels 1 & 2 — EMDR Association India',
-      'Advanced Trauma Therapy — Janina Fisher (NICABM)',
-      'Complex Trauma Level 1 — ISSTD',
-      'Trauma-Informed Psychotherapy, REBT & CBT',
+      { title: 'Master’s in Applied (Clinical) Psychology', issuer: 'TISS' },
+      { title: 'EMDR Therapy, Levels 1 & 2', issuer: 'EMDR Association India' },
+      { title: 'Advanced Trauma Therapy', issuer: 'Janina Fisher · NICABM' },
+      { title: 'Complex Trauma, Level 1', issuer: 'ISSTD' },
+      { title: 'Trauma-Informed Psychotherapy, REBT & CBT', issuer: null },
     ],
     philosophy: 'Therapy is like a tattoo, or exercise — it can hurt while you’re going through it, and then it’s beautiful.',
     keyLearning: 'It’s not about the symptom; there’s always a cause.',
@@ -102,13 +134,15 @@ export const team = [
     name: 'Kartik',
     role: 'Fitness Coach',
     pronouns: 'he/him',
-    image: '/images/team/kartik.png',
+    image: '/images/team/karthik.png',
     published: true,
     experience: '1 year',
     mode: 'In-person (Bandra) & online',
     sessionLength: '60 min',
     languages: ['English', 'Hindi', 'Marathi'],
     blurb: 'Technique first, progress steady — safe, consistent training that lasts.',
+    approachTitle: 'How we’ll train together',
+    ctaVerb: 'Train',
     specialisations: [
       'Personal Training', 'Group Training', 'Fat loss',
       'Strength building', 'Muscle building', 'Recovery & massage',
@@ -117,7 +151,11 @@ export const team = [
       'Beginners', 'Senior citizens', 'Children',
       'Anyone looking to uplift their lifestyle',
     ],
-    credentials: ['IFSA Certified'],
+    // TODO(180 team): Kartik's source line was just "IFSA Certified" — ask him
+    // for the full certification name so this reads like the others.
+    credentials: [
+      { title: 'Certified', issuer: 'IFSA' },
+    ],
     philosophy: 'I emphasise correct technique and gradual progression, so you train safely, improve consistently, and build a lifestyle that lasts.',
     keyLearning: 'Watching a client’s confidence grow keeps me learning — and keeps me helping more people improve their health.',
     funFact: 'I was the friend who brought salad in his lunchbox so everyone got enough fibre.',
@@ -138,6 +176,8 @@ export const team = [
     mode: 'In-person (Bandra) & online',
     languages: ['English', 'Hindi', 'Gujarati', 'Marathi'],
     blurb: 'Thirteen years of nutrition rooted in science, compassion and sustainability.',
+    approachTitle: 'How we’ll work together',
+    ctaVerb: 'Work',
     specialisations: [
       'Nutrition Coaching', 'Lifestyle Coaching', 'Sustainable Weight Management',
       'Diet Planning', 'Fat Loss Support', 'Muscle Gain Nutrition',
@@ -145,10 +185,10 @@ export const team = [
     ],
     clientGroups: ['Beginners', 'Athletes', 'Women', 'Senior citizens'],
     credentials: [
-      'Diploma in Nutrition & Dietetics, Tulip International (Rank 1)',
-      'B.H.M.S — CMP Medical',
-      'Associated with Advanced Multispecialty Hospital, Vile Parle',
-      'Associated with Nakshatra Hospital, Andheri West',
+      { title: 'Diploma in Nutrition & Dietetics — Rank 1', issuer: 'Tulip International' },
+      { title: 'B.H.M.S', issuer: 'CMP Medical' },
+      { title: 'Associated practitioner, Vile Parle', issuer: 'Advanced Multispecialty Hospital' },
+      { title: 'Associated practitioner, Andheri West', issuer: 'Nakshatra Hospital' },
     ],
     // NOTE: the PDF's "philosophy" field was a copy of Arya's template line.
     // Replaced with Dr. Vakil's OWN words (from her whisper) — not invented.
@@ -173,6 +213,8 @@ export const team = [
     mode: 'In-person & online',
     languages: ['English', 'Hindi', 'Marathi'],
     blurb: 'Calm coaching, clear guidance, real results that last — not short fixes.',
+    approachTitle: 'How we’ll train together',
+    ctaVerb: 'Train',
     specialisations: [
       'Personal Training', 'Functional Strength', 'Mobility', 'Rehab Support',
       'Fat loss', 'Flexibility', 'Endurance', 'Injury prevention', 'Performance',
@@ -182,10 +224,10 @@ export const team = [
       'Injury recovery', 'Lifestyle clients',
     ],
     credentials: [
-      'Advanced Personal Training (GGFI)',
-      'B.Com — Mumbai University',
-      'Female Fitness training',
-      'First-aid & CPR',
+      { title: 'Advanced Personal Training', issuer: 'GGFI' },
+      { title: 'B.Com', issuer: 'Mumbai University' },
+      { title: 'Female Fitness Training', issuer: null },
+      { title: 'First-aid & CPR', issuer: null },
     ],
     philosophy: 'Fitness isn’t just fat loss or bigger muscles — it’s living your day-to-day pain-free and moving through life with ease.',
     keyLearning: 'Put yourself in the client’s shoes and plan around their goals. Learning flows both ways on a training journey.',

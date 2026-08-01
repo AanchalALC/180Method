@@ -37,11 +37,15 @@ export default function Reviews() {
         path="/reviews"
       />
 
+      {/* No image for now, by request (Aug 2026) — PageHero's no-image state
+          is a designed fallback (dark forest/ink radial gradient), not a
+          blank gap, so this reads as intentional rather than broken. Add an
+          `image="/images/..."` prop back here once a real header photo for
+          this page is chosen. */}
       <PageHero
         eyebrow="Testimonials"
         title="Don’t just take our word for it"
-        lede="Unedited, apart from tidying up where a name ran into a date."
-        image="/images/home/hero.jpg"
+        lede="Straight from people who’ve experienced The 180 Method."
       >
         <div className="flex items-center gap-4">
           <Stars rating={5} className="[&_svg]:h-5 [&_svg]:w-5" />
@@ -75,8 +79,15 @@ export default function Reviews() {
         </div>
       </Section>
 
-      <Section tone="forest" className="py-section-sm">
-        <div className="container-x text-center">
+      {/* CTA — ink, not forest. Section directly above the Footer's own CTA
+          band, which is forest-800 — two identical green bands back to back
+          read as one flat slab rather than two distinct moments. Every other
+          page ends its pre-footer CTA in ink for the same reason (see
+          Team.jsx, TeamMember.jsx, MediaFeatures.jsx); this page was the one
+          outlier still on forest. */}
+      <Section tone="ink" className="overflow-hidden py-section-sm">
+        <div className="absolute -left-24 -top-24 h-80 w-80 rounded-full bg-lime/10 blur-3xl" aria-hidden="true" />
+        <div className="container-x relative text-center">
           <SectionHeading
             eyebrow="Your turn"
             title="Trained with us?"
@@ -85,15 +96,15 @@ export default function Reviews() {
           />
           <Reveal delay={0.1}>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
-              {/* TODO(180 team): audit R3 — add googleReviewUrl to switch this on. */}
+              {/* Audit R3 — closed, googleReviewUrl is set in src/data/reviews.js.
+                  Kept behind this guard rather than hardcoding the render, so a
+                  future empty string hides the button instead of shipping a
+                  dead link. */}
               {googleReviewUrl && (
                 <Button href={googleReviewUrl} variant="lime" size="lg">
-                  Leave a Google review
+                  Write a review
                 </Button>
               )}
-              <Button href={links.whatsapp} variant="outlineLight" size="lg">
-                Book a session
-              </Button>
             </div>
           </Reveal>
         </div>

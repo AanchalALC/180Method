@@ -38,7 +38,7 @@ import { cn } from '@/lib/cn'
          - want MORE photo visible → lower the /80 and /65 stops
          - text hard to read on a bright shot → raise them
      • Headline is REAL HTML <h1> (never baked into the image) — one H1, SEO-safe.
-     • Hero image is eager + fetchPriority="high" — it's the LCP element.
+     • Hero image is eager + fetchpriority="high" — it's the LCP element.
 
    HEIGHT: min-h-[72svh] — taller than the ~58vh inner-page default so the raw
    photo has room to read, matching About's baseline. About was later pushed to
@@ -62,7 +62,7 @@ function ServicesHero() {
             width={1920}
             height={1080}
             loading="eager"
-            fetchPriority="high"
+            fetchpriority="high"
           />
         </div>
 

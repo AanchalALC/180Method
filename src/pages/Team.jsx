@@ -44,7 +44,7 @@ import { links } from '@/data/site'
          - want MORE photo visible → lower the /80 and /65 stops
          - text hard to read on a bright shot → raise them
      • Headline is REAL HTML <h1> (never baked into the image) — one H1, SEO-safe.
-     • Hero image is eager + fetchPriority="high" — it's the LCP element.
+     • Hero image is eager + fetchpriority="high" — it's the LCP element.
 
    HEIGHT: min-h-[72svh] — matches ServicesHero. The lede here is short, so 72
    sits better than About's taller 84. Nudge to taste.
@@ -62,7 +62,7 @@ function TeamHero() {
             width={1920}
             height={1080}
             loading="eager"
-            fetchPriority="high"
+            fetchpriority="high"
           />
         </div>
 
@@ -83,14 +83,14 @@ function TeamHero() {
 
         <Reveal delay={0.08}>
           <h1 className="max-w-5xl font-display text-fluid-3xl uppercase leading-[0.95] tracking-tight text-paper [text-shadow:0_2px_28px_rgba(11,13,11,0.65)]">
-            Meet the trainers
+            The people behind your progress
           </h1>
         </Reveal>
 
         <Reveal delay={0.16}>
           <p className="mt-6 max-w-3xl text-fluid-lg leading-relaxed text-paper-100/75 [text-shadow:0_1px_18px_rgba(11,13,11,0.75)]">
-            The people you will actually be working with — on the floor, at the
-            table, and in the room.
+            Meet the coaches, therapists, nutritionists and specialists
+            dedicated to supporting every step of your journey.
           </p>
         </Reveal>
       </div>

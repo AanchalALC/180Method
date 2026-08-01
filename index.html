@@ -40,8 +40,10 @@
     <meta property="og:url" content="https://180method.in/" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <!-- LocalBusiness schema. TODO: replace streetAddress / postalCode / geo
-         with the real studio values before go-live. -->
+    <!-- LocalBusiness schema. streetAddress / postalCode are omitted rather
+         than filled with placeholder text — schema.org does not require
+         them, and a wrong or fake value here is worse than a missing one.
+         Add both back the day a real street address is confirmed. -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -55,21 +57,28 @@
         "image": "https://180method.in/images/og-default.jpg",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "TODO_STREET_ADDRESS",
           "addressLocality": "Bandra",
           "addressRegion": "Maharashtra",
-          "postalCode": "TODO_PINCODE",
           "addressCountry": "IN"
         },
         "openingHoursSpecification": [
           {
             "@type": "OpeningHoursSpecification",
             "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-            "opens": "08:00",
-            "closes": "17:00"
+            "opens": "06:00",
+            "closes": "21:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Sunday"],
+            "opens": "06:00",
+            "closes": "15:00"
           }
         ],
-        "sameAs": ["https://www.instagram.com/180.method"]
+        "sameAs": [
+          "https://www.instagram.com/180.method",
+          "https://www.linkedin.com/company/180-method"
+        ]
       }
     </script>
   </head>

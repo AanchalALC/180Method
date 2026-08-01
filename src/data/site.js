@@ -23,25 +23,43 @@ export const site = {
   instagram: 'https://www.instagram.com/180.method',
   instagramHandle: '@180.method',
 
-  // TODO(180 team): audit item Ct1 — the live WordPress site still shows
-  // "Street name, 22135 Copenhagen, Denmark". Real address needed before launch.
+  /* LinkedIn — supplied by Naveen, Aug 2026.
+     `company` is the one that belongs in the footer / Contact / schema sameAs.
+     `arya` is a PERSONAL profile: it belongs on his own /team/arya page if we
+     ever surface it, not in the site-wide footer. Keeping them as separate
+     keys so nobody wires the personal one into a global component by accident. */
+  linkedin: {
+    company: 'https://www.linkedin.com/company/180-method',
+    arya: 'https://www.linkedin.com/in/arya-talwalkar-2ba1253b0',
+  },
+
+  /* Audit Ct1 — the live WordPress site showed "Street name, 22135
+     Copenhagen, Denmark", which was worse than showing nothing. Per Swathi,
+     Aug 2026: stop showing the literal word TODO to visitors — render only
+     the area that's actually confirmed (Bandra West, Mumbai, Maharashtra)
+     rather than inventing a street line or pincode. `line1` and `pincode`
+     are deliberately absent, not empty strings, so Contact.jsx, Footer.jsx
+     and the LocalBusiness schema in index.html can all just skip them. Add
+     them back here the day a real street address is provided — nowhere
+     else needs to change. */
   address: {
-    line1: 'TODO: Studio address line 1',
     line2: 'Bandra West',
     city: 'Mumbai',
     state: 'Maharashtra',
-    pincode: 'TODO',
     country: 'India',
     // Paste the Google Maps embed URL here to switch the map on (Contact page).
     mapEmbedUrl: '',
     mapDirectionsUrl: 'https://maps.google.com/?q=180+Method+Bandra+Mumbai',
   },
 
-  // TODO(180 team): audit item Ct2 — live site says "8:00 AM – 17:00 PM".
-  // Confirm the real hours.
+  /* CONFIRMED by Naveen, Aug 2026 — closes audit item Ct2. The live WordPress
+     site's "8:00 AM – 17:00 PM" was wrong in both hours and format.
+     ⚠️ index.html carries the same hours in the LocalBusiness JSON-LD. If you
+     change them here, change them there too or the schema and the page
+     disagree — and Google trusts the schema. */
   hours: [
-    { days: 'Monday – Saturday', time: '8:00 AM – 5:00 PM' },
-    { days: 'Sunday', time: 'Closed' },
+    { days: 'Monday – Saturday', time: '6:00 AM – 9:00 PM' },
+    { days: 'Sunday', time: '6:00 AM – 3:00 PM' },
   ],
 
   partner: {
@@ -71,6 +89,7 @@ export const links = {
   tel: `tel:+${site.phoneRaw}`,
   mailto: `mailto:${site.email}`,
   instagram: site.instagram,
+  linkedin: site.linkedin.company,
 }
 
 /* ---------------------------------------------------------------------------

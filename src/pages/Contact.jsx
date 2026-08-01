@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Phone, Mail, Clock, MapPin, Instagram, ArrowUpRight, Check, AlertCircle } from 'lucide-react'
+import { Phone, Mail, Clock, MapPin, Instagram, Linkedin, ArrowUpRight, Check, AlertCircle } from 'lucide-react'
 import { Seo } from '@/components/ui/Widgets'
 import {
   Button,
@@ -16,8 +16,9 @@ import { cn } from '@/lib/cn'
 /* ============================================================================
    CONTACT
    Audit items fixed here:
-   Ct1  demo address "Street name, 22135 Copenhagen, Denmark" → site.address
-        (still a TODO in the data file — real address needed before launch)
+   Ct1  demo address "Street name, 22135 Copenhagen, Denmark" → site.address.
+        Shows Bandra West / Mumbai / Maharashtra only — no street line or
+        pincode exist yet, so none renders, rather than a literal "TODO".
    Ct2  "8:00 AM – 17:00 PM" → one consistent format, from site.hours
    Ct3  no enquiry form → the form below
    Ct4  no map → embed slot, switched on by site.address.mapEmbedUrl
@@ -207,8 +208,8 @@ export default function Contact() {
 
       <PageHero
         eyebrow="Contact us"
-        title="Connect with us"
-        lede="Reach out on WhatsApp to learn more about 180 Method — or send us a note and we’ll come back to you."
+        title="Ready when you are"
+        lede="Questions, curiosity, or ready to begin? Reach out and we’ll guide you every step of the way."
       >
         <Button href={links.whatsapp} variant="lime" size="lg" icon={ArrowUpRight}>
           Send us a message on WhatsApp
@@ -247,17 +248,29 @@ export default function Contact() {
 
                 <RevealItem>
                   <DetailRow icon={MapPin} label="Visit us" href={site.address.mapDirectionsUrl}>
-                    {site.address.line1}
-                    <br />
                     {site.address.line2}, {site.address.city}
                     <br />
-                    {site.address.state} {site.address.pincode}
+                    {site.address.state}, {site.address.country}
                   </DetailRow>
                 </RevealItem>
 
                 <RevealItem>
                   <DetailRow icon={Instagram} label="Instagram" href={links.instagram}>
                     {site.instagramHandle}
+                  </DetailRow>
+                </RevealItem>
+
+                <RevealItem>
+                  <DetailRow icon={Linkedin} label="LinkedIn" href={links.linkedin}>
+                    180 Method
+                  </DetailRow>
+                </RevealItem>
+
+                {/* Arya's personal profile, per Swathi's request (Aug 2026) —
+                    Contact only, not the site-wide Footer. */}
+                <RevealItem>
+                  <DetailRow icon={Linkedin} label="Arya on LinkedIn" href={site.linkedin.arya}>
+                    Arya Talwalkar
                   </DetailRow>
                 </RevealItem>
               </RevealGroup>

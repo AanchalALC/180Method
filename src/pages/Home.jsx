@@ -19,7 +19,7 @@ import { EASE, viewport, fadeUp } from '@/lib/motion'
    over the photo and needs contrast. Everywhere else on the page the images
    now show RAW — no `.duotone`, no colour layer.
      • Headline stays REAL TEXT over the images, never baked in (audit PF2).
-     • Only the FIRST slide is eager + fetchPriority="high" (LCP element).
+     • Only the FIRST slide is eager + fetchpriority="high" (LCP element).
      • Cross-fade is opacity only; the slow zoom is transform (scale) only.
      • Auto-advance + zoom disabled under prefers-reduced-motion; dots still work.
    The scrims below only darken the bottom-left corner where the text sits —
@@ -63,7 +63,7 @@ function Hero() {
               width={1920}
               height={1080}
               loading={i === 0 ? 'eager' : 'lazy'}
-              fetchPriority={i === 0 ? 'high' : 'auto'}
+              fetchpriority={i === 0 ? 'high' : 'auto'}
               animate={reduceMotion ? {} : { scale: active === i ? 1.06 : 1 }}
               transition={{ duration: 7, ease: 'linear' }}
             />
@@ -168,18 +168,30 @@ function VennDiagram() {
         ))}
       </g>
 
-      {lobes.map((lobe, i) => (
-        <motion.text
-          key={`${lobe.key}-label`}
-          x={lobe.cx} y={lobe.key === 'nutrition' ? lobe.cy + 48 : lobe.cy - 38}
-          textAnchor="middle" className="font-display uppercase"
-          fontSize="10" letterSpacing="1.8" fill="#0B0D0B"
-          initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={viewport}
-          transition={{ delay: 0.5 + i * 0.1, duration: 0.6 }}
-        >
-          {lobe.label}
-        </motion.text>
-      ))}
+      {/* Physical + Mental sit on the same horizontal band, only 60 units of
+          centre-to-centre gap apart — centred labels for both collided into
+          "PHYSICALMENTAL". Fix: each one anchors AWAY from the shared centre
+          instead of ON it — physical's text ends where it used to be centred,
+          mental's starts there — so they grow apart, not into each other. */}
+      {lobes.map((lobe, i) => {
+        const isNutrition = lobe.key === 'nutrition'
+        const isPhysical = lobe.key === 'physical'
+        const textAnchor = isNutrition ? 'middle' : isPhysical ? 'end' : 'start'
+        const xOffset = isNutrition ? 0 : isPhysical ? -14 : 14
+
+        return (
+          <motion.text
+            key={`${lobe.key}-label`}
+            x={lobe.cx + xOffset} y={isNutrition ? lobe.cy + 48 : lobe.cy - 42}
+            textAnchor={textAnchor} className="font-display uppercase"
+            fontSize="10" letterSpacing="1.8" fill="#0B0D0B"
+            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={viewport}
+            transition={{ delay: 0.5 + i * 0.1, duration: 0.6 }}
+          >
+            {lobe.label}
+          </motion.text>
+        )
+      })}
 
       <motion.text
         x="130" y="106" textAnchor="middle" className="font-display uppercase"

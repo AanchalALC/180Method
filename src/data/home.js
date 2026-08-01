@@ -24,7 +24,7 @@ export const pillars = [
     copy: 'Mental and emotional support to help you stay consistent.',
     words: ['Aware', 'Resilient', 'Grounded'],
     image: '/images/home/pillar-psychology.png',
-    imageAlt: 'A counsellor mid-session in the 180 Method counselling room',
+    imageAlt: 'An illustration of a therapist and client in conversation during a counselling session',
     href: '/counselling',
   },
   {
@@ -34,7 +34,7 @@ export const pillars = [
     copy: 'Sustainable eating habits, not crash diets.',
     words: ['Flexible', 'Simple', 'Sustainable'],
     image: '/images/home/pillar-nutrition.png',
-    imageAlt: 'Dr. Moyna Vakil in a nutrition consultation',
+    imageAlt: 'An illustration of a nutrition consultation at a table',
     href: '/services#nutrition-support',
   },
 ]

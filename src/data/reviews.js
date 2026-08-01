@@ -76,9 +76,19 @@ export const reviews = [
   },
 ]
 
-// TODO(180 team): audit R3 — paste the Google review URL to switch the
-// "Leave a review" button on. Until then the button is hidden, not broken.
-export const googleReviewUrl = ''
+/* Audit R3 — closed. Swathi supplied this exact Google search-results URL
+   (Aug 2026) and asked to use it as-is, not the cleaned-up ludocid deep link.
+   It opens the studio's real Google Business listing with the review
+   composer available from there.
+   Note for later: the sxsrf / ei / sei query params are Google session
+   tokens, not permanent identifiers — they are tied to the browser session
+   that generated this URL and can eventually stop resolving. If the "Write a
+   review" button ever 404s, re-fetch a fresh link the same way, or switch to
+   the durable form: https://search.google.com/local/writereview?ludocid=<CID>
+   — the CID's decimal form is 9839559905213902227, taken from the lrd=
+   fragment below. */
+export const googleReviewUrl =
+  'https://www.google.com/search?q=180+method+bandra&sca_esv=3845b1f60853253e&rlz=1C1RXQR_enIN1219IN1219&sxsrf=APpeQnuBQoY6lWTdKsavAMlJb0oPXg5mGQ%3A1785577869588&ei=jcFtaqq1I7mgseMPoOO8eA&biw=958&bih=992&oq=180method+&gs_lp=Egxnd3Mtd2l6LXNlcnAiCjE4MG1ldGhvZCAqAggAMgcQABiABBgNMgcQABiABBgNMgcQABiABBgNMgcQABiABBgNMgcQABiABBgNMgYQABgeGA0yBhAAGB4YDTIGEAAYHhgNMgYQABgeGA0yBhAAGB4YDUi4FFCsA1isA3ABeAGQAQCYAa8BoAGvAaoBAzAuMbgBAcgBAPgBAZgCAqACvAHCAgoQABhHGNYEGLADwgINEAAYgAQYigUYQxiwA5gDAOIDBRIBMSBAiAYBkAYFkgcDMS4xoAfFBbIHAzAuMbgHtAHCBwMyLTLIBwmACAE&sclient=gws-wiz-serp&sei=8cptatfuHtjbseMP0dTIqQk#lrd=0x3be7c99ef65ac425:0x888d239a00736d93,1,,,,'
 
 export function formatDate(iso) {
   return new Date(iso).toLocaleDateString('en-GB', {

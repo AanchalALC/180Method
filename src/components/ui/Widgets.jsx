@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback, Children } from 'react'
+import { Link } from 'react-router-dom'
 import { motion, useInView, animate } from 'framer-motion'
 import { ChevronDown, Star } from 'lucide-react'
 import { cn } from '@/lib/cn'
@@ -135,7 +136,36 @@ export function Accordion({ items, idPrefix = 'acc' }) {
               className="overflow-hidden"
               {...(!isOpen && { inert: '' })}
             >
-              <p className="max-w-prose pb-7 pr-12 leading-relaxed text-ink/70">{item.a}</p>
+              <div className="max-w-prose pb-7 pr-12">
+                <p className="leading-relaxed text-ink/70">{item.a}</p>
+                {/* Optional per-answer links (see src/data/faqs.js). Internal
+                    routes go through <Link> so they don't reload the app. */}
+                {item.links?.length > 0 && (
+                  <p className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
+                    {item.links.map((link) =>
+                      link.href.startsWith('/') ? (
+                        <Link
+                          key={link.label}
+                          to={link.href}
+                          className="link-underline font-display text-fluid-xs uppercase tracking-[0.14em] text-forest-700"
+                        >
+                          {link.label}
+                        </Link>
+                      ) : (
+                        <a
+                          key={link.label}
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="link-underline font-display text-fluid-xs uppercase tracking-[0.14em] text-forest-700"
+                        >
+                          {link.label}
+                        </a>
+                      )
+                    )}
+                  </p>
+                )}
+              </div>
             </motion.div>
           </div>
         )

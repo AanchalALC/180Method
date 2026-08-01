@@ -173,7 +173,7 @@ export function PageHero({ eyebrow, title, lede, image, imageAlt = '', children 
     <header className="on-dark relative isolate flex min-h-[48vh] items-end overflow-hidden bg-ink-950 pb-14 pt-[calc(var(--header-h)+3.5rem)] md:min-h-[58vh] md:pb-20">
       {image ? (
         <div className="duotone grain absolute inset-0 -z-10">
-          <img src={image} alt={imageAlt} className="h-full w-full object-cover opacity-55" loading="eager" fetchPriority="high" width={1920} height={1080} />
+          <img src={image} alt={imageAlt} className="h-full w-full object-cover opacity-55" loading="eager" fetchpriority="high" width={1920} height={1080} />
           <div className="absolute inset-0 z-[3] bg-gradient-to-t from-ink-950 via-ink-950/75 to-ink-950/30" />
         </div>
       ) : (
@@ -223,5 +223,73 @@ export function TickerBand({ items, tone = 'lime', speed = 'animate-marquee' }) 
         </div>
       </div>
     </div>
+  )
+}
+
+
+const tagVariants = {
+  /* --- light surfaces: paper / paperAlt / paperDeep --- */
+  lime: 'border-transparent bg-lime text-ink',
+  forest: 'border-transparent bg-forest-600 text-paper',
+  aloe: 'border-transparent bg-aloe-300 text-forest-950',
+  quiet: 'border-forest-600/35 bg-transparent text-forest-700',
+
+  /* --- dark surfaces: ink / forest / forestDeep --- */
+  limeDark: 'border-transparent bg-lime text-ink',
+  inkDark: 'border-transparent bg-ink-950 text-lime',
+  aloeDark: 'border-transparent bg-aloe-500/20 text-aloe-200',
+  quietDark: 'border-paper/25 bg-transparent text-paper-100/80',
+}
+
+const tagSizes = {
+  sm: 'px-4 py-2 text-fluid-xs',
+  md: 'px-5 py-2.5 text-fluid-xs',
+  lg: 'px-6 py-3 text-fluid-sm',
+}
+
+export const TAG_CYCLE = ['lime', 'quiet', 'forest', 'aloe']
+export const TAG_CYCLE_DARK = ['limeDark', 'quietDark', 'inkDark', 'aloeDark']
+
+/* `href` swaps the tag from a plain <span> to a link — used where a tag is
+   also a real destination (e.g. a syndicated outlet's article) rather than a
+   decorative label. External by default: press URLs are never internal. */
+export function Tag({ children, variant = 'quiet', size = 'md', className, href }) {
+  const classes = cn(
+    'inline-block rounded-full border font-display uppercase tracking-[0.12em]',
+    'transition-transform duration-500 ease-brand will-change-transform hover:-translate-y-0.5',
+    tagVariants[variant] ?? tagVariants.quiet,
+    tagSizes[size] ?? tagSizes.md,
+    className
+  )
+
+  if (href) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" className={classes}>
+        {children}
+      </a>
+    )
+  }
+
+  return <span className={classes}>{children}</span>
+}
+
+/* TagRow — a revealed, wrapping row of Tags with the colour cycle applied.
+   surface="dark" swaps to the dark-surface palette. Pass `cycle` to override
+   the order for one specific row (e.g. to start on forest instead of lime so
+   two adjacent rows don't both open with a lime pill). */
+export function TagRow({ items = [], surface = 'light', cycle, size = 'md', className }) {
+  const order = cycle ?? (surface === 'dark' ? TAG_CYCLE_DARK : TAG_CYCLE)
+  if (!items.length) return null
+
+  return (
+    <RevealGroup className={cn('flex flex-wrap gap-2.5', className)} gap={0.04}>
+      {items.map((item, i) => (
+        <RevealItem key={item}>
+          <Tag variant={order[i % order.length]} size={size}>
+            {item}
+          </Tag>
+        </RevealItem>
+      ))}
+    </RevealGroup>
   )
 }

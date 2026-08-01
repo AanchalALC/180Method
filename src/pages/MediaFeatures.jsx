@@ -8,9 +8,11 @@ import {
   RevealItem,
   SectionHeading,
   PageHero,
+  Tag,
 } from '@/components/ui/Primitives'
 import { mediaFeatures, pressLogos } from '@/data/media'
 import { links } from '@/data/site'
+import { cn } from '@/lib/cn'
 
 /* ============================================================================
    MEDIA FEATURES  (audit M1)
@@ -23,7 +25,16 @@ import { links } from '@/data/site'
    each one. Fifteen cards with three headlines repeated five times each would
    look like padding, because it would be padding.
 
-   LOGO CAROUSEL: now uses the SAME white-card treatment as the homepage
+   CARD COLOUR (Naveen's note — "a few places the text looks very
+   monotonous"). Three identical flat-white cards in a row was the same
+   problem as the trainer-profile tags: nothing to tell them apart at a
+   glance. Each card now gets one of the three brand accents — lime, forest,
+   aloe — carried through its top edge, its numbered badge, and its
+   "Also carried by" pills. Cards don't repeat an accent (there are exactly
+   three of each), so the row reads as three distinct stories, not one story
+   times three.
+
+   LOGO CAROUSEL: uses the SAME white-card treatment as the homepage
    PressStrip (white cards, larger logos, a scoped `group/logo` hover, and a
    lime link-chip affordance). Deliberately kept on `tone="ink"`: the white
    cards read better on dark, AND this section is the page's dark anchor between
@@ -32,10 +43,46 @@ import { links } from '@/data/site'
    treatment is gone; logos show full colour inside the white cards.
    ========================================================================== */
 
-function FeatureCard({ feature }) {
+/* One accent per card. Tailwind classes are written out in full (not
+   templated as `bg-${x}-600`) because the JIT compiler only picks up literal
+   class strings — a templated one would get purged from the production
+   build. */
+const ACCENTS = [
+  {
+    bar: 'bg-lime',
+    tint: 'bg-lime/[0.07]',
+    badge: 'bg-lime text-ink',
+    chip: 'lime',
+    read: 'bg-lime/15 text-forest-700 group-hover:bg-lime group-hover:text-ink',
+  },
+  {
+    bar: 'bg-forest-600',
+    tint: 'bg-forest-600/[0.06]',
+    badge: 'bg-forest-600 text-paper',
+    chip: 'forest',
+    read: 'bg-forest-600/10 text-forest-700 group-hover:bg-forest-600 group-hover:text-paper',
+  },
+  {
+    bar: 'bg-aloe-500',
+    tint: 'bg-aloe-500/[0.12]',
+    badge: 'bg-aloe-500 text-forest-950',
+    chip: 'aloe',
+    read: 'bg-aloe-500/15 text-forest-700 group-hover:bg-aloe-500 group-hover:text-forest-950',
+  },
+]
+
+const CHIP_CYCLE = ['lime', 'quiet', 'forest', 'aloe']
+
+function FeatureCard({ feature, index }) {
+  const accent = ACCENTS[index % ACCENTS.length]
+
   return (
     <RevealItem className="group relative flex flex-col overflow-hidden rounded-4xl border border-ink/10 bg-paper transition-all duration-500 ease-brand hover:-translate-y-1 hover:border-transparent hover:shadow-[0_28px_70px_-30px_rgba(40,37,26,0.32)]">
-      <div className="flex items-center justify-between gap-4 border-b border-ink/10 px-7 py-5">
+      {/* Accent strip — the one thing that makes three cards read as three
+          different stories instead of one story times three. */}
+      <div className={cn('h-1.5 w-full', accent.bar)} aria-hidden="true" />
+
+      <div className={cn('flex items-center justify-between gap-4 border-b border-ink/10 px-7 py-5', accent.tint)}>
         <img
           src={feature.logo}
           alt={feature.outlet}
@@ -44,7 +91,7 @@ function FeatureCard({ feature }) {
           height={200}
           className="h-6 w-auto object-contain"
         />
-        {feature.date && (
+        {feature.date ? (
           <time className="text-fluid-xs text-ink/40" dateTime={feature.date}>
             {new Date(feature.date).toLocaleDateString('en-GB', {
               day: 'numeric',
@@ -52,6 +99,16 @@ function FeatureCard({ feature }) {
               year: 'numeric',
             })}
           </time>
+        ) : (
+          <span
+            className={cn(
+              'grid h-8 w-8 shrink-0 place-items-center rounded-full font-display text-fluid-xs',
+              accent.badge
+            )}
+            aria-hidden="true"
+          >
+            {String(index + 1).padStart(2, '0')}
+          </span>
         )}
       </div>
 
@@ -67,7 +124,12 @@ function FeatureCard({ feature }) {
 
         <p className="mt-4 flex-1 leading-relaxed text-ink/60">{feature.excerpt}</p>
 
-        <span className="mt-6 inline-flex items-center gap-2 font-display text-fluid-xs uppercase tracking-[0.16em] text-forest-600">
+        <span
+          className={cn(
+            'relative z-10 mt-6 inline-flex w-fit items-center gap-2 rounded-full px-4 py-2 font-display text-fluid-xs uppercase tracking-[0.16em] transition-colors duration-500 ease-brand',
+            accent.read
+          )}
+        >
           Read article
           <ArrowUpRight
             className="h-3.5 w-3.5 transition-transform duration-500 ease-brand group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
@@ -76,24 +138,17 @@ function FeatureCard({ feature }) {
         </span>
 
         {feature.syndicated?.length > 0 && (
-          <div className="relative z-10 mt-6 border-t border-ink/10 pt-4">
-            <p className="text-fluid-xs uppercase tracking-[0.14em] text-ink/35">
+          <div className="relative z-10 mt-6 border-t border-ink/10 pt-5">
+            <p className="mb-3 text-fluid-xs uppercase tracking-[0.14em] text-ink/35">
               Also carried by
             </p>
-            <ul className="mt-2 flex flex-wrap gap-x-3 gap-y-1.5">
-              {feature.syndicated.map((s) => (
-                <li key={s.url}>
-                  <a
-                    href={s.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="link-underline text-fluid-xs text-ink/45 hover:text-forest-600"
-                  >
-                    {s.outlet}
-                  </a>
-                </li>
+            <div className="flex flex-wrap gap-2">
+              {feature.syndicated.map((s, i) => (
+                <Tag key={s.url} href={s.url} variant={CHIP_CYCLE[i % CHIP_CYCLE.length]} size="sm">
+                  {s.outlet}
+                </Tag>
               ))}
-            </ul>
+            </div>
           </div>
         )}
       </div>
@@ -113,7 +168,7 @@ export default function MediaFeatures() {
       <PageHero
         eyebrow="180 Bulletin"
         title="180 Method in the press"
-        lede="What has been written about the studio, the founders, and the idea that the body and the mind are the same project."
+        lede="Read what the media has to say about our founders, our community, and our approach to fitness, nutrition and mental well-being."
       />
 
       <Section tone="paperAlt">
@@ -126,8 +181,8 @@ export default function MediaFeatures() {
           />
 
           <RevealGroup className="grid gap-6 lg:grid-cols-3" gap={0.1}>
-            {mediaFeatures.map((feature) => (
-              <FeatureCard key={feature.id} feature={feature} />
+            {mediaFeatures.map((feature, index) => (
+              <FeatureCard key={feature.id} feature={feature} index={index} />
             ))}
           </RevealGroup>
         </div>

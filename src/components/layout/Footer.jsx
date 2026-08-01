@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Instagram, Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react'
+import { Instagram, Linkedin, Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react'
 import { navigation, site, links } from '@/data/site'
 import { Button, Reveal, SplitHeading } from '@/components/ui/Primitives'
 
@@ -37,7 +37,7 @@ export default function Footer() {
       <div className="container-x py-section-sm">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-4">
-            <img src="/images/logo-lime.png" alt={site.name} width={140} height={54} className="h-10 w-auto" />
+            <img src="/images/logo-lime.png" alt={site.name} width={140} height={54} className="h-20 w-auto" />
             <p className="mt-6 max-w-sm leading-relaxed text-paper-100/55">
               At 180 Method, we meet you exactly where you are — physically, mentally, and emotionally —
               and support you forward with intention.
@@ -76,13 +76,21 @@ export default function Footer() {
               <li>
                 <a href={site.address.mapDirectionsUrl} target="_blank" rel="noopener noreferrer" className="group flex items-start gap-3 text-paper-100/60 transition-colors hover:text-lime">
                   <MapPin className="mt-1 h-4 w-4 shrink-0" aria-hidden="true" />
-                  <span>{site.address.line1}<br />{site.address.line2}, {site.address.city}</span>
+                  <span>{site.address.line2}, {site.address.city}<br />{site.address.state}</span>
                 </a>
               </li>
               <li>
                 <a href={links.instagram} target="_blank" rel="noopener noreferrer" className="group flex items-start gap-3 text-paper-100/60 transition-colors hover:text-lime">
                   <Instagram className="mt-1 h-4 w-4 shrink-0" aria-hidden="true" />
                   <span className="link-underline">{site.instagramHandle}</span>
+                </a>
+              </li>
+              {/* Company page only. Arya's personal LinkedIn is deliberately not
+                  here — site-wide footer is the company's voice, not his. */}
+              <li>
+                <a href={links.linkedin} target="_blank" rel="noopener noreferrer" className="group flex items-start gap-3 text-paper-100/60 transition-colors hover:text-lime">
+                  <Linkedin className="mt-1 h-4 w-4 shrink-0" aria-hidden="true" />
+                  <span className="link-underline">180 Method</span>
                 </a>
               </li>
             </ul>

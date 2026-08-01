@@ -10,8 +10,10 @@
    `syndicated` so nothing is lost — but the page shows 3 real stories rather
    than 15 rows of the same headline, which is what a reader actually wants.
 
-   The `logo` paths are placeholders. Audit M1: the 180 team still owes an
-   outlet logo (transparent PNG, ~400x200) for each of these.
+   `logo` on each feature below points at the outlet's real mark in
+   public/images/press/ — no placeholders left here. (Filenames were mismatched
+   against what's actually on disk until Aug 2026; fixed alongside the
+   pressLogos strip further down.)
    ========================================================================== */
 
 export const mediaFeatures = [
@@ -24,7 +26,7 @@ export const mediaFeatures = [
       'The founders discuss why training the body without addressing the mind leaves most people stuck — and how the studio was built around that gap.',
     url: 'https://livemint24.com/aanchal-narang-and-arya-talwalkar-on-the-mind-body-collaboration-at-180-method-studio/',
     date: '', // TODO(180 team): publish date — the sheet's date column is empty
-    logo: '/images/press/livemint24.png',
+    logo: '/images/press/livemint.png',
     featured: true,
     syndicated: [
       { outlet: 'Khabar On Demand', url: 'https://khabarondemand.com/aanchal-narang-and-arya-talwalkar-on-the-mind-body-collaboration-at-180-method-studio/' },
@@ -42,7 +44,7 @@ export const mediaFeatures = [
       'On building a gym floor where nobody is performing for anybody — and why shame is the thing that most often ends a fitness journey before it starts.',
     url: 'https://theasiantalks.com/breaking-the-shame-cycle-how-aanchal-narang-and-arya-talwalkar-are-redefining-fitness-and-therapy-spaces-in-india/',
     date: '',
-    logo: '/images/press/the-asian-talks.png',
+    logo: '/images/press/asiantalks.png',
     featured: true,
     syndicated: [
       { outlet: 'Daily Pioneer', url: 'https://dailypioneer.in/breaking-the-shame-cycle-how-aanchal-narang-and-arya-talwalkar-are-redefining-fitness-and-therapy-spaces-in-india/' },
@@ -60,7 +62,7 @@ export const mediaFeatures = [
       'Why the 180 Method floor is built for every age — and what changes when older clients are trained for capability rather than aesthetics.',
     url: 'https://forbesstory.com/aanchal-narang-and-arya-talwalkar-on-why-mental-health-and-physical-health-are-equally-important-for-senior-citizens/',
     date: '',
-    logo: '/images/press/forbes-story.png',
+    logo: '/images/press/forbesstory.png',
     featured: true,
     syndicated: [
       { outlet: 'Entrepreneur View', url: 'https://entrepreneurview.in/aanchal-narang-and-arya-talwalkar-on-why-mental-health-and-physical-health-are-equally-important-for-senior-citizens/' },
@@ -72,24 +74,13 @@ export const mediaFeatures = [
 ]
 
 /* The "As seen in" logo strip.
-   TODO(180 team): audit M1 — supply transparent PNGs (~400x200, uniform
-   height) and, where a logo maps to an actual article, add its `url` so the
-   logo links out (per the final draft: "every publication logo should
-   redirect to the respective article"). Logos without a url render as
-   non-clickable, which is honest — better than a dead link. */
-// export const pressLogos = [
-//   { name: 'Hindustan Times', logo: '/images/press/hindustan-times.png', url: '' },
-//   { name: 'LiveMint 24', logo: '/images/press/livemint24.png', url: mediaFeatures[0].url },
-//   { name: 'The Asian Talks', logo: '/images/press/the-asian-talks.png', url: mediaFeatures[1].url },
-//   { name: 'Forbes Story', logo: '/images/press/forbes-story.png', url: mediaFeatures[2].url },
-//   { name: 'The Asian Age', logo: '/images/press/the-asian-age.png', url: '' },
-//   { name: 'Mumbai Times', logo: '/images/press/mumbai-times.png', url: '' },
-//   { name: 'Daily Pioneer', logo: '/images/press/daily-pioneer.png', url: '' },
-//   { name: 'Tycoon World', logo: '/images/press/tycoon-world.png', url: '' },
-// ]
+   Final draft: "every publication logo should redirect to the respective
+   article" — done, every entry below carries its real article URL and the
+   logo filenames match what is actually in public/images/press/.
 
-// src/data/media.js — each pressLogos entry gets a swappable url.
-// Placeholder now (publication homepage or '#'-free stand-in); replace with the real article URL when Naveen sends them.
+   TODO(180 team): audit M1 — these are the outlets' own marks at mixed
+   resolutions. Uniform transparent PNGs (~400x200) would look better, but the
+   links are correct and live, so this is cosmetic, not blocking. */
 export const pressLogos = [
   { name: 'Asian Talks',          logo: '/images/press/asiantalks.png',          url: 'https://theasiantalks.com/breaking-the-shame-cycle-how-aanchal-narang-and-arya-talwalkar-are-redefining-fitness-and-therapy-spaces-in-india/' },
   { name: 'Bharat Now',          logo: '/images/press/bharatnow.png',          url: 'https://thebharatnow.com/aanchal-narang-and-arya-talwalkar-on-why-mental-health-and-physical-health-are-equally-important-for-senior-citizens/' },
