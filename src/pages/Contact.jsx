@@ -35,14 +35,54 @@ import { cn } from '@/lib/cn'
 
 const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY
 
+// Accepts optional leading + then 10-15 digits, ignoring spaces/dashes/parens
+// as typed (e.g. "+91 97021 31149" or "(91) 97021-31149").
+const PHONE_REGEX = /^\+?[0-9]{10,15}$/
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+function validateField(name, value) {
+  if (name === 'phone') {
+    const cleaned = value.replace(/[\s\-()]/g, '')
+    return PHONE_REGEX.test(cleaned) ? '' : 'Enter a valid phone number (10–15 digits, optional country code).'
+  }
+  if (name === 'email') {
+    return EMAIL_REGEX.test(value.trim()) ? '' : 'Enter a valid email address.'
+  }
+  return ''
+}
+
 function EnquiryForm() {
   const [status, setStatus] = useState('idle') // idle | sending | success | error
+  const [errors, setErrors] = useState({})
+
+  function handleBlur(e) {
+    const { name, value } = e.target
+    if (name !== 'phone' && name !== 'email') return
+    setErrors((prev) => ({ ...prev, [name]: validateField(name, value) }))
+  }
+
+  function handleChange(e) {
+    const { name } = e.target
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: '' }))
+    }
+  }
 
   async function handleSubmit(e) {
     e.preventDefault()
-    setStatus('sending')
 
     const formData = new FormData(e.target)
+    const fieldErrors = {
+      phone: validateField('phone', formData.get('phone') || ''),
+      email: validateField('email', formData.get('email') || ''),
+    }
+    if (fieldErrors.phone || fieldErrors.email) {
+      setErrors(fieldErrors)
+      return
+    }
+
+    setStatus('sending')
+
     formData.append('access_key', WEB3FORMS_KEY)
     formData.append('subject', 'New enquiry from 180method.in')
     formData.append('from_name', '180 Method Website')
@@ -117,7 +157,25 @@ function EnquiryForm() {
           <label htmlFor="phone" className="mb-2 block font-display text-fluid-xs uppercase tracking-[0.14em] text-ink/55">
             Phone <span className="text-forest-600">*</span>
           </label>
-          <input id="phone" name="phone" type="tel" required autoComplete="tel" className={fieldClass} placeholder="+91" />
+          <input
+            id="phone"
+            name="phone"
+            type="tel"
+            required
+            autoComplete="tel"
+            pattern="^\+?[0-9\s\-()]{10,17}$"
+            aria-invalid={errors.phone ? 'true' : 'false'}
+            aria-describedby={errors.phone ? 'phone-error' : undefined}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            className={cn(fieldClass, errors.phone && 'border-red-400 focus:border-red-500')}
+            placeholder="+91 97021 31149"
+          />
+          {errors.phone && (
+            <p id="phone-error" role="alert" className="mt-1.5 text-fluid-xs text-red-700">
+              {errors.phone}
+            </p>
+          )}
         </div>
       </div>
 
@@ -125,7 +183,24 @@ function EnquiryForm() {
         <label htmlFor="email" className="mb-2 block font-display text-fluid-xs uppercase tracking-[0.14em] text-ink/55">
           Email <span className="text-forest-600">*</span>
         </label>
-        <input id="email" name="email" type="email" required autoComplete="email" className={fieldClass} placeholder="you@example.com" />
+        <input
+          id="email"
+          name="email"
+          type="email"
+          required
+          autoComplete="email"
+          aria-invalid={errors.email ? 'true' : 'false'}
+          aria-describedby={errors.email ? 'email-error' : undefined}
+          onBlur={handleBlur}
+          onChange={handleChange}
+          className={cn(fieldClass, errors.email && 'border-red-400 focus:border-red-500')}
+          placeholder="you@example.com"
+        />
+        {errors.email && (
+          <p id="email-error" role="alert" className="mt-1.5 text-fluid-xs text-red-700">
+            {errors.email}
+          </p>
+        )}
       </div>
 
       <div>
