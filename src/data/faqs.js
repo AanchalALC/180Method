@@ -7,7 +7,7 @@
    `draft: false` is what lets an answer into the FAQPage JSON-LD (Google rich
    results). Every answer below is client-approved copy, so all 15 are live.
 
-   ⚠️ TWO ANSWERS MAKE FACTUAL CLAIMS the 180 team owns:
+   ⚠️ TWO ANSWERS MAKE FACTUAL CLAIMS the 180 team owns-
      • "Can I book a free trial before enrolling?" — Naveen's wording is hedged
        ("selected programs, subject to availability"), but Arya should confirm.
      • "What are your studio timings…?" — the hours are NOT hardcoded here. They
