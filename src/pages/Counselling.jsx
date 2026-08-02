@@ -112,7 +112,7 @@ export default function Counselling() {
       <Seo
         title="Counselling & Fitness Together | 180 Method × Another Light"
         description="Through our partnership with Another Light Counselling, every 180 Method package includes a free counselling session. Training that works with your mind, not against it."
-        path="/counselling"
+        path="/counselling/"
       />
 
       <CounsellingHero />

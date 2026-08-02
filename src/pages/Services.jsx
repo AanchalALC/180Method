@@ -228,7 +228,7 @@ export default function Services() {
       <Seo
         title="Services — Personal, Group & Nutrition Training | 180 Method"
         description="Personal Training, Buddy Training, Focused Group Training with a 1:5 ratio, nutrition support and counselling. Every 180 Method package includes a free counselling session."
-        path="/services"
+        path="/services/"
       />
 
       <ServicesHero />

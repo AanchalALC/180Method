@@ -1,12 +1,14 @@
 {
-  "$comment": "Vercel equivalent of _redirects. Only one of the two applies, depending on where you deploy — keeping both means the repo is host-agnostic. NOTE: this file must sit at the PROJECT ROOT for Vercel, not in /public. Move it up one level if deploying to Vercel.",
+  "trailingSlash": true,
   "redirects": [
-    { "source": "/aboutus", "destination": "/about", "permanent": true },
-    { "source": "/contactus", "destination": "/contact", "permanent": true },
-    { "source": "/mediafeatures", "destination": "/media-features", "permanent": true },
-    { "source": "/faq", "destination": "/faqs", "permanent": true },
     { "source": "/blog", "destination": "/", "permanent": false },
     { "source": "/blog/:path*", "destination": "/", "permanent": false }
   ],
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    }
+  ]
 }

@@ -42,7 +42,15 @@
 
 export const team = [
   {
+    /* `path` is the live WordPress URL for this member, preserved deliberately
+       so the migration to the new site needs no redirect at all — Google sees
+       no URL change. It is consumed directly as a top-level <Route path> in
+       App.jsx and as the canonical <Seo path> in TeamMember.jsx. Do NOT
+       "clean up" these URLs (e.g. to /team/:slug) without an SEO decision and
+       a 301 plan — see site.js legacyRedirects / vercel.json for the one-time
+       cost that would reopen. */
     slug: 'arya',
+    path: '/arya-co-foundertrainer/',
     name: 'Arya Talwalkar',
     role: 'Co-founder & Head Trainer',
     pronouns: 'he/him',
@@ -81,12 +89,8 @@ export const team = [
 
   {
     /* ------------------------------------------------------------------------
-       AANCHAL — HELD FOR WRITTEN SIGN-OFF (§9, highest-risk item).
-
-       ⚠️ THIS IS CURRENTLY published:true AND THE STANDING RULE SAYS IT SHOULD
-       NOT BE. Either attach her written approval to the ticket, or set this
-       back to false before deploy. I have NOT changed the value — flipping it
-       silently either way is the wrong call. Decide, then edit this one line.
+       AANCHAL — written sign-off received 2 Aug 2026 (§9, highest-risk item).
+       published:true is confirmed correct.
 
        The clinical "concerns" list from her PDF (CSA, self-harm, eating
        disorder, psychosis, perpetrators, etc.) is DELIBERATELY NOT reproduced
@@ -96,6 +100,7 @@ export const team = [
        Do NOT add support-area copy without Aanchal's written sign-off.
     ------------------------------------------------------------------------ */
     slug: 'aanchal',
+    path: '/aanchal-cofounder/',
     name: 'Aanchal',
     role: 'Co-founder & Head Therapist',
     pronouns: 'she/they',
@@ -131,6 +136,7 @@ export const team = [
 
   {
     slug: 'kartik',
+    path: '/karthik-fitnesscoach/',
     name: 'Kartik',
     role: 'Fitness Coach',
     pronouns: 'he/him',
@@ -167,6 +173,7 @@ export const team = [
 
   {
     slug: 'moyna',
+    path: '/moyna-nutritionist-dietician-lifestylecoach/',
     name: 'Dr. Moyna Vakil',
     role: 'Nutritionist, Dietician & Lifestyle Coach',
     pronouns: 'she/her',
@@ -203,6 +210,7 @@ export const team = [
 
   {
     slug: 'vishal',
+    path: '/vishal-fitnesscoach/',
     name: 'Vishal Hunari',
     preferred: 'Vee',
     role: 'Fitness Coach',

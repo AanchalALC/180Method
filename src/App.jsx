@@ -5,6 +5,7 @@ import Layout from '@/components/layout/Layout'
 import ScrollToTop from '@/components/layout/ScrollToTop'
 import SmoothScroll from '@/components/layout/SmoothScroll'
 import { legacyRedirects } from '@/data/site'
+import { team } from '@/data/team'
 import TeamMember from '@/pages/TeamMember'
 import Home from '@/pages/Home'
 import About from '@/pages/About'
@@ -28,15 +29,18 @@ export default function App() {
         <Routes>
           <Route element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path="about" element={<About />} />
+            <Route path="aboutus" element={<About />} />
             <Route path="services" element={<Services />} />
             <Route path="team" element={<Team />} />
             <Route path="counselling" element={<Counselling />} />
             <Route path="reviews" element={<Reviews />} />
             <Route path="faqs" element={<Faqs />} />
-            <Route path="media-features" element={<MediaFeatures />} />
-            <Route path="contact" element={<Contact />} />
-            <Route path="/team/:slug" element={<TeamMember />} />
+            <Route path="mediafeatures" element={<MediaFeatures />} />
+            <Route path="contactus" element={<Contact />} />
+
+            {team.map((m) => (
+              <Route key={m.slug} path={m.path} element={<TeamMember slug={m.slug} />} />
+            ))}
 
             {/* Old WordPress URLs. These are live and indexed today, so they
                 must never 404. Handled at the CDN too (public/_redirects) —

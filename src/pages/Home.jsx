@@ -108,7 +108,7 @@ function Hero() {
           className="mt-9 flex flex-wrap items-center gap-3"
         >
           <Button href={links.whatsapp} variant="lime" size="lg" icon={ArrowUpRight}>Get started</Button>
-          <Button to="/about" variant="outlineLight" size="lg">Read more</Button>
+          <Button to="/aboutus/" variant="outlineLight" size="lg">Read more</Button>
         </motion.div>
 
         {/* Carousel dots — active pill is lime; inactive are faint on the dark hero. */}
@@ -379,7 +379,7 @@ function HomeReviews() {
       <div className="container-x">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SectionHeading eyebrow="Hear from our clients" title="Don’t just take our word for it" className="max-w-2xl" size="lg" />
-          <Reveal><Button to="/reviews" variant="outline" icon={ArrowRight}>Read our reviews</Button></Reveal>
+          <Reveal><Button to="/reviews/" variant="outline" icon={ArrowRight}>Read our reviews</Button></Reveal>
         </div>
 
         <RevealGroup className="mt-12 grid gap-4 md:grid-cols-3" gap={0.1}>
@@ -446,7 +446,7 @@ function CounsellingTeaser() {
                 Because real transformation isn’t just about doing more — it’s about understanding yourself better.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <Button to="/counselling" variant="lime" icon={ArrowRight}>How it works</Button>
+                <Button to="/counselling/" variant="lime" icon={ArrowRight}>How it works</Button>
                 <Button href={links.whatsapp} variant="outlineLight">Talk to us</Button>
               </div>
             </Reveal>
@@ -508,7 +508,7 @@ function PressStrip() {
       </Marquee>
 
       <div className="container-x mt-10 text-center">
-        <Reveal><Button to="/media-features" variant="outline" icon={ArrowRight}>Explore our media features</Button></Reveal>
+        <Reveal><Button to="/mediafeatures/" variant="outline" icon={ArrowRight}>Explore our media features</Button></Reveal>
       </div>
     </Section>
   )

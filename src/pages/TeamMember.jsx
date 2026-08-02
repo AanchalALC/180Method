@@ -1,4 +1,4 @@
-import { useParams, Link, Navigate } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { ArrowUpRight, ArrowLeft } from 'lucide-react'
 
 import { Seo } from '@/components/ui/Widgets'
@@ -9,10 +9,12 @@ import { team } from '@/data/team'
 import { links } from '@/data/site'
 
 /* ============================================================================
-   TEAM MEMBER — /team/:slug
-   One data-driven page for every member. Reads from team.js; renders only the
-   sections that have data, so a lean profile (Kartik) and a rich one (Arya)
-   both look intentional.
+   TEAM MEMBER — per-member top-level legacy URL
+   Not /team/:slug — each member is routed at its own live WordPress URL
+   (team.js `path`), registered as a top-level <Route> in App.jsx, which
+   passes `slug` in as a prop. One data-driven page for every member. Reads
+   from team.js; renders only the sections that have data, so a lean profile
+   (Kartik) and a rich one (Arya) both look intentional.
 
    ---------------------------------------------------------------------------
    POINT OF VIEW (Naveen's note — the first/third person clash)
@@ -143,12 +145,11 @@ function Credential({ credential }) {
   )
 }
 
-export default function TeamMember() {
-  const { slug } = useParams()
+export default function TeamMember({ slug }) {
   const member = team.find((m) => m.slug === slug)
 
   // Unknown slug → back to the grid (belt-and-braces with the 404 route).
-  if (!member) return <Navigate to="/team" replace />
+  if (!member) return <Navigate to="/team/" replace />
 
   const fname = firstName(member.name)
   const hasProfessional =
@@ -160,7 +161,7 @@ export default function TeamMember() {
 
   return (
     <>
-      <Seo title={member.seoTitle} description={member.seoDescription} path={`/team/${member.slug}`} />
+      <Seo title={member.seoTitle} description={member.seoDescription} path={member.path} />
 
       {/* HERO — portrait on top, name highlighted, on ink. */}
       <section className="on-dark relative isolate overflow-hidden bg-ink-950 pb-16 pt-[calc(var(--header-h)+3rem)]">
@@ -168,7 +169,7 @@ export default function TeamMember() {
         <div className="container-x relative">
           <Reveal>
             <Link
-              to="/team"
+              to="/team/"
               className="link-underline mb-10 inline-flex items-center gap-1.5 font-display text-fluid-xs uppercase tracking-[0.14em] text-paper-200/60 transition-colors hover:text-lime"
             >
               <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />

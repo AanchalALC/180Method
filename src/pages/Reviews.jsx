@@ -34,7 +34,7 @@ export default function Reviews() {
       <Seo
         title="Client Reviews & Testimonials | 180 Method"
         description="Read what members say about training at 180 Method — group sessions, personal training and the studio itself, in their own words."
-        path="/reviews"
+        path="/reviews/"
       />
 
       {/* No image for now, by request (Aug 2026) — PageHero's no-image state

@@ -278,7 +278,7 @@ export default function Contact() {
       <Seo
         title="Contact 180 Method — Book a Session in Bandra, Mumbai"
         description="Message us on WhatsApp, send an enquiry, or come and see the studio. 180 Method, Bandra, Mumbai. Phone +91 97021 31149."
-        path="/contact"
+        path="/contactus/"
       />
 
       <PageHero

@@ -162,7 +162,7 @@ export default function MediaFeatures() {
       <Seo
         title="180 Method in the Press | Media Features"
         description="Press coverage of 180 Method and founders Aanchal Narang and Arya Talwalkar — on mind–body training, breaking the shame cycle, and fitness for senior citizens."
-        path="/media-features"
+        path="/mediafeatures/"
       />
 
       <PageHero

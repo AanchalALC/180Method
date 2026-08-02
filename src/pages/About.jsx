@@ -231,7 +231,7 @@ export default function About() {
       <Seo
         title="About 180 Method — Fitness + Counselling Studio, Bandra"
         description="We are not about quick fixes. 180 Method focuses on long-term lifestyle change — fitness, nutrition and psychology together, in a warm, inclusive studio in Bandra, Mumbai."
-        path="/about"
+        path="/aboutus/"
       />
 
       <AboutHero />

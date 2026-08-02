@@ -100,24 +100,27 @@ export const links = {
 --------------------------------------------------------------------------- */
 export const navigation = [
   { label: 'Home', href: '/' },
-  { label: 'About', href: '/about' },
-  { label: 'Services', href: '/services' },
-  { label: 'Team', href: '/team' },
-  { label: 'Counselling', href: '/counselling' },
-  { label: 'Reviews', href: '/reviews' },
-  { label: 'FAQs', href: '/faqs' },
-  { label: 'Media', href: '/media-features' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'About', href: '/aboutus/' },
+  { label: 'Services', href: '/services/' },
+  { label: 'Team', href: '/team/' },
+  { label: 'Counselling', href: '/counselling/' },
+  { label: 'Reviews', href: '/reviews/' },
+  { label: 'FAQs', href: '/faqs/' },
+  { label: 'Media', href: '/mediafeatures/' },
+  { label: 'Contact', href: '/contactus/' },
 ]
 
-/* Legacy WordPress URL → new route.
-   Every one of these is currently live and indexed. They are redirected at the
-   host (see public/_redirects) AND handled client-side in App.jsx so no
-   existing link or Google result ever 404s. */
+/* Client-side redirects, mirrored at the host in vercel.json and
+   public/_redirects.
+
+   This list is deliberately almost empty. The new site serves the ORIGINAL
+   WordPress URLs (/aboutus/, /contactus/, /mediafeatures/, and the five
+   top-level team-member pages), so there is nothing to redirect — Google sees
+   no URL change at all.
+
+   /blog is the exception: it 404s on the live site but is linked from the
+   homepage cards and may be indexed. 302 (temporary) on purpose — the Blog
+   will exist one day and a 301 would be a lie we'd have to undo. */
 export const legacyRedirects = [
-  { from: '/aboutus', to: '/about' },
-  { from: '/contactus', to: '/contact' },
-  { from: '/mediafeatures', to: '/media-features' },
-  { from: '/faq', to: '/faqs' },
-  { from: '/blog', to: '/' }, // Blog is deliberately not built yet — audit N1.
+  { from: '/blog', to: '/' },
 ]

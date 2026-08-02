@@ -38,7 +38,7 @@ export default function Faqs() {
       <Seo
         title="FAQs | 180 Method"
         description="Common questions about training at 180 Method — programs, the 1:5 group ratio, nutrition, counselling, beginners, injuries, timings and how to book."
-        path="/faqs"
+        path="/faqs/"
         schema={schema}
       />
 

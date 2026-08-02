@@ -14,7 +14,8 @@ import { links } from '@/data/site'
 
 /* ============================================================================
    TEAM
-   The grid now links each card to its individual profile at /team/:slug.
+   The grid now links each card to its individual profile at its top-level
+   legacy URL (member.path, from team.js) — not /team/:slug.
 
    Data shape (src/data/team.js):
      • published:false  → card is NOT linked and the member is kept out of the
@@ -110,7 +111,7 @@ function initials(name) {
 function TeamCard({ member }) {
   const linked = member.published !== false
   const Wrapper = linked ? Link : 'div'
-  const wrapperProps = linked ? { to: `/team/${member.slug}` } : {}
+  const wrapperProps = linked ? { to: member.path } : {}
 
   return (
     <RevealItem className="group">
@@ -185,7 +186,7 @@ export default function Team() {
       <Seo
         title="Meet the Team — Trainers & Therapists | 180 Method"
         description="Meet the coaches, nutritionist and therapist behind 180 Method — Arya Talwalkar, Aanchal Narang, Kartik, Dr. Moyna Vakil and Vishal Hunari."
-        path="/team"
+        path="/team/"
       />
 
       <TeamHero />
