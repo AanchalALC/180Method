@@ -1,5 +1,5 @@
 import { Link, Navigate } from 'react-router-dom'
-import { ArrowUpRight, ArrowLeft } from 'lucide-react'
+import { ArrowUpRight, ArrowLeft, Linkedin, Instagram } from 'lucide-react'
 
 import { Seo } from '@/components/ui/Widgets'
 import {
@@ -203,6 +203,35 @@ export default function TeamMember({ slug }) {
                 <p className="mt-6 max-w-2xl text-fluid-lg leading-relaxed text-paper-100/75">
                   {member.blurb}
                 </p>
+              </Reveal>
+            )}
+
+            {member.socials && (
+              <Reveal delay={0.28}>
+                <div className="mt-6 flex items-center justify-center gap-4">
+                  {member.socials.linkedin && (
+                    <a
+                      href={member.socials.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${fname} on LinkedIn`}
+                      className="text-paper-200/60 transition-colors hover:text-lime"
+                    >
+                      <Linkedin className="h-5 w-5" aria-hidden="true" />
+                    </a>
+                  )}
+                  {member.socials.instagram && (
+                    <a
+                      href={member.socials.instagram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${fname} on Instagram`}
+                      className="text-paper-200/60 transition-colors hover:text-lime"
+                    >
+                      <Instagram className="h-5 w-5" aria-hidden="true" />
+                    </a>
+                  )}
+                </div>
               </Reveal>
             )}
           </div>

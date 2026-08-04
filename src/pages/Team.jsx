@@ -184,8 +184,8 @@ export default function Team() {
   return (
     <>
       <Seo
-        title="Meet the Team — Trainers & Therapists | 180 Method"
-        description="Meet the coaches, nutritionist and therapist behind 180 Method — Arya Talwalkar, Aanchal Narang, Kartik, Dr. Moyna Vakil and Vishal Hunari."
+        title="Our Trainers | Arya Talwalkar & Aanchal Narang | 180 Method"
+        description="Meet our trainers Arya Talwalkar & Aanchal Narang, who are dedicated to helping you achieve your fitness goals with expert guidance."
         path="/team/"
       />
 

@@ -276,8 +276,8 @@ export default function Contact() {
   return (
     <>
       <Seo
-        title="Contact 180 Method — Book a Session in Bandra, Mumbai"
-        description="Message us on WhatsApp, send an enquiry, or come and see the studio. 180 Method, Bandra, Mumbai. Phone +91 97021 31149."
+        title="Best Gym in Mumbai | Contact 180 Method"
+        description="Reach out to 180 Method, the best gym in Mumbai, and discover personalized fitness programs with integrated wellness support."
         path="/contactus/"
       />
 
@@ -338,14 +338,6 @@ export default function Contact() {
                 <RevealItem>
                   <DetailRow icon={Linkedin} label="LinkedIn" href={links.linkedin}>
                     180 Method
-                  </DetailRow>
-                </RevealItem>
-
-                {/* Arya's personal profile, per Swathi's request (Aug 2026) —
-                    Contact only, not the site-wide Footer. */}
-                <RevealItem>
-                  <DetailRow icon={Linkedin} label="Arya on LinkedIn" href={site.linkedin.arya}>
-                    Arya Talwalkar
                   </DetailRow>
                 </RevealItem>
               </RevealGroup>

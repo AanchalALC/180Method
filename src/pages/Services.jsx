@@ -226,8 +226,8 @@ export default function Services() {
   return (
     <>
       <Seo
-        title="Services — Personal, Group & Nutrition Training | 180 Method"
-        description="Personal Training, Buddy Training, Focused Group Training with a 1:5 ratio, nutrition support and counselling. Every 180 Method package includes a free counselling session."
+        title="Functional Training Studio in Mumbai | 180 Method"
+        description="Join our functional training studio in Mumbai for strength training, calisthenics, expert coaching, and holistic wellness programs."
         path="/services/"
       />
 

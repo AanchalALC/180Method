@@ -110,8 +110,8 @@ export default function Counselling() {
   return (
     <>
       <Seo
-        title="Counselling & Fitness Together | 180 Method × Another Light"
-        description="Through our partnership with Another Light Counselling, every 180 Method package includes a free counselling session. Training that works with your mind, not against it."
+        title="Mental Health Support | 180 Method"
+        description="180 Method combines personalized fitness plans with mental health support to help you achieve sustainable physical and emotional well-being."
         path="/counselling/"
       />
 

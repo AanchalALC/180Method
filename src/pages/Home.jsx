@@ -518,8 +518,8 @@ export default function Home() {
   return (
     <>
       <Seo
-        title="180 Method — Fitness, Nutrition & Counselling Studio in Bandra, Mumbai"
-        description="Personal, buddy and group training with nutrition and counselling built in. One system for body and mind, in Bandra, Mumbai. Every package includes a free counselling session."
+        title="Personal Training Studio & Fitness Centre | 180 Method"
+        description="180 Method is a leading personal training studio and fitness centre in Mumbai, offering expert coaching for strength, fitness, and wellness."
         path="/"
       />
       <Hero />

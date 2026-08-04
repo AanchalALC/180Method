@@ -33,19 +33,13 @@ export const site = {
     arya: 'https://www.linkedin.com/in/arya-talwalkar-2ba1253b0',
   },
 
-  /* Audit Ct1 — the live WordPress site showed "Street name, 22135
-     Copenhagen, Denmark", which was worse than showing nothing. Per Swathi,
-     Aug 2026: stop showing the literal word TODO to visitors — render only
-     the area that's actually confirmed (Bandra West, Mumbai, Maharashtra)
-     rather than inventing a street line or pincode. `line1` and `pincode`
-     are deliberately absent, not empty strings, so Contact.jsx, Footer.jsx
-     and the LocalBusiness schema in index.html can all just skip them. Add
-     them back here the day a real street address is provided — nowhere
-     else needs to change. */
+  // Full street address confirmed by Swathi, Aug 2026.
   address: {
+    line1: 'Roha Orion, 301',
     line2: 'Bandra West',
     city: 'Mumbai',
     state: 'Maharashtra',
+    pincode: '400050',
     country: 'India',
     // Paste the Google Maps embed URL here to switch the map on (Contact page).
     mapEmbedUrl: '',

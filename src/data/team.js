@@ -83,6 +83,10 @@ export const team = [
     funFact: 'If I wasn’t a personal trainer, I’d have been an actor or a film director.',
     hobbies: ['Dancing', 'Music', 'Cinema', 'Sports', 'Food'],
     whisper: 'The whole reason I started training was to help people get healthier, happier and reach their full potential — which is exactly what 180 Method stands for.',
+    socials: {
+      linkedin: 'https://www.linkedin.com/in/arya-talwalkar-2ba1253b0/',
+      instagram: 'https://www.instagram.com/aryatalwalkar_',
+    },
     seoTitle: 'Arya Talwalkar — Head Trainer | 180 Method',
     seoDescription: 'Meet Arya Talwalkar, co-founder and head trainer at 180 Method, Bandra. Seven years coaching personal training, rehab, Pilates, mobility and strength.',
   },
@@ -129,6 +133,10 @@ export const team = [
     externalProfile: {
       label: 'See how Aanchal can help at Another Light Counselling',
       href: 'https://www.another-light.com',
+    },
+    socials: {
+      linkedin: 'https://www.linkedin.com/in/aanchal-narang/',
+      instagram: 'https://www.instagram.com/aanchal_therapist_puppy',
     },
     seoTitle: 'Aanchal — Head Therapist | 180 Method',
     seoDescription: 'Meet Aanchal, co-founder and head therapist at 180 Method and founder of Another Light Counselling. Trauma-informed, queer-affirming mental-health care.',

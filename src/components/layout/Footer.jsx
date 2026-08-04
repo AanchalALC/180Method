@@ -76,7 +76,7 @@ export default function Footer() {
               <li>
                 <a href={site.address.mapDirectionsUrl} target="_blank" rel="noopener noreferrer" className="group flex items-start gap-3 text-paper-100/60 transition-colors hover:text-lime">
                   <MapPin className="mt-1 h-4 w-4 shrink-0" aria-hidden="true" />
-                  <span>{site.address.line2}, {site.address.city}<br />{site.address.state}</span>
+                  <span>{site.address.line1}, {site.address.line2}<br />{site.address.city}, {site.address.state} {site.address.pincode}</span>
                 </a>
               </li>
               <li>
