@@ -58,7 +58,7 @@ export const site = {
 
   partner: {
     name: 'Another Light Counselling',
-    url: 'https://another-light.com',
+    url: 'https://www.another-light.com',
   },
 }
 
