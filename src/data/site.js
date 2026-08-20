@@ -101,6 +101,7 @@ export const navigation = [
   { label: 'Reviews', href: '/reviews/' },
   { label: 'FAQs', href: '/faqs/' },
   { label: 'Media', href: '/mediafeatures/' },
+  { label: 'Blog', href: '/blog/' },
   { label: 'Contact', href: '/contactus/' },
 ]
 
@@ -112,9 +113,6 @@ export const navigation = [
    top-level team-member pages), so there is nothing to redirect — Google sees
    no URL change at all.
 
-   /blog is the exception: it 404s on the live site but is linked from the
-   homepage cards and may be indexed. 302 (temporary) on purpose — the Blog
-   will exist one day and a 301 would be a lie we'd have to undo. */
-export const legacyRedirects = [
-  { from: '/blog', to: '/' },
-]
+   The former /blog → / redirect is gone now that the Blog is a real route
+   (see App.jsx). */
+export const legacyRedirects = []

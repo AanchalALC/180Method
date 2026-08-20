@@ -1,9 +1,5 @@
 {
   "trailingSlash": true,
-  "redirects": [
-    { "source": "/blog", "destination": "/", "permanent": false },
-    { "source": "/blog/:path*", "destination": "/", "permanent": false }
-  ],
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
   "headers": [
     {

@@ -16,6 +16,8 @@ import Reviews from '@/pages/Reviews'
 import Faqs from '@/pages/Faqs'
 import MediaFeatures from '@/pages/MediaFeatures'
 import Contact from '@/pages/Contact'
+import Blog from '@/pages/Blog'
+import BlogPost from '@/pages/BlogPost'
 import NotFound from '@/pages/NotFound'
 
 export default function App() {
@@ -37,6 +39,8 @@ export default function App() {
             <Route path="faqs" element={<Faqs />} />
             <Route path="mediafeatures" element={<MediaFeatures />} />
             <Route path="contactus" element={<Contact />} />
+            <Route path="blog" element={<Blog />} />
+            <Route path="blog/:slug" element={<BlogPost />} />
 
             {team.map((m) => (
               <Route key={m.slug} path={m.path} element={<TeamMember slug={m.slug} />} />
