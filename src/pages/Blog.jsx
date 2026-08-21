@@ -60,9 +60,9 @@ export default function Blog() {
       />
 
       <PageHero
-        eyebrow="180 Journal"
-        title="Ideas worth training on"
-        lede="Coaching notes on strength, nutrition, recovery and the mindset that holds it all together."
+        eyebrow="Where mind meets movement"
+        title="The 180 perspective"
+        lede="Explore practical, expert-backed insights, guides and resources on fitness, nutrition, recovery, mental health and everything in between."
       />
 
       <Section tone="paperAlt">
