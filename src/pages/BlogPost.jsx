@@ -20,10 +20,9 @@ function formatDate(iso) {
 
 /* ============================================================================
    BLOG POST
-   Hero deliberately does NOT reuse the shared <PageHero> — that component
-   wraps its image in `.duotone`, and the brief for this feature is explicit
-   that blog imagery stays raw photography. This hand-rolls the same visual
-   language (gradient overlay, lime hairline, hero typography) minus duotone.
+   Headline sits in normal page flow (not overlaid on the hero image) and the
+   image runs as its own block underneath it — title and photo both suffer
+   when they're stacked into one dark, gradient-masked hero.
    ========================================================================== */
 export default function BlogPost() {
   const { slug } = useParams()
@@ -59,58 +58,54 @@ export default function BlogPost() {
         schema={schema}
       />
 
-      <header className="on-dark relative isolate flex min-h-[48vh] items-end overflow-hidden bg-ink-950 pb-14 pt-[calc(var(--header-h)+3.5rem)] md:min-h-[58vh] md:pb-20">
-        <div className="grain absolute inset-0 -z-10">
-          <img
-            src={post.image.hero.url}
-            width={post.image.hero.width}
-            height={post.image.hero.height}
-            alt={post.image.alt}
-            fetchpriority="high"
-            className="h-full w-full object-cover opacity-70"
-          />
-          <div className="absolute inset-0 z-[3] bg-gradient-to-t from-ink-950 via-ink-950/75 to-ink-950/30" />
-        </div>
-        <div
-          className="absolute inset-x-0 top-[var(--header-h)] h-px bg-gradient-to-r from-lime/50 via-lime/10 to-transparent"
-          aria-hidden="true"
-        />
-
-        <div className="container-x">
-          {post.category && (
-            <Reveal>
-              <Tag variant="lime" size="sm" className="mb-5">
-                {post.category}
-              </Tag>
-            </Reveal>
-          )}
-          <Reveal delay={0.05}>
-            <h1 className="max-w-4xl text-fluid-3xl leading-[0.95] text-paper display-tight">{post.title}</h1>
-          </Reveal>
-          <Reveal delay={0.15}>
-            <p className="mt-6 font-display text-fluid-xs uppercase tracking-[0.14em] text-paper-100/60">
-              {formatDate(post.publishedAt)} · {post.readingTime} min read · {post.author}
-            </p>
-          </Reveal>
-        </div>
-      </header>
-
-      <Section tone="paper">
+      <Section tone="paper" className="pt-[calc(var(--header-h)+3rem)] md:pt-[calc(var(--header-h)+4rem)]">
         <div className="container-x">
           <Reveal>
             <Link
               to="/blog/"
-              className="link-underline mb-10 inline-flex items-center gap-1.5 font-display text-fluid-xs uppercase tracking-[0.14em] text-ink/50 transition-colors hover:text-forest-600"
+              className="link-underline mb-8 inline-flex items-center gap-1.5 font-display text-fluid-xs uppercase tracking-[0.14em] text-ink/50 transition-colors hover:text-forest-600"
             >
               <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
               All posts
             </Link>
           </Reveal>
 
+          {post.category && (
+            <Reveal delay={0.05}>
+              <Tag variant="lime" size="sm" className="mb-5">
+                {post.category}
+              </Tag>
+            </Reveal>
+          )}
+          <Reveal delay={0.1}>
+            <h1 className="max-w-4xl text-fluid-3xl leading-[0.95] text-ink display-tight">{post.title}</h1>
+          </Reveal>
+          <Reveal delay={0.2}>
+            <p className="mt-6 font-display text-fluid-xs uppercase tracking-[0.14em] text-ink/45">
+              {formatDate(post.publishedAt)} · {post.readingTime} min read · {post.author}
+            </p>
+          </Reveal>
+
+          <Reveal delay={0.3}>
+            <div className="grain relative mt-10 aspect-[16/9] overflow-hidden rounded-4xl border border-ink/10 md:mt-14">
+              <img
+                src={post.image.hero.url}
+                width={post.image.hero.width}
+                height={post.image.hero.height}
+                alt={post.image.alt}
+                fetchpriority="high"
+                className="h-full w-full object-cover"
+              />
+            </div>
+          </Reveal>
+
           {/* Body HTML is generated at build time from our own CMS by our own
               serializer (scripts/fetch-content.mjs) — never from user input —
               so injecting it raw here is safe. */}
-          <div className="max-w-prose" dangerouslySetInnerHTML={{ __html: post.bodyHtml }} />
+          <div
+            className="mx-auto mt-14 max-w-prose md:mt-16 md:max-w-4xl"
+            dangerouslySetInnerHTML={{ __html: post.bodyHtml }}
+          />
         </div>
       </Section>
 

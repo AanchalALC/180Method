@@ -139,10 +139,10 @@ export default defineType({
       type: 'string',
       options: {
         list: [
-          { title: 'Fitness', value: 'Fitness' },
-          { title: 'Nutrition', value: 'Nutrition' },
-          { title: 'Mental Health', value: 'Mental Health' },
-          { title: 'Lifestyle', value: 'Lifestyle' },
+          { title: 'The 180 Perspective', value: 'The 180 Perspective' },
+          { title: 'Fitness & Training', value: 'Fitness & Training' },
+          { title: 'Mind & Mental Wellbeing', value: 'Mind & Mental Wellbeing' },
+          { title: 'Nutrition & Lifestyle', value: 'Nutrition & Lifestyle' },
         ],
         layout: 'radio',
       },

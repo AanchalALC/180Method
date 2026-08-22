@@ -106,11 +106,11 @@ const portableComponents = {
     h3: ({ children }) => `<h3 class="mt-9 mb-4 text-fluid-lg leading-snug">${children}</h3>`,
     blockquote: ({ children }) =>
       `<blockquote class="my-8 border-l-2 border-lime pl-6 text-fluid-lg italic leading-relaxed text-ink/70">${children}</blockquote>`,
-    normal: ({ children }) => `<p class="mb-5 leading-relaxed text-ink/80">${children}</p>`,
+    normal: ({ children }) => `<p class="mb-5 text-fluid-lg leading-relaxed text-ink/80">${children}</p>`,
   },
   list: {
-    bullet: ({ children }) => `<ul class="mb-5 ml-5 list-disc space-y-2 leading-relaxed text-ink/80">${children}</ul>`,
-    number: ({ children }) => `<ol class="mb-5 ml-5 list-decimal space-y-2 leading-relaxed text-ink/80">${children}</ol>`,
+    bullet: ({ children }) => `<ul class="mb-5 ml-5 list-disc space-y-2 text-fluid-lg leading-relaxed text-ink/80">${children}</ul>`,
+    number: ({ children }) => `<ol class="mb-5 ml-5 list-decimal space-y-2 text-fluid-lg leading-relaxed text-ink/80">${children}</ol>`,
   },
   listItem: {
     bullet: ({ children }) => `<li class="pl-1">${children}</li>`,
@@ -126,7 +126,10 @@ const portableComponents = {
       if (!/^(https?:|mailto:|tel:)/.test(href)) return children
       const external = value?.blank !== false
       const targetAttrs = external ? ' target="_blank" rel="noopener noreferrer"' : ''
-      return `<a href="${href}" class="text-lime underline decoration-lime/50 underline-offset-2 transition-colors hover:decoration-lime"${targetAttrs}>${children}</a>`
+      // Solid lime-on-white text fails contrast (≈1.6:1 — unreadable), so the
+      // "yellow-green" pop comes from a soft lime highlight behind dark green
+      // text instead of the text itself being lime.
+      return `<a href="${href}" class="rounded bg-lime/35 px-1 py-0.5 text-forest-700 underline decoration-forest-700 decoration-2 underline-offset-2 transition-colors hover:bg-lime/55"${targetAttrs}>${children}</a>`
     },
   },
 }
