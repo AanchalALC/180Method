@@ -141,7 +141,7 @@ export default function BlogPost() {
         </Section>
       )}
 
-      <Section tone="ink" className="py-section-sm">
+      {/* <Section tone="ink" className="py-section-sm">
         <div className="container-x text-center">
           <Reveal>
             <h2 className="text-fluid-xl leading-tight text-paper">Ready to put this into practice?</h2>
@@ -155,7 +155,7 @@ export default function BlogPost() {
             </div>
           </Reveal>
         </div>
-      </Section>
+      </Section> */}
     </>
   )
 }
