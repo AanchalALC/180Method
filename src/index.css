@@ -81,6 +81,50 @@
   .link-underline:hover::after,
   .link-underline:focus-visible::after { @apply origin-left scale-x-100; }
 
+  /* -------------------------------------------------------------------------
+     BLOG POST BODY — INLINE LINKS
+     post.bodyHtml is injected with dangerouslySetInnerHTML, so no React
+     className can reach the <a> tags inside it, and Tailwind's preflight
+     resets them to `color: inherit; text-decoration: inherit`. These rules
+     are the only thing that can style them.
+
+     Two-tone on purpose. Forest carries the contrast (#275442 on #F6F8F3 is
+     8.2:1, AAA). Lime carries the "highlighted" read. Lime as *text* on a
+     light surface is ~1.4:1 and would be unreadable, so it lives in the
+     underline and the hover fill instead — never in the text colour.
+  ------------------------------------------------------------------------- */
+  .post-body a {
+    @apply font-medium text-forest-600;
+
+    text-decoration-line: underline;
+    text-decoration-color: #DCE576;    /* lime-500 · TUNING: #C8D250 (lime-600) reads heavier */
+    text-decoration-thickness: 0.14em; /* TUNING: 0.10em subtler · 0.20em marker-pen */
+    text-underline-offset: 0.18em;     /* TUNING: 0.24em if descenders clip the rule */
+
+    /* The fill has to extend past the glyphs without adding box width, or every
+       hover would reflow the paragraph. Padding + an equal negative margin
+       nets to zero advance. box-decoration-break keeps the shape correct when
+       a link wraps across two lines. */
+    padding: 0.08em 0.22em;
+    margin: 0 -0.22em;
+    border-radius: 3px;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    background-color: transparent;
+
+    /* Paint-only transition — colour and background never trigger layout, so
+       this does not violate the transform/opacity rule for animation. */
+    transition-property: color, background-color, text-decoration-color;
+    transition-duration: 200ms; /* TUNING */
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1); /* ease-brand */
+  }
+
+  .post-body a:hover,
+  .post-body a:focus-visible {
+    @apply bg-lime text-ink-900;       /* #DCE576 fill · #0B0D0B text = 15.1:1 */
+    text-decoration-color: #275442;    /* forest-600 — underline flips to green */
+  }
+
   /* Fine grain — lifts the compressed WhatsApp-export photography. */
   .grain::after {
     content: ''; position: absolute; inset: 0; pointer-events: none;

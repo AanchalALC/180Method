@@ -101,9 +101,13 @@ export default function BlogPost() {
 
           {/* Body HTML is generated at build time from our own CMS by our own
               serializer (scripts/fetch-content.mjs) — never from user input —
-              so injecting it raw here is safe. */}
+              so injecting it raw here is safe.
+
+              `post-body` is the styling hook for everything inside that HTML.
+              React classNames cannot reach injected nodes; the rules live in
+              src/index.css under @layer components. */}
           <div
-            className="mx-auto mt-14 max-w-prose md:mt-16 md:max-w-4xl"
+            className="post-body mx-auto mt-14 max-w-prose md:mt-16 md:max-w-4xl"
             dangerouslySetInnerHTML={{ __html: post.bodyHtml }}
           />
         </div>
