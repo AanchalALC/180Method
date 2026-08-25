@@ -32,12 +32,31 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { execSync } from 'node:child_process'
 import { team } from '../src/data/team.js'
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)))
 const distDir = join(root, 'dist')
 const template = readFileSync(join(distDir, 'index.html'), 'utf8')
 const SITE_URL = 'https://180method.in'
+const BUILD_TIME = new Date().toISOString()
+
+// Real "last modified" per URL, not a hand-maintained guess: the source
+// file's last commit date for static/team pages, Sanity's own _updatedAt
+// for blog content. Falls back to build time if git history isn't available
+// (e.g. a shallow clone) so a missing/failed git lookup never breaks the build.
+function gitLastMod(relPath) {
+  try {
+    const out = execSync(`git log -1 --format=%cI -- "${relPath}"`, {
+      cwd: root,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim()
+    return out || BUILD_TIME
+  } catch {
+    return BUILD_TIME
+  }
+}
 
 const STATIC_PAGES = [
   'Home',
@@ -259,33 +278,52 @@ for (const post of posts) {
 console.log(`prerender: wrote ${blogRouteCount} blog route(s) (1 index + ${posts.length} post[s]).`)
 
 /* ----------------------------------------------------------------------------
-   3) SITEMAP — the original 14 URLs, byte-for-byte, plus /blog/ and every post.
+   3) SITEMAP — the original 14 URLs (same paths/priorities, byte-for-byte
+   order), plus /blog/ and every post. Every entry now carries a real
+   <lastmod> (git commit date for static/team pages, Sanity's _updatedAt for
+   blog content) and a uniform weekly <changefreq> per Sujoy's request
+   (2026-08-24) so Google has a reason to recrawl on a predictable cadence.
    No <?xml-stylesheet?> (a stylesheet PI pointing at a missing XSL file makes
    browsers render a blank page).
 ---------------------------------------------------------------------------- */
-const STATIC_SITEMAP_URLS = [
-  '  <url><loc>https://180method.in/</loc><priority>1.0</priority><changefreq>monthly</changefreq></url>',
-  '  <url><loc>https://180method.in/aboutus/</loc><priority>0.8</priority></url>',
-  '  <url><loc>https://180method.in/services/</loc><priority>0.9</priority></url>',
-  '  <url><loc>https://180method.in/team/</loc><priority>0.8</priority></url>',
-  '  <url><loc>https://180method.in/arya-co-foundertrainer/</loc><priority>0.6</priority></url>',
-  '  <url><loc>https://180method.in/aanchal-cofounder/</loc><priority>0.6</priority></url>',
-  '  <url><loc>https://180method.in/karthik-fitnesscoach/</loc><priority>0.6</priority></url>',
-  '  <url><loc>https://180method.in/moyna-nutritionist-dietician-lifestylecoach/</loc><priority>0.6</priority></url>',
-  '  <url><loc>https://180method.in/vishal-fitnesscoach/</loc><priority>0.6</priority></url>',
-  '  <url><loc>https://180method.in/counselling/</loc><priority>0.8</priority></url>',
-  '  <url><loc>https://180method.in/reviews/</loc><priority>0.7</priority></url>',
-  '  <url><loc>https://180method.in/faqs/</loc><priority>0.7</priority></url>',
-  '  <url><loc>https://180method.in/mediafeatures/</loc><priority>0.6</priority></url>',
-  '  <url><loc>https://180method.in/contactus/</loc><priority>0.9</priority></url>',
-]
+const STATIC_PAGE_PRIORITY = {
+  Home: '1.0',
+  About: '0.8',
+  Services: '0.9',
+  Team: '0.8',
+  Counselling: '0.8',
+  Reviews: '0.7',
+  Faqs: '0.7',
+  MediaFeatures: '0.6',
+  Contact: '0.9',
+}
+
+function sitemapUrl(loc, priority, lastmod) {
+  return `  <url><loc>${loc}</loc><priority>${priority}</priority><changefreq>weekly</changefreq><lastmod>${lastmod}</lastmod></url>`
+}
+
+const staticSitemapUrls = []
+for (const component of STATIC_PAGES) {
+  const { path } = extractSeo(component)
+  staticSitemapUrls.push(
+    sitemapUrl(`${SITE_URL}${path}`, STATIC_PAGE_PRIORITY[component], gitLastMod(`src/pages/${component}.jsx`))
+  )
+  // Team member profile pages sit right after /team/ in the original URL order.
+  if (component === 'Team') {
+    const teamLastMod = gitLastMod('src/data/team.js')
+    for (const member of team) {
+      staticSitemapUrls.push(sitemapUrl(`${SITE_URL}${member.path}`, '0.6', teamLastMod))
+    }
+  }
+}
+
+const blogIndexLastMod = posts.length
+  ? posts.reduce((latest, post) => (post.updatedAt > latest ? post.updatedAt : latest), posts[0].updatedAt)
+  : BUILD_TIME
 
 const blogSitemapUrls = [
-  `  <url><loc>${SITE_URL}/blog/</loc><priority>0.7</priority><changefreq>weekly</changefreq></url>`,
-  ...posts.map(
-    (post) =>
-      `  <url><loc>${SITE_URL}/blog/${post.slug}/</loc><priority>0.6</priority><changefreq>monthly</changefreq><lastmod>${post.publishedAt}</lastmod></url>`
-  ),
+  sitemapUrl(`${SITE_URL}/blog/`, '0.7', blogIndexLastMod),
+  ...posts.map((post) => sitemapUrl(`${SITE_URL}/blog/${post.slug}/`, '0.6', post.updatedAt)),
 ]
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -296,11 +334,12 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
      The first 14 URLs are the ORIGINAL WordPress URLs, preserved by the React
      rebuild so the migration needs no redirects. Trailing slashes are
      load-bearing — they match the indexed URLs and the canonical tags.
-     Generated by scripts/prerender.mjs — do not hand-edit dist/sitemap.xml. -->
+     Generated by scripts/prerender.mjs — do not hand-edit dist/sitemap.xml
+     (or public/sitemap.xml, which this overwrites on every build). -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${[...STATIC_SITEMAP_URLS, ...blogSitemapUrls].join('\n')}
+${[...staticSitemapUrls, ...blogSitemapUrls].join('\n')}
 </urlset>
 `
 
 writeFileSync(join(distDir, 'sitemap.xml'), sitemap, 'utf8')
-console.log(`prerender: wrote dist/sitemap.xml with ${STATIC_SITEMAP_URLS.length + blogSitemapUrls.length} URLs.`)
+console.log(`prerender: wrote dist/sitemap.xml with ${staticSitemapUrls.length + blogSitemapUrls.length} URLs.`)

@@ -48,7 +48,8 @@ const QUERY = `*[_type == "post" && !(_id in path("drafts.**")) && publishedAt <
   body,
   category,
   author,
-  publishedAt
+  publishedAt,
+  _updatedAt
 }`
 
 function plainText(blocks) {
@@ -180,6 +181,9 @@ async function main() {
       category: post.category || null,
       author: post.author || '180 Method',
       publishedAt: post.publishedAt,
+      // Sanity's own last-edit timestamp — the real "last modified" signal
+      // for the sitemap, distinct from publishedAt (which never changes once set).
+      updatedAt: post._updatedAt || post.publishedAt,
       readingTime: readingTime(post.body),
       bodyHtml: toHTML(post.body, { components: portableComponents }),
       image: buildImage(post.heroImage, post.slug),
