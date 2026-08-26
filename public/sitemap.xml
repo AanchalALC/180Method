@@ -1,11 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- No <?xml-stylesheet?> here on purpose. A stylesheet PI pointing at a
-     missing XSL file makes browsers render a blank page. If you add one,
-     ship the XSL with it.
-
-     These are the ORIGINAL WordPress URLs, preserved by the React rebuild so
-     the migration needs no redirects. Trailing slashes are load-bearing —
-     they match the indexed URLs and the canonical tags. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://180method.in/</loc><priority>1.0</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://180method.in/aboutus/</loc><priority>0.8</priority></url>
