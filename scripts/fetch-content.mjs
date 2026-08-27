@@ -126,11 +126,16 @@ const portableComponents = {
       // schemaTypes/post.js) — refuses to render anything else, e.g. javascript:.
       if (!/^(https?:|mailto:|tel:)/.test(href)) return children
       const external = value?.blank !== false
-      const targetAttrs = external ? ' target="_blank" rel="noopener noreferrer"' : ''
+      // "No follow" is an editorial choice per link (e.g. citing WHO — we
+      // don't want to pass authority to a page we don't control), set from
+      // the Studio's link popup, not inferred from the domain.
+      const relTokens = [external && 'noopener', external && 'noreferrer', value?.nofollow && 'nofollow'].filter(Boolean)
+      const relAttr = relTokens.length ? ` rel="${relTokens.join(' ')}"` : ''
+      const targetAttr = external ? ' target="_blank"' : ''
       // Solid lime-on-white text fails contrast (≈1.6:1 — unreadable), so the
       // "yellow-green" pop comes from a soft lime highlight behind dark green
       // text instead of the text itself being lime.
-      return `<a href="${href}" class="rounded bg-lime/35 px-1 py-0.5 text-forest-700 underline decoration-forest-700 decoration-2 underline-offset-2 transition-colors hover:bg-lime/55"${targetAttrs}>${children}</a>`
+      return `<a href="${href}" class="rounded bg-lime/35 px-1 py-0.5 text-forest-700 underline decoration-forest-700 decoration-2 underline-offset-2 transition-colors hover:bg-lime/55"${targetAttr}${relAttr}>${children}</a>`
     },
   },
 }

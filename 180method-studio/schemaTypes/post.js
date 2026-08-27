@@ -125,6 +125,14 @@ export default defineType({
                     type: 'boolean',
                     initialValue: true,
                   }),
+                  defineField({
+                    name: 'nofollow',
+                    title: 'No follow',
+                    description:
+                      'Adds rel="nofollow" so search engines don’t pass authority to this link. Turn this on for third-party sites we’re citing but not endorsing/partnered with (e.g. WHO, a news article, a study) — leave it off for our own pages or sites we actually want to vouch for.',
+                    type: 'boolean',
+                    initialValue: false,
+                  }),
                 ],
               }),
             ],
