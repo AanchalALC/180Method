@@ -78,11 +78,10 @@ export const journey = [
 /* Sessions conducted.
    The live site shows 0 / 0 (audit H5). The outline supplies real numbers and
    asks for full forms rather than "PT" / "GT".
-   TODO(180 team): the outline notes these are current only to Feb 2026 and
-   should be updated from March 2026 onward. */
+   Current as of July 2026 — update again when the 180 team supplies newer figures. */
 export const stats = [
-  { value: 13200, label: 'Personal Training sessions', suffix: '+' },
-  { value: 5000, label: 'Group Training sessions', suffix: '+' },
+  { value: 14300, label: 'Personal Training sessions', suffix: '+' },
+  { value: 6600, label: 'Group Training sessions', suffix: '+' },
 ]
 
 export const heroSlides = [
