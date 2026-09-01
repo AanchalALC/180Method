@@ -105,13 +105,18 @@ for (const { path, title, description } of legacyRoutes) {
   const safeTitle = escapeHtml(title)
   const safeDescription = escapeHtml(description)
 
-  const html = template
+  let html = template
     .replace(/<title>[\s\S]*?<\/title>/, `<title>${safeTitle}</title>`)
     .replace(/<meta\s+name="description"\s+content="[^"]*"\s*\/>/, `<meta name="description" content="${safeDescription}" />`)
     .replace(/<link rel="canonical" href="[^"]*" \/>/, `<link rel="canonical" href="${url}" />`)
     .replace(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${safeTitle}" />`)
     .replace(/<meta\s+property="og:description"\s+content="[^"]*"\s*\/>/, `<meta property="og:description" content="${safeDescription}" />`)
     .replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${url}" />`)
+
+  // Google Search Console verification tag is only valid for the home page.
+  if (path !== '/') {
+    html = html.replace(/\r?\n?\s*<meta name="google-site-verification"[^>]*\/>/, '')
+  }
 
   const outDir = path === '/' ? distDir : join(distDir, path.replace(/^\/|\/$/g, ''))
   mkdirSync(outDir, { recursive: true })
@@ -161,6 +166,8 @@ function applyMeta(html, { title, description, url, ogImage, ogType }) {
   if (ogType) {
     out = out.replace(/<meta property="og:type" content="[^"]*" \/>/, `<meta property="og:type" content="${ogType}" />`)
   }
+  // Google Search Console verification tag is only valid for the home page.
+  out = out.replace(/\r?\n?\s*<meta name="google-site-verification"[^>]*\/>/, '')
   return out
 }
 
