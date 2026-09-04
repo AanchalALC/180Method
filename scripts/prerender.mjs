@@ -32,7 +32,6 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { execSync } from 'node:child_process'
 import { team } from '../src/data/team.js'
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)))
@@ -40,23 +39,6 @@ const distDir = join(root, 'dist')
 const template = readFileSync(join(distDir, 'index.html'), 'utf8')
 const SITE_URL = 'https://180method.in'
 const BUILD_TIME = new Date().toISOString()
-
-// Real "last modified" per URL, not a hand-maintained guess: the source
-// file's last commit date for static/team pages, Sanity's own _updatedAt
-// for blog content. Falls back to build time if git history isn't available
-// (e.g. a shallow clone) so a missing/failed git lookup never breaks the build.
-function gitLastMod(relPath) {
-  try {
-    const out = execSync(`git log -1 --format=%cI -- "${relPath}"`, {
-      cwd: root,
-      encoding: 'utf8',
-      stdio: ['ignore', 'pipe', 'ignore'],
-    }).trim()
-    return out || BUILD_TIME
-  } catch {
-    return BUILD_TIME
-  }
-}
 
 const STATIC_PAGES = [
   'Home',
@@ -286,12 +268,10 @@ console.log(`prerender: wrote ${blogRouteCount} blog route(s) (1 index + ${posts
 
 /* ----------------------------------------------------------------------------
    3) SITEMAP — the original 14 URLs (same paths/priorities, byte-for-byte
-   order), plus /blog/ and every post. Every entry now carries a real
-   <lastmod> (git commit date for static/team pages, Sanity's _updatedAt for
-   blog content) and a uniform weekly <changefreq> per Sujoy's request
-   (2026-08-24) so Google has a reason to recrawl on a predictable cadence.
-   No <?xml-stylesheet?> (a stylesheet PI pointing at a missing XSL file makes
-   browsers render a blank page).
+   order), plus /blog/ and every post. Every entry carries a uniform weekly
+   <changefreq> and a <lastmod> of the current build time, so Google sees a
+   fresh sitemap on every deploy. No <?xml-stylesheet?> (a stylesheet PI
+   pointing at a missing XSL file makes browsers render a blank page).
 ---------------------------------------------------------------------------- */
 const STATIC_PAGE_PRIORITY = {
   Home: '1.0',
@@ -313,24 +293,19 @@ const staticSitemapUrls = []
 for (const component of STATIC_PAGES) {
   const { path } = extractSeo(component)
   staticSitemapUrls.push(
-    sitemapUrl(`${SITE_URL}${path}`, STATIC_PAGE_PRIORITY[component], gitLastMod(`src/pages/${component}.jsx`))
+    sitemapUrl(`${SITE_URL}${path}`, STATIC_PAGE_PRIORITY[component], BUILD_TIME)
   )
   // Team member profile pages sit right after /team/ in the original URL order.
   if (component === 'Team') {
-    const teamLastMod = gitLastMod('src/data/team.js')
     for (const member of team) {
-      staticSitemapUrls.push(sitemapUrl(`${SITE_URL}${member.path}`, '0.6', teamLastMod))
+      staticSitemapUrls.push(sitemapUrl(`${SITE_URL}${member.path}`, '0.6', BUILD_TIME))
     }
   }
 }
 
-const blogIndexLastMod = posts.length
-  ? posts.reduce((latest, post) => (post.updatedAt > latest ? post.updatedAt : latest), posts[0].updatedAt)
-  : BUILD_TIME
-
 const blogSitemapUrls = [
-  sitemapUrl(`${SITE_URL}/blog/`, '0.7', blogIndexLastMod),
-  ...posts.map((post) => sitemapUrl(`${SITE_URL}/blog/${post.slug}/`, '0.6', post.updatedAt)),
+  sitemapUrl(`${SITE_URL}/blog/`, '0.7', BUILD_TIME),
+  ...posts.map((post) => sitemapUrl(`${SITE_URL}/blog/${post.slug}/`, '0.6', BUILD_TIME)),
 ]
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
