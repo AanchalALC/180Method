@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion
 import { ArrowUpRight, ArrowRight } from 'lucide-react'
 
 import { Seo, Counter, Marquee, Stars } from '@/components/ui/Widgets'
+import InstagramFeed from '@/components/sections/InstagramFeed'
 import {
   Button, Section, Reveal, RevealGroup, RevealItem, SectionHeading, SplitHeading, TickerBand,
 } from '@/components/ui/Primitives'
@@ -530,6 +531,7 @@ export default function Home() {
       <HomeReviews />
       <CounsellingTeaser />
       <PressStrip />
+      <InstagramFeed />
     </>
   )
 }

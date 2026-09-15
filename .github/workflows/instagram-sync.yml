@@ -1,0 +1,78 @@
+name: Instagram sync
+
+# Keeps src/data/instagram.js and public/instagram/ up to date with the
+# studio's Instagram account, by committing straight to main. Vercel's own
+# git integration then deploys that commit — there is no separate deploy
+# step here.
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch: {}
+
+concurrency:
+  group: instagram-sync
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Sync Instagram feed
+        id: sync
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+        run: node scripts/sync-instagram.mjs
+
+      # Registers the refreshed token with the runner's log masker before it
+      # is ever used again in this job, so it can't leak into step output.
+      - name: Mask refreshed token
+        if: steps.sync.outputs.new_token != ''
+        run: echo "::add-mask::${{ steps.sync.outputs.new_token }}"
+
+      # Option A — automatic. Requires a fine-grained PAT (`IG_PAT`) scoped to
+      # this repo with Secrets: read and write. GITHUB_TOKEN cannot write
+      # secrets, so this step is skipped entirely when IG_PAT isn't set.
+      - name: Persist refreshed token to secrets
+        if: steps.sync.outputs.new_token != '' && secrets.IG_PAT != ''
+        env:
+          GH_TOKEN: ${{ secrets.IG_PAT }}
+        run: gh secret set IG_ACCESS_TOKEN --body "${{ steps.sync.outputs.new_token }}" --repo ${{ github.repository }}
+
+      # Option B — fallback, only when there's no PAT to do this automatically.
+      # An already-expired token cannot be refreshed at all — the account has
+      # to be reconnected from the Meta App Dashboard — so this needs a human
+      # before that happens, not after.
+      - name: Open low-expiry issue
+        if: steps.sync.outputs.days_remaining != '' && fromJSON(steps.sync.outputs.days_remaining) < 14 && secrets.IG_PAT == ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create \
+            --title "Instagram token expires in ${{ steps.sync.outputs.days_remaining }} days" \
+            --body "scripts/sync-instagram.mjs reports the IG_ACCESS_TOKEN secret expires in ${{ steps.sync.outputs.days_remaining }} day(s), and no IG_PAT secret is configured to refresh it automatically. Generate a new token (Meta App Dashboard → Instagram → API setup with Instagram business login → Generate token) and update the IG_ACCESS_TOKEN secret before it expires. An already-expired token cannot be refreshed — the account must be reconnected from the App Dashboard instead." \
+            --repo ${{ github.repository }}
+
+      - name: Commit synced feed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/instagram src/data/instagram.js
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: sync instagram feed"
+            git push
+          fi
