@@ -87,14 +87,14 @@ export default function BlogPost() {
           </Reveal>
 
           <Reveal delay={0.3}>
-            <div className="grain relative mt-10 aspect-[16/9] overflow-hidden rounded-4xl border border-ink/10 md:mt-14">
+            <div className="grain relative mt-10 overflow-hidden rounded-4xl border border-ink/10 md:mt-14">
               <img
                 src={post.image.hero.url}
                 width={post.image.hero.width}
                 height={post.image.hero.height}
                 alt={post.image.alt}
                 fetchpriority="high"
-                className="h-full w-full object-cover"
+                className="h-auto w-full"
               />
             </div>
           </Reveal>
@@ -124,14 +124,14 @@ export default function BlogPost() {
                     to={`/blog/${p.slug}/`}
                     className="group flex h-full flex-col overflow-hidden rounded-4xl border border-ink/10 bg-paper transition-all duration-500 ease-brand hover:-translate-y-1"
                   >
-                    <div className="aspect-[8/5] w-full overflow-hidden">
+                    <div className="w-full overflow-hidden">
                       <img
                         src={p.image.card.url}
                         width={p.image.card.width}
                         height={p.image.card.height}
                         alt={p.image.alt}
                         loading="lazy"
-                        className="h-full w-full object-cover transition-transform duration-700 ease-brand group-hover:scale-105"
+                        className="h-auto w-full"
                       />
                     </div>
                     <div className="p-6">

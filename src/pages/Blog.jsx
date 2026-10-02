@@ -22,14 +22,14 @@ function PostCard({ post, index }) {
         to={`/blog/${post.slug}/`}
         className="group flex h-full flex-col overflow-hidden rounded-4xl border border-ink/10 bg-paper transition-all duration-500 ease-brand hover:-translate-y-1 hover:border-transparent hover:shadow-[0_28px_70px_-30px_rgba(40,37,26,0.32)]"
       >
-        <div className="aspect-[8/5] w-full overflow-hidden">
+        <div className="w-full overflow-hidden">
           <img
             src={post.image.card.url}
             width={post.image.card.width}
             height={post.image.card.height}
             alt={post.image.alt}
             loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-700 ease-brand group-hover:scale-105"
+            className="h-auto w-full"
           />
         </div>
 

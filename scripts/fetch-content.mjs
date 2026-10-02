@@ -78,10 +78,13 @@ function imageVariant(ref, { w, h, fit = 'crop', fm = 'webp', q = 80 }) {
   // The resize itself only happens via the ?w=&h= query params below.
   const [, assetId, originalWidth, originalHeight, format] = match
   const base = `https://cdn.sanity.io/images/${projectId}/${dataset}/${assetId}-${originalWidth}x${originalHeight}.${format}`
-  const params = new URLSearchParams({ w: String(w), h: String(h), fit, fm, q: String(q) })
-  // fit=crop guarantees the delivered image is exactly w×h, so the requested
-  // transform size doubles as the correct intrinsic width/height attribute.
-  return { url: `${base}?${params.toString()}`, width: w, height: h }
+  const params = new URLSearchParams({ w: String(w), fit, fm, q: String(q) })
+  if (h) params.set('h', String(h))
+  const width = Math.min(w, Number(originalWidth))
+  const height = h && fit === 'crop'
+    ? h
+    : Math.round(width * Number(originalHeight) / Number(originalWidth))
+  return { url: `${base}?${params.toString()}`, width, height }
 }
 
 function buildImage(heroImage, slugForError) {
@@ -91,8 +94,8 @@ function buildImage(heroImage, slugForError) {
   }
   return {
     alt: heroImage.alt,
-    hero: imageVariant(ref, { w: 1600, h: 900 }),
-    card: imageVariant(ref, { w: 800, h: 500 }),
+    hero: imageVariant(ref, { w: 1600, fit: 'max' }),
+    card: imageVariant(ref, { w: 800, fit: 'max' }),
     og: imageVariant(ref, { w: 1200, h: 630 }),
   }
 }
