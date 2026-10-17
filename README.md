@@ -37,7 +37,7 @@ Requires Node 18+.
 | `/contact` | `/contactus/` | Details, enquiry form, map slot |
 | `404` | *didn't exist* | Branded, routes people back |
 
-**Deliberately not built:** Blog (needs real articles — currently lorem ipsum), Careers, Pricing, Schedule, Privacy/Terms, Events, Instagram feed. Each is its own scoped item. `/blog` is redirected home so the homepage links stop 404-ing.
+**Deliberately not built:** Blog (needs real articles — currently lorem ipsum), Careers, Pricing, Schedule, Privacy/Terms, Events. Each is its own scoped item. `/blog` is redirected home so the homepage links stop 404-ing.
 
 ---
 

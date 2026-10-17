@@ -1,12 +1,11 @@
 name: Instagram sync
 
-# Keeps src/data/instagram.js and public/instagram/ up to date with the
-# studio's Instagram account, by committing straight to main. Vercel's own
-# git integration then deploys that commit — there is no separate deploy
-# step here.
+# Polls Instagram every 15 minutes and commits changes to src/data/instagram.js
+# and public/instagram/. This is a static-site snapshot, not a live feed:
+# GitHub may delay scheduled runs, and Vercel must deploy each changed commit.
 on:
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: '*/15 * * * *'
   workflow_dispatch: {}
 
 concurrency:
