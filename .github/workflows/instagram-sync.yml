@@ -20,6 +20,8 @@ permissions:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    env:
+      IG_PAT_CONFIGURED: ${{ secrets.IG_PAT != '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -46,7 +48,7 @@ jobs:
       # this repo with Secrets: read and write. GITHUB_TOKEN cannot write
       # secrets, so this step is skipped entirely when IG_PAT isn't set.
       - name: Persist refreshed token to secrets
-        if: steps.sync.outputs.new_token != '' && secrets.IG_PAT != ''
+        if: steps.sync.outputs.new_token != '' && env.IG_PAT_CONFIGURED == 'true'
         env:
           GH_TOKEN: ${{ secrets.IG_PAT }}
         run: gh secret set IG_ACCESS_TOKEN --body "${{ steps.sync.outputs.new_token }}" --repo ${{ github.repository }}
@@ -56,7 +58,7 @@ jobs:
       # to be reconnected from the Meta App Dashboard — so this needs a human
       # before that happens, not after.
       - name: Open low-expiry issue
-        if: steps.sync.outputs.days_remaining != '' && fromJSON(steps.sync.outputs.days_remaining) < 14 && secrets.IG_PAT == ''
+        if: steps.sync.outputs.days_remaining != '' && fromJSON(steps.sync.outputs.days_remaining) < 14 && env.IG_PAT_CONFIGURED != 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
