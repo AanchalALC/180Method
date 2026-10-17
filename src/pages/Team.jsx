@@ -154,7 +154,9 @@ function TeamCard({ member }) {
             </p>
             <p className="mt-1.5 text-fluid-xs text-lime">
               {member.role}
-              <span className="text-paper-200/50"> · {member.pronouns}</span>
+              {member.pronouns && (
+                <span className="text-paper-200/50"> · {member.pronouns}</span>
+              )}
             </p>
           </div>
         </div>

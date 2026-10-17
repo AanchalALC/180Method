@@ -154,6 +154,8 @@ export default function TeamMember({ slug }) {
   const fname = firstName(member.name)
   const hasProfessional =
     (member.specialisations?.length ?? 0) > 0 || (member.clientGroups?.length ?? 0) > 0
+  const hasPersonal =
+    (member.hobbies?.length ?? 0) > 0 || Boolean(member.funFact) || Boolean(member.whisper)
 
   // Site voice, second person — never third-person narration about the member.
   const ctaVerb = member.ctaVerb ?? 'Train'
@@ -184,7 +186,9 @@ export default function TeamMember({ slug }) {
               <p className="eyebrow mb-4 flex flex-wrap items-center justify-center gap-3">
                 <span className="inline-block h-px w-8 bg-lime" aria-hidden="true" />
                 {member.role}
-                <span className="text-paper-200/50">· {member.pronouns}</span>
+                {member.pronouns && (
+                  <span className="text-paper-200/50">· {member.pronouns}</span>
+                )}
               </p>
             </Reveal>
 
@@ -321,7 +325,7 @@ export default function TeamMember({ slug }) {
       <Section tone="paperAlt">
         <div className="container-x grid gap-14 lg:grid-cols-12 lg:gap-16">
           {member.credentials?.length > 0 && (
-            <div className="lg:col-span-5">
+            <div className={hasPersonal ? 'lg:col-span-5' : 'lg:col-span-12'}>
               <SectionHeading eyebrow="Qualifications" title="Certified & trained" />
               <RevealGroup as="ul" className="mt-8 space-y-3" gap={0.05}>
                 {member.credentials.map((c) => (
@@ -331,37 +335,39 @@ export default function TeamMember({ slug }) {
             </div>
           )}
 
-          <div className="lg:col-span-7">
-            {member.hobbies?.length > 0 && (
-              <>
-                <SectionHeading eyebrow="Off the floor" title="A little more about me" />
-                {/* Starts on `aloe` — third distinct opening colour on the page. */}
-                <div className="mt-8">
-                  <TagRow items={member.hobbies} cycle={['aloe', 'lime', 'quiet', 'forest']} />
-                </div>
-              </>
-            )}
+          {hasPersonal && (
+            <div className="lg:col-span-7">
+              {member.hobbies?.length > 0 && (
+                <>
+                  <SectionHeading eyebrow="Off the floor" title="A little more about me" />
+                  {/* Starts on `aloe` — third distinct opening colour on the page. */}
+                  <div className="mt-8">
+                    <TagRow items={member.hobbies} cycle={['aloe', 'lime', 'quiet', 'forest']} />
+                  </div>
+                </>
+              )}
 
-            {member.funFact && (
-              <Reveal delay={0.1}>
-                <div className="mt-10 rounded-3xl border border-ink/10 bg-paper p-7">
-                  <p className="eyebrow mb-3 text-forest-600">A fun fact</p>
-                  <p className="text-fluid-lg leading-relaxed text-ink/75">{member.funFact}</p>
-                </div>
-              </Reveal>
-            )}
+              {member.funFact && (
+                <Reveal delay={0.1}>
+                  <div className="mt-10 rounded-3xl border border-ink/10 bg-paper p-7">
+                    <p className="eyebrow mb-3 text-forest-600">A fun fact</p>
+                    <p className="text-fluid-lg leading-relaxed text-ink/75">{member.funFact}</p>
+                  </div>
+                </Reveal>
+              )}
 
-            {member.whisper && (
-              <Reveal delay={0.15}>
-                <div className="mt-4 rounded-3xl bg-lime p-7">
-                  <p className="eyebrow mb-3 text-ink/70">A note for you</p>
-                  <p className="font-display text-fluid-base uppercase leading-snug tracking-tight text-ink">
-                    {member.whisper}
-                  </p>
-                </div>
-              </Reveal>
-            )}
-          </div>
+              {member.whisper && (
+                <Reveal delay={0.15}>
+                  <div className="mt-4 rounded-3xl bg-lime p-7">
+                    <p className="eyebrow mb-3 text-ink/70">A note for you</p>
+                    <p className="font-display text-fluid-base uppercase leading-snug tracking-tight text-ink">
+                      {member.whisper}
+                    </p>
+                  </div>
+                </Reveal>
+              )}
+            </div>
+          )}
         </div>
       </Section>
 

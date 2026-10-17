@@ -3,10 +3,10 @@
    One object per member drives BOTH the /team grid card and the individual
    /team/:slug profile page. Add fields here, never in the component.
 
-   ORDER: Arya → Aanchal → Kartik → Moyna → Vishal.
+   ORDER: Arya → Aanchal → Kartik → Moyna → Vishal → Vikas.
 
    ---------------------------------------------------------------------------
-   POINT OF VIEW — the rule, applied across all five profiles
+   POINT OF VIEW — the rule, applied across all six profiles
    ---------------------------------------------------------------------------
    On /team/:slug the MEMBER speaks: first person, always. `philosophy`,
    `keyLearning`, `funFact` and `whisper` are their own words, in their own
@@ -148,7 +148,7 @@ export const team = [
     name: 'Kartik',
     role: 'Fitness Coach',
     pronouns: 'he/him',
-    image: '/images/team/karthik.png',
+    image: '/images/team/karthik.PNG',
     published: true,
     experience: '1 year',
     mode: 'In-person (Bandra) & online',
@@ -252,5 +252,32 @@ export const team = [
     whisper: 'I focus on calm coaching, clear guidance and results that last. If you’re ready to stay consistent and build strength the right way, I’m here to guide you.',
     seoTitle: 'Vishal Hunari — Fitness Coach | 180 Method',
     seoDescription: 'Meet Vishal “Vee” Hunari, fitness coach at 180 Method, Bandra. Calm, technique-first coaching for strength, mobility, fat loss and injury recovery.',
+  },
+
+  {
+    slug: 'vikas',
+    path: '/vikas-bhojaiya/',
+    name: 'Vikas Bhojaiya',
+    role: 'Personal Trainer',
+    image: '/images/team/vikas-bhojaiya.jpeg',
+    published: true,
+    experience: '5+ years',
+    blurb: 'Personalized, goal-oriented training for strength, fat loss, muscle gain, better posture and mobility.',
+    approachTitle: 'How we’ll train together',
+    ctaVerb: 'Train',
+    specialisations: [
+      'Strength Training',
+      'Fat Loss & Muscle Gain',
+      'Functional Training',
+      'Posture Correction',
+      'Mobility Training',
+    ],
+    credentials: [
+      { title: 'ACSM-CPT', issuer: null },
+    ],
+    philosophy: 'I am a passionate Personal Trainer with over 5 years of experience in the fitness industry. I specialize in strength training, fat loss, muscle gain, functional fitness, and improving posture and mobility. My approach focuses on personalized training programs, proper exercise technique, progressive overload, and sustainable fitness results. I am committed to helping clients achieve their fitness goals through structured, effective, and goal-oriented training.',
+    keyLearning: 'My goal is to help individuals build strength, improve movement quality, and develop a healthier, stronger lifestyle.',
+    seoTitle: 'Vikas Bhojaiya — Personal Trainer | 180 Method',
+    seoDescription: 'Meet Vikas Bhojaiya, personal trainer at 180 Method. ACSM-CPT with 5+ years of experience in strength training, fat loss, muscle gain, functional training, posture correction and mobility.',
   },
 ]
