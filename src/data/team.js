@@ -148,7 +148,7 @@ export const team = [
     name: 'Kartik',
     role: 'Fitness Coach',
     pronouns: 'he/him',
-    image: '/images/team/karthik.PNG',
+    image: '/images/team/karthik.png',
     published: true,
     experience: '1 year',
     mode: 'In-person (Bandra) & online',
