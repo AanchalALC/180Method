@@ -16,6 +16,7 @@ import { readdirSync, mkdirSync, writeFileSync, unlinkSync, appendFileSync, exis
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import sharp from 'sharp'
+import instagramProfile from '../src/data/instagram-profile.js'
 
 // --- Tuning knobs ----------------------------------------------------------
 const POST_LIMIT = 9          // how many recent posts, Reels included, to show
@@ -27,6 +28,7 @@ const CAPTION_MAX_LENGTH = 120   // characters, truncated on a word boundary
 const root = dirname(dirname(fileURLToPath(import.meta.url)))
 const IMAGE_DIR = join(root, 'public', 'instagram')
 const DATA_FILE = join(root, 'src', 'data', 'instagram.js')
+const PROFILE_FILE = join(root, 'src', 'data', 'instagram-profile.js')
 
 const TOKEN = process.env.IG_ACCESS_TOKEN
 
@@ -57,6 +59,35 @@ function sourceUrlFor(media) {
     return media.media_url || media.thumbnail_url
   }
   return media.thumbnail_url || media.media_url
+}
+
+async function fetchInstagramProfile() {
+  const params = new URLSearchParams({
+    fields: 'username,name,followers_count,follows_count',
+    access_token: TOKEN,
+  })
+  const res = await fetch(`https://graph.instagram.com/me?${params.toString()}`)
+  if (!res.ok) {
+    throw new Error(`Instagram /me responded ${res.status} ${res.statusText}`)
+  }
+
+  const body = await res.json()
+  const account = Array.isArray(body?.data) ? body.data[0] : body
+  if (
+    typeof account?.username !== 'string' ||
+    typeof account.followers_count !== 'number' ||
+    typeof account.follows_count !== 'number'
+  ) {
+    throw new Error('Instagram /me returned an unexpected profile response.')
+  }
+
+  return {
+    ...instagramProfile,
+    username: account.username,
+    name: typeof account.name === 'string' ? account.name : instagramProfile.name,
+    followersCount: account.followers_count,
+    followsCount: account.follows_count,
+  }
 }
 
 async function fetchMedia() {
@@ -125,6 +156,19 @@ async function main() {
   if (!TOKEN) {
     console.warn('sync-instagram: IG_ACCESS_TOKEN is not set. Skipping sync — existing feed left untouched.')
     return
+  }
+
+  try {
+    const profile = await fetchInstagramProfile()
+    const profileContents = `// Profile counts are refreshed by scripts/sync-instagram.mjs.
+// The Instagram API does not expose biography in this integration; keep it current manually.
+export default ${JSON.stringify(profile, null, 2)}
+`
+    writeFileSync(PROFILE_FILE, profileContents, 'utf8')
+    console.log('sync-instagram: refreshed Instagram profile details.')
+  } catch (err) {
+    console.warn('sync-instagram: could not refresh profile details. Existing profile left untouched.')
+    console.warn(err?.message || err)
   }
 
   let media

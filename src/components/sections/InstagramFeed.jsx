@@ -1,7 +1,8 @@
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, Instagram } from 'lucide-react'
 import { Button, Section, Reveal, RevealGroup, RevealItem, SectionHeading } from '@/components/ui/Primitives'
 import { site } from '@/data/site'
 import posts from '@/data/instagram'
+import instagramProfile from '@/data/instagram-profile'
 
 /* ============================================================================
    INSTAGRAM FEED
@@ -32,6 +33,44 @@ export default function InstagramFeed() {
             </Button>
           </Reveal>
         </div>
+
+        <Reveal className="mt-10 rounded-4xl border border-ink/10 bg-paper-100 p-6 sm:p-8">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-start gap-4">
+              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-lime text-ink">
+                <Instagram className="h-6 w-6" aria-hidden="true" />
+              </span>
+              <div>
+                <a
+                  href={site.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-display text-fluid-base uppercase tracking-tight text-ink hover:text-forest-600"
+                >
+                  @{instagramProfile.username}
+                </a>
+                <p className="mt-1 font-medium text-ink/75">{instagramProfile.name}</p>
+                <p className="mt-3 whitespace-pre-line leading-relaxed text-ink/65">
+                  {instagramProfile.biography}
+                </p>
+              </div>
+            </div>
+            <dl className="flex gap-8 pl-16 sm:pl-0">
+              <div>
+                <dt className="eyebrow text-forest-600">Followers</dt>
+                <dd className="mt-1 font-display text-fluid-base uppercase text-ink">
+                  {instagramProfile.followersCount.toLocaleString('en-IN')}
+                </dd>
+              </div>
+              <div>
+                <dt className="eyebrow text-forest-600">Following</dt>
+                <dd className="mt-1 font-display text-fluid-base uppercase text-ink">
+                  {instagramProfile.followsCount.toLocaleString('en-IN')}
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </Reveal>
 
         {posts.length === 0 ? (
           <Reveal className="mt-12 flex flex-col items-start gap-5 rounded-4xl border border-ink/10 bg-paper-100 p-10">

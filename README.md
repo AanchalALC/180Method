@@ -52,11 +52,14 @@ Requires Node 18+.
 | Team names, roles, bios, photos | `src/data/team.js` |
 | Testimonials, Google review link | `src/data/reviews.js` |
 | Press articles, outlet logos | `src/data/media.js` |
+| Instagram bio | `src/data/instagram-profile.js` |
 | FAQ questions and answers | `src/data/faqs.js` |
 | Hero copy, pillars, 5 steps, session counters, vision/mission | `src/data/home.js` |
 | Colours, fonts, spacing | `tailwind.config.js` |
 
 `src/data/site.js` is the important one. The nav is a single array that drives **both** desktop and mobile — which is why the two menus can't drift apart the way they have on the live site.
+
+The Instagram feed and follower/following counts are synced by GitHub Actions every 15 minutes, then deployed through Vercel. This is a scheduled static-site update, not real-time. The Instagram API integration does not expose the biography, so edit that copy manually in `src/data/instagram-profile.js`.
 
 ---
 

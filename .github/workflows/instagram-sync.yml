@@ -70,7 +70,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/instagram src/data/instagram.js
+          git add public/instagram src/data/instagram.js src/data/instagram-profile.js
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
