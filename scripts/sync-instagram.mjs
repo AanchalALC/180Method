@@ -18,7 +18,8 @@ import { fileURLToPath } from 'node:url'
 import sharp from 'sharp'
 
 // --- Tuning knobs ----------------------------------------------------------
-const POST_LIMIT = 9          // how many recent posts to show
+const POST_LIMIT = 9          // how many recent Reels to show
+const MEDIA_PAGE_SIZE = 50    // scan past non-Reels to find POST_LIMIT Reels
 const IMAGE_WIDTHS = [640, 1280] // srcset widths generated per post, px
 const WEBP_QUALITY = 78
 const CAPTION_MAX_LENGTH = 120   // characters, truncated on a word boundary
@@ -61,19 +62,29 @@ function sourceUrlFor(media) {
 
 async function fetchMedia() {
   const params = new URLSearchParams({
-    fields: 'id,caption,media_type,media_url,thumbnail_url,permalink,timestamp',
-    limit: String(POST_LIMIT),
+    fields: 'id,caption,media_type,media_product_type,media_url,thumbnail_url,permalink,timestamp',
+    limit: String(MEDIA_PAGE_SIZE),
     access_token: TOKEN,
   })
-  const res = await fetch(`https://graph.instagram.com/me/media?${params.toString()}`)
-  if (!res.ok) {
-    throw new Error(`Instagram /me/media responded ${res.status} ${res.statusText}`)
+
+  let nextUrl = `https://graph.instagram.com/me/media?${params.toString()}`
+  const reels = []
+
+  while (nextUrl && reels.length < POST_LIMIT) {
+    const res = await fetch(nextUrl)
+    if (!res.ok) {
+      throw new Error(`Instagram /me/media responded ${res.status} ${res.statusText}`)
+    }
+    const body = await res.json()
+    if (!Array.isArray(body?.data)) {
+      throw new Error('Instagram /me/media returned an unexpected response shape.')
+    }
+
+    reels.push(...body.data.filter((item) => item.media_product_type === 'REELS'))
+    nextUrl = body.paging?.next || null
   }
-  const body = await res.json()
-  if (!Array.isArray(body?.data)) {
-    throw new Error('Instagram /me/media returned an unexpected response shape.')
-  }
-  return body.data.slice(0, POST_LIMIT)
+
+  return reels.slice(0, POST_LIMIT)
 }
 
 async function downloadImage(url) {
