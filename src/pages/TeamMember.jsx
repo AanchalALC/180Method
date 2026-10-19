@@ -107,12 +107,13 @@ function Portrait({ member }) {
   )
 }
 
-function Fact({ label, value }) {
+function Fact({ label, value, description }) {
   if (!value) return null
   return (
     <RevealItem>
       <p className="eyebrow mb-1.5 text-lime">{label}</p>
       <p className="font-display text-fluid-base uppercase tracking-tight text-paper">{value}</p>
+      {description && <p className="mt-2 text-sm leading-relaxed text-paper-200/70">{description}</p>}
     </RevealItem>
   )
 }
@@ -153,9 +154,14 @@ export default function TeamMember({ slug }) {
 
   const fname = firstName(member.name)
   const hasProfessional =
-    (member.specialisations?.length ?? 0) > 0 || (member.clientGroups?.length ?? 0) > 0
+    (member.specialisations?.length ?? 0) > 0 ||
+    (member.clientGroups?.length ?? 0) > 0 ||
+    Boolean(member.clientDescription)
   const hasPersonal =
-    (member.hobbies?.length ?? 0) > 0 || Boolean(member.funFact) || Boolean(member.whisper)
+    (member.hobbies?.length ?? 0) > 0 ||
+    Boolean(member.aboutMore) ||
+    Boolean(member.funFact) ||
+    Boolean(member.whisper)
 
   // Site voice, second person — never third-person narration about the member.
   const ctaVerb = member.ctaVerb ?? 'Train'
@@ -249,7 +255,7 @@ export default function TeamMember({ slug }) {
             <Fact label="Experience" value={member.experience} />
             <Fact label="Languages" value={member.languages?.join(', ')} />
             <Fact label="Training" value={member.mode} />
-            <Fact label="Session" value={member.sessionLength} />
+            <Fact label="Session" value={member.sessionLength} description={member.sessionDescription} />
           </RevealGroup>
         </div>
       </Section>
@@ -267,13 +273,19 @@ export default function TeamMember({ slug }) {
                 </div>
               </div>
             )}
-            {member.clientGroups?.length > 0 && (
+            {(member.clientGroups?.length > 0 || member.clientDescription) && (
               <div>
                 <SectionHeading eyebrow="Who I work with" title="If you have a body, you qualify" />
-                {/* Starts on `forest` so this row doesn't open with lime like the one above it. */}
-                <div className="mt-8">
-                  <TagRow items={member.clientGroups} cycle={['forest', 'aloe', 'lime', 'quiet']} />
-                </div>
+                {member.clientDescription && (
+                  <p className="mt-6 max-w-prose text-fluid-lg leading-relaxed text-ink/70">
+                    {member.clientDescription}
+                  </p>
+                )}
+                {member.clientGroups?.length > 0 && (
+                  <div className="mt-8">
+                    <TagRow items={member.clientGroups} cycle={['forest', 'aloe', 'lime', 'quiet']} />
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -337,13 +349,19 @@ export default function TeamMember({ slug }) {
 
           {hasPersonal && (
             <div className="lg:col-span-7">
-              {member.hobbies?.length > 0 && (
+              {(member.hobbies?.length > 0 || member.aboutMore) && (
                 <>
                   <SectionHeading eyebrow="Off the floor" title="A little more about me" />
-                  {/* Starts on `aloe` — third distinct opening colour on the page. */}
-                  <div className="mt-8">
-                    <TagRow items={member.hobbies} cycle={['aloe', 'lime', 'quiet', 'forest']} />
-                  </div>
+                  {member.aboutMore && (
+                    <p className="mt-6 max-w-prose text-fluid-lg leading-relaxed text-ink/70">
+                      {member.aboutMore}
+                    </p>
+                  )}
+                  {member.hobbies?.length > 0 && (
+                    <div className="mt-8">
+                      <TagRow items={member.hobbies} cycle={['aloe', 'lime', 'quiet', 'forest']} />
+                    </div>
+                  )}
                 </>
               )}
 
