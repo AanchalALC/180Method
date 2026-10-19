@@ -104,7 +104,13 @@ async function fetchMedia() {
   if (!Array.isArray(body?.data)) {
     throw new Error('Instagram /me/media returned an unexpected response shape.')
   }
-  return body.data.slice(0, POST_LIMIT)
+  if (body.data.some((item) => !item || typeof item.timestamp !== 'string' || !Number.isFinite(Date.parse(item.timestamp)))) {
+    throw new Error('Instagram /me/media returned a post with an invalid timestamp.')
+  }
+  return body.data
+    .slice()
+    .sort((a, b) => Date.parse(b.timestamp) - Date.parse(a.timestamp))
+    .slice(0, POST_LIMIT)
 }
 
 async function downloadImage(url) {

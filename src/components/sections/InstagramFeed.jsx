@@ -16,6 +16,10 @@ import instagramProfile from '@/data/instagram-profile'
    being rendered from Home.
    ========================================================================== */
 export default function InstagramFeed() {
+  const newestFirst = [...posts].sort(
+    (a, b) => Date.parse(b.timestamp) - Date.parse(a.timestamp),
+  )
+
   return (
     <Section tone="paper">
       <div className="container-x">
@@ -72,7 +76,7 @@ export default function InstagramFeed() {
           </div>
         </Reveal>
 
-        {posts.length === 0 ? (
+        {newestFirst.length === 0 ? (
           <Reveal className="mt-12 flex flex-col items-start gap-5 rounded-4xl border border-ink/10 bg-paper-100 p-10">
             <p className="font-display text-fluid-xs uppercase tracking-[0.2em] text-forest-600">{site.instagramHandle}</p>
             <p className="max-w-prose leading-relaxed text-ink/65">
@@ -84,7 +88,7 @@ export default function InstagramFeed() {
           </Reveal>
         ) : (
           <RevealGroup className="mt-12 grid grid-cols-2 gap-4 lg:grid-cols-3" gap={0.06}>
-            {posts.map((post) => (
+            {newestFirst.map((post) => (
               <RevealItem key={post.id}>
                 <a
                   href={post.permalink}
