@@ -4,6 +4,6 @@ export default {
   "username": "180.method",
   "name": "180 Method",
   "biography": "Mind And Body At Play !\nHolistic wellness that fits real life\n📍 301 Roha Orion, Bandra West",
-  "followersCount": 1403,
+  "followersCount": 1404,
   "followsCount": 4
 }
