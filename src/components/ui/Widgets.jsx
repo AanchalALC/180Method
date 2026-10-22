@@ -212,7 +212,9 @@ function upsertMeta(selector, attrs) {
 export function Seo({ title, description, path = '/', image, schema }) {
   useEffect(() => {
     const url = `https://180method.in${path}`
-    const ogImage = image || 'https://180method.in/images/og-default.jpg'
+    const ogImage = image
+      ? new URL(image, url).href
+      : 'https://180method.in/images/og-default.jpg'
 
     document.title = title
 
@@ -221,6 +223,7 @@ export function Seo({ title, description, path = '/', image, schema }) {
     upsertMeta('meta[property="og:description"]', { property: 'og:description', content: description })
     upsertMeta('meta[property="og:url"]', { property: 'og:url', content: url })
     upsertMeta('meta[property="og:image"]', { property: 'og:image', content: ogImage })
+    upsertMeta('meta[name="twitter:image"]', { name: 'twitter:image', content: ogImage })
     upsertMeta('meta[name="twitter:title"]', { name: 'twitter:title', content: title })
     upsertMeta('meta[name="twitter:description"]', { name: 'twitter:description', content: description })
 

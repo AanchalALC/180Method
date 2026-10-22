@@ -79,13 +79,19 @@ function formatDate(iso) {
 ---------------------------------------------------------------------------- */
 const legacyRoutes = [
   ...STATIC_PAGES.map(extractSeo),
-  ...team.map((m) => ({ path: m.path, title: m.seoTitle, description: m.seoDescription })),
+  ...team.map((m) => ({
+    path: m.path,
+    title: m.seoTitle,
+    description: m.seoDescription,
+    image: m.image ? `${SITE_URL}${m.image}` : undefined,
+  })),
 ]
 
-for (const { path, title, description } of legacyRoutes) {
+for (const { path, title, description, image } of legacyRoutes) {
   const url = `${SITE_URL}${path}`
   const safeTitle = escapeHtml(title)
   const safeDescription = escapeHtml(description)
+  const shareImage = image || `${SITE_URL}/images/og-default.jpg`
 
   let html = template
     .replace(/<title>[\s\S]*?<\/title>/, `<title>${safeTitle}</title>`)
@@ -94,6 +100,8 @@ for (const { path, title, description } of legacyRoutes) {
     .replace(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${safeTitle}" />`)
     .replace(/<meta\s+property="og:description"\s+content="[^"]*"\s*\/>/, `<meta property="og:description" content="${safeDescription}" />`)
     .replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${url}" />`)
+    .replace(/<meta property="og:image" content="[^"]*" \/>/, `<meta property="og:image" content="${shareImage}" />`)
+    .replace(/<meta name="twitter:image" content="[^"]*" \/>/, `<meta name="twitter:image" content="${shareImage}" />`)
 
   // Google Search Console verification tag is only valid for the home page.
   if (path !== '/') {
@@ -144,6 +152,7 @@ function applyMeta(html, { title, description, url, ogImage, ogType }) {
     .replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${url}" />`)
   if (ogImage) {
     out = out.replace(/<meta property="og:image" content="[^"]*" \/>/, `<meta property="og:image" content="${ogImage}" />`)
+    out = out.replace(/<meta name="twitter:image" content="[^"]*" \/>/, `<meta name="twitter:image" content="${ogImage}" />`)
   }
   if (ogType) {
     out = out.replace(/<meta property="og:type" content="[^"]*" \/>/, `<meta property="og:type" content="${ogType}" />`)

@@ -169,7 +169,12 @@ export default function TeamMember({ slug }) {
 
   return (
     <>
-      <Seo title={member.seoTitle} description={member.seoDescription} path={member.path} />
+      <Seo
+        title={member.seoTitle}
+        description={member.seoDescription}
+        path={member.path}
+        image={member.image}
+      />
 
       {/* HERO — portrait on top, name highlighted, on ink. */}
       <section className="on-dark relative isolate overflow-hidden bg-ink-950 pb-16 pt-[calc(var(--header-h)+3rem)]">
