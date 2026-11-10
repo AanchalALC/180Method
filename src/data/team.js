@@ -113,12 +113,14 @@ export const team = [
     published: true,
     experience: null,
     mode: 'Counselling delivered via Another Light Counselling',
+    modeLabel: 'Session Mode',
     languages: ['English', 'Hindi', 'Urdu'],
     blurb: 'Head Therapist and founder of Another Light Counselling — the mental-health backbone of the 180 Method.',
     approachTitle: 'How we’ll work together',
     ctaVerb: 'Talk',
     specialisations: [],          // intentionally empty — see note above
     clientGroups: [],
+    personalEyebrow: 'Beyond the therapy room',
     credentials: [
       { title: 'Master’s in Applied (Clinical) Psychology', issuer: 'TISS' },
       { title: 'EMDR Therapy, Levels 1 & 2', issuer: 'EMDR Association India' },
@@ -138,6 +140,7 @@ export const team = [
     socials: {
       linkedin: 'https://www.linkedin.com/in/aanchal-narang/',
       instagram: 'https://www.instagram.com/aanchal_therapist_puppy',
+      youtube: 'https://www.youtube.com/@AnotherLightCounselling',
     },
     seoTitle: 'Aanchal — Head Therapist | 180 Method',
     seoDescription: 'Meet Aanchal, co-founder and head therapist at 180 Method and founder of Another Light Counselling. Trauma-informed, queer-affirming mental-health care.',
@@ -190,6 +193,7 @@ export const team = [
     published: true,
     experience: '13 years',
     mode: 'In-person (Bandra) & online',
+    modeLabel: 'Session Mode',
     languages: ['English', 'Hindi', 'Gujarati', 'Marathi'],
     blurb: 'Thirteen years of nutrition rooted in science, compassion and sustainability.',
     approachTitle: 'How we’ll work together',
@@ -199,7 +203,11 @@ export const team = [
       'Diet Planning', 'Fat Loss Support', 'Muscle Gain Nutrition',
       'Gut Health', 'Digestive Wellness', 'Energy Optimization', 'Meal Structuring',
     ],
+    specialisationsTitle: 'Nutrition and lifestyle support, tailored to you',
     clientGroups: ['Beginners', 'Athletes', 'Women', 'Senior citizens'],
+    clientGroupsEyebrow: 'Who I support',
+    clientGroupsTitle: 'A healthier relationship with food and lifestyle',
+    personalEyebrow: 'Beyond nutrition',
     credentials: [
       { title: 'Diploma in Nutrition & Dietetics — Rank 1', issuer: 'Tulip International' },
       { title: 'B.H.M.S', issuer: 'CMP Medical' },
@@ -264,6 +272,7 @@ export const team = [
     published: true,
     experience: '5+ years',
     blurb: 'Personalized, goal-oriented training for strength, fat loss, muscle gain, better posture and mobility.',
+    approachTitle: 'How we’ll train together',
     ctaVerb: 'Train',
     specialisations: [
       'Strength Training',
@@ -276,10 +285,10 @@ export const team = [
     sessionDescription: 'With a focus on proper technique, controlled movements, progressive training, and individual fitness goals.',
     languages: ['Hindi', 'English', 'Gujarati', 'Marathi'],
     clientDescription: 'I work with individuals who want to improve their strength, lose body fat, build muscle, improve posture, and move better in their daily lives. My training approach is tailored to each client’s fitness level, goals, and needs.',
+    approachDescription: 'With over 5 years of experience in personal training, I am passionate about helping people become stronger, fitter, and more confident. I believe in continuous learning and improving my knowledge to deliver better training experiences for my clients.',
     credentials: [
-      { title: 'ACSM-CPT', issuer: null },
+      { title: 'ACSM Certified Personal Trainer (ACSM-CPT)', issuer: 'ACSM' },
     ],
-    aboutMore: 'With over 5 years of experience in personal training, I am passionate about helping people become stronger, fitter, and more confident. I believe in continuous learning and improving my knowledge to deliver better training experiences for my clients.',
     funFact: 'I enjoy playing cricket and believe that fitness is not just about looking good, but also about performing better in everyday life.',
     whisper: 'Your fitness journey is unique, and progress takes consistency and patience. My goal is to help you train with confidence, focus on proper form, and build sustainable habits. Let’s work together to become stronger, one session at a time!',
     seoTitle: 'Vikas Bhojaiya — Personal Trainer | 180 Method',

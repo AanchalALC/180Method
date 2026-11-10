@@ -118,30 +118,37 @@ function Fact({ label, value, description }) {
   )
 }
 
+function credentialImageUrl(image) {
+  if (typeof image === 'string') return image
+  return image?.asset?.url ?? image?.url ?? null
+}
+
 /* ---------------------------------------------------------------------------
-   CREDENTIAL — issuer badge + credential title.
-
-   Naveen asked for certification logos pulled from the internet. Not doing
-   that: ACSM / Reebok / ISSTD / TISS marks are trademarks with published usage
-   rules, they'd arrive at mismatched resolutions, and a commercial site is
-   exactly where that gets noticed. The awarding body set in forest + lime
-   carries the same authenticity signal, scales perfectly, and is ours to use.
-   If the client wants real logos, request the official brand kit from each
-   body — that's a separate task with a slow dependency.
-
-   TUNING: drop `bg-forest-600 text-lime` to `bg-lime text-ink` if the column
-   reads too dark next to the hobby tags.
+   CREDENTIAL — optional uploaded issuer logo, issuer badge and title.
 --------------------------------------------------------------------------- */
 function Credential({ credential }) {
   const { title, issuer } = normaliseCredential(credential)
+  const image = credentialImageUrl(credential.imageUrl ?? credential.image)
   return (
     <RevealItem as="li" className="rounded-2xl border border-ink/10 bg-paper p-5">
-      {issuer && (
-        <span className="mb-3 inline-block rounded-full bg-forest-600 px-3 py-1 font-display text-fluid-xs uppercase tracking-[0.14em] text-lime">
-          {issuer}
-        </span>
-      )}
-      <p className="leading-relaxed text-ink/80">{title}</p>
+      <div className="flex items-center gap-4">
+        {image && (
+          <img
+            src={image}
+            alt={credential.imageAlt ?? `${issuer ?? title} logo`}
+            loading="lazy"
+            className="h-12 w-16 shrink-0 rounded-lg object-contain"
+          />
+        )}
+        <div>
+          {issuer && (
+            <span className="mb-2 inline-block rounded-full bg-forest-600 px-3 py-1 font-display text-fluid-xs uppercase tracking-[0.14em] text-lime">
+              {issuer}
+            </span>
+          )}
+          <p className="leading-relaxed text-ink/80">{title}</p>
+        </div>
+      </div>
     </RevealItem>
   )
 }
@@ -276,7 +283,7 @@ export default function TeamMember({ slug }) {
           <RevealGroup className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4" gap={0.08}>
             <Fact label="Experience" value={member.experience} />
             <Fact label="Languages" value={member.languages?.join(', ')} />
-            <Fact label="Training" value={member.mode} />
+            <Fact label={member.modeLabel ?? 'Training Mode'} value={member.mode} />
             <Fact label="Session" value={member.sessionLength} description={member.sessionDescription} />
           </RevealGroup>
         </div>
@@ -289,7 +296,11 @@ export default function TeamMember({ slug }) {
           <div className="container-x space-y-14">
             {member.specialisations?.length > 0 && (
               <div>
-                <SectionHeading eyebrow="Areas of specialisation" title="Your goals, my support" size="lg" />
+                <SectionHeading
+                  eyebrow={member.specialisationsEyebrow ?? 'Areas of specialisation'}
+                  title={member.specialisationsTitle ?? 'Your goals, my support'}
+                  size="lg"
+                />
                 <div className="mt-8">
                   <TagRow items={member.specialisations} />
                 </div>
@@ -297,7 +308,10 @@ export default function TeamMember({ slug }) {
             )}
             {(member.clientGroups?.length > 0 || member.clientDescription) && (
               <div>
-                <SectionHeading eyebrow="Who I work with" title="If you have a body, you qualify" />
+                <SectionHeading
+                  eyebrow={member.clientGroupsEyebrow ?? 'Who I work with'}
+                  title={member.clientGroupsTitle ?? 'If you have a body, you qualify'}
+                />
                 {member.clientDescription && (
                   <p className="mt-6 max-w-prose text-fluid-lg leading-relaxed text-ink/70">
                     {member.clientDescription}
@@ -315,7 +329,7 @@ export default function TeamMember({ slug }) {
       )}
 
       {/* APPROACH — forestDeep dark anchor. Philosophy + key learning. */}
-      {(member.philosophy || member.keyLearning) && (
+      {(member.approachDescription || member.philosophy || member.keyLearning) && (
         <Section tone="forestDeep">
           <div className="container-x">
             <SectionHeading
@@ -323,20 +337,27 @@ export default function TeamMember({ slug }) {
               title={member.approachTitle ?? 'How we’ll work together'}
               size="lg"
             />
-            <div className="mt-10 grid gap-8 lg:grid-cols-2">
-              {member.philosophy && (
-                <Reveal className="border-l-2 border-lime pl-6">
-                  <p className="eyebrow mb-3 text-lime">My philosophy</p>
-                  <p className="text-fluid-lg leading-relaxed text-paper-100/85">{member.philosophy}</p>
-                </Reveal>
-              )}
-              {member.keyLearning && (
-                <Reveal delay={0.1} className="border-l-2 border-lime pl-6">
-                  <p className="eyebrow mb-3 text-lime">What I’ve learned</p>
-                  <p className="text-fluid-lg leading-relaxed text-paper-100/85">{member.keyLearning}</p>
-                </Reveal>
-              )}
-            </div>
+            {member.approachDescription && (
+              <Reveal className="mt-10 border-l-2 border-lime pl-6">
+                <p className="text-fluid-lg leading-relaxed text-paper-100/85">{member.approachDescription}</p>
+              </Reveal>
+            )}
+            {(member.philosophy || member.keyLearning) && (
+              <div className="mt-10 grid gap-8 lg:grid-cols-2">
+                {member.philosophy && (
+                  <Reveal className="border-l-2 border-lime pl-6">
+                    <p className="eyebrow mb-3 text-lime">My philosophy</p>
+                    <p className="text-fluid-lg leading-relaxed text-paper-100/85">{member.philosophy}</p>
+                  </Reveal>
+                )}
+                {member.keyLearning && (
+                  <Reveal delay={0.1} className="border-l-2 border-lime pl-6">
+                    <p className="eyebrow mb-3 text-lime">What I’ve learned</p>
+                    <p className="text-fluid-lg leading-relaxed text-paper-100/85">{member.keyLearning}</p>
+                  </Reveal>
+                )}
+              </div>
+            )}
 
             {member.externalProfile && (
               <Reveal delay={0.15}>
@@ -360,7 +381,7 @@ export default function TeamMember({ slug }) {
         <div className="container-x grid gap-14 lg:grid-cols-12 lg:gap-16">
           {member.credentials?.length > 0 && (
             <div className={hasPersonal ? 'lg:col-span-5' : 'lg:col-span-12'}>
-              <SectionHeading eyebrow="Qualifications" title="Certified & trained" />
+              <SectionHeading eyebrow="Qualifications" title="Certifications & training" />
               <RevealGroup as="ul" className="mt-8 space-y-3" gap={0.05}>
                 {member.credentials.map((c) => (
                   <Credential key={normaliseCredential(c).title} credential={c} />
@@ -373,11 +394,18 @@ export default function TeamMember({ slug }) {
             <div className="lg:col-span-7">
               {(member.hobbies?.length > 0 || member.aboutMore) && (
                 <>
-                  <SectionHeading eyebrow="Off the floor" title="A little more about me" />
+                  <SectionHeading
+                    eyebrow={member.personalEyebrow ?? 'Off the floor'}
+                    title="A little more about me"
+                  />
                   {member.aboutMore && (
-                    <p className="mt-6 max-w-prose text-fluid-lg leading-relaxed text-ink/70">
-                      {member.aboutMore}
-                    </p>
+                    <Reveal className="mt-6">
+                      <div className="rounded-3xl border border-ink/10 bg-paper p-7">
+                        <p className="text-fluid-lg leading-relaxed text-ink/75">
+                          {member.aboutMore}
+                        </p>
+                      </div>
+                    </Reveal>
                   )}
                   {member.hobbies?.length > 0 && (
                     <div className="mt-8">
@@ -389,7 +417,7 @@ export default function TeamMember({ slug }) {
 
               {member.funFact && (
                 <Reveal delay={0.1}>
-                  <div className="mt-10 rounded-3xl border border-ink/10 bg-paper p-7">
+                  <div className={`${member.aboutMore ? 'mt-4' : 'mt-10'} rounded-3xl border border-ink/10 bg-paper p-7`}>
                     <p className="eyebrow mb-3 text-forest-600">A fun fact</p>
                     <p className="text-fluid-lg leading-relaxed text-ink/75">{member.funFact}</p>
                   </div>
