@@ -202,7 +202,7 @@ export default function TeamMember({ slug }) {
       value: member.mode,
       description: member.modeDescription,
     },
-    { label: 'Session', value: member.sessionLength, description: member.sessionDescription },
+    { label: 'Session Duration', value: '60 minutes' },
   ].filter((fact) => fact.value)
   const quickFactsGrid =
     quickFacts.length === 1
