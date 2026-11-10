@@ -97,12 +97,8 @@ export const team = [
        AANCHAL — written sign-off received 2 Aug 2026 (§9, highest-risk item).
        published:true is confirmed correct.
 
-       The clinical "concerns" list from her PDF (CSA, self-harm, eating
-       disorder, psychosis, perpetrators, etc.) is DELIBERATELY NOT reproduced
-       here — it belongs on Another Light Counselling, not a fitness site, and
-       needs Aanchal's written approval. This page shows only her qualifications
-       and voice, and routes people to ALC for support areas.
-       Do NOT add support-area copy without Aanchal's written sign-off.
+       The clinical support-area list below is included with Aanchal's written
+       approval. Reconfirm with her before adding or changing support-area copy.
     ------------------------------------------------------------------------ */
     slug: 'aanchal',
     path: '/aanchal-cofounder/',
@@ -111,22 +107,83 @@ export const team = [
     pronouns: 'she/they',
     image: '/images/team/aanchal-narang.jpeg',
     published: true,
-    experience: null,
-    mode: 'Counselling delivered via Another Light Counselling',
+    experience: '10 years',
+    mode: 'In-person (Andheri) & online',
     modeLabel: 'Session Mode',
+    /*
+    modeDescription: [
+      'Other therapists from Another Light Counselling, including ',
+      { text: 'Varghese John', href: 'https://www.another-light.com/about/varghese-john/' },
+      ' and ',
+      { text: 'Rachel', href: 'https://www.another-light.com/about/rachel/' },
+      ', are available at 180 Method Studio, Bandra, and online on Mondays, Wednesdays, Fridays, and Saturdays.',
+    ],
+    */
     languages: ['English', 'Hindi', 'Urdu'],
     blurb: 'Head Therapist and founder of Another Light Counselling — the mental-health backbone of the 180 Method.',
     approachTitle: 'How we’ll work together',
     ctaVerb: 'Talk',
-    specialisations: [],          // intentionally empty — see note above
-    clientGroups: [],
+    specialisations: [
+      'ADHD',
+      'Anger management',
+      'BPD',
+      'Body dysmorphia',
+      'Boundary setting',
+      'CPTSD / PTSD',
+      'Child Sexual Abuse (CSA)',
+      'Childhood trauma',
+      'Chronic pain',
+      'Couples therapy',
+      'Dissociation',
+      'Eating disorder',
+      'Fibromyalgia',
+      'Inner conflict work',
+      'Low self-esteem',
+      'Obsessive-compulsive disorder',
+      'PMDD',
+      'Panic attacks',
+      'Psychosis',
+      'Psychosomatic concerns',
+      'Queer',
+      'Sexual abuse',
+      'Sexual concerns',
+      'Stress, Sleep & Anger management',
+      'Suicidality / self-harm',
+      'Trans',
+      'Trauma',
+      'Vaginismus',
+      'Working with perpetrators',
+    ],
+    clientGroups: [
+      'Trauma survivors',
+      'Queer & trans individuals',
+      'Couples',
+      'Neurodivergent individuals',
+      'People navigating chronic pain',
+      'People navigating body image concerns',
+    ],
     personalEyebrow: 'Beyond the therapy room',
     credentials: [
-      { title: 'Master’s in Applied (Clinical) Psychology', issuer: 'TISS' },
-      { title: 'EMDR Therapy, Levels 1 & 2', issuer: 'EMDR Association India' },
+      { title: 'EMDR Therapy (Level 1 & 2)', issuer: 'EMDR Association India' },
       { title: 'Advanced Trauma Therapy', issuer: 'Janina Fisher · NICABM' },
-      { title: 'Complex Trauma, Level 1', issuer: 'ISSTD' },
-      { title: 'Trauma-Informed Psychotherapy, REBT & CBT', issuer: null },
+      {
+        title: 'Somatic Trauma Strategies',
+        issuer: 'Dr. Peter Levine & Dr. Diane Poole Heller',
+      },
+      { title: 'Compassionate Inquiry', issuer: 'Gabor Maté' },
+      { title: 'Somatic EMDR Therapy', issuer: 'Arielle Schwartz' },
+      { title: 'Integral Somatic Psychology (ISP)', issuer: null },
+      { title: 'Brainspotting Therapy', issuer: null },
+      { title: 'Trauma-Informed Psychotherapy', issuer: 'Shalini Anant' },
+      {
+        title: 'Queer Mental Health & Polyamory',
+        issuer: 'SAMHI & Clementine Morrigan',
+      },
+      { title: 'Suicide Prevention', issuer: 'City & Guilds' },
+      {
+        title: 'REBT & CBT',
+        issuer: 'Dr. Minnu Bhosle & Swati Kandolkar',
+      },
     ],
     philosophy: 'Therapy is like a tattoo, or exercise — it can hurt while you’re going through it, and then it’s beautiful.',
     keyLearning: 'It’s not about the symptom; there’s always a cause.',
@@ -206,7 +263,7 @@ export const team = [
     specialisationsTitle: 'Nutrition and lifestyle support, tailored to you',
     clientGroups: ['Beginners', 'Athletes', 'Women', 'Senior citizens'],
     clientGroupsEyebrow: 'Who I support',
-    clientGroupsTitle: 'A healthier relationship with food and lifestyle',
+    clientGroupsTitle: 'A healthier relationship with food and lifestyle for',
     personalEyebrow: 'Beyond nutrition',
     credentials: [
       { title: 'Diploma in Nutrition & Dietetics — Rank 1', issuer: 'Tulip International' },

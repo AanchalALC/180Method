@@ -110,10 +110,30 @@ function Portrait({ member }) {
 function Fact({ label, value, description }) {
   if (!value) return null
   return (
-    <RevealItem>
-      <p className="eyebrow mb-1.5 text-lime">{label}</p>
+    <RevealItem className="w-full text-center">
+      <p className="eyebrow mb-1.5 text-center text-lime">{label}</p>
       <p className="font-display text-fluid-base uppercase tracking-tight text-paper">{value}</p>
-      {description && <p className="mt-2 text-sm leading-relaxed text-paper-200/70">{description}</p>}
+      {description && (
+        <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-paper-200/70">
+          {Array.isArray(description)
+            ? description.map((part, index) =>
+                typeof part === 'string' ? (
+                  part
+                ) : (
+                  <a
+                    key={part.href}
+                    href={part.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="link-underline text-lime"
+                  >
+                    {part.text}
+                  </a>
+                )
+              )
+            : description}
+        </p>
+      )}
     </RevealItem>
   )
 }
@@ -160,6 +180,7 @@ export default function TeamMember({ slug }) {
   if (!member) return <Navigate to="/team/" replace />
 
   const fname = firstName(member.name)
+  const isAanchal = member.slug === 'aanchal'
   const hasProfessional =
     (member.specialisations?.length ?? 0) > 0 ||
     (member.clientGroups?.length ?? 0) > 0 ||
@@ -173,6 +194,24 @@ export default function TeamMember({ slug }) {
   // Site voice, second person — never third-person narration about the member.
   const ctaVerb = member.ctaVerb ?? 'Train'
   const ctaHeading = ctaVerb === 'Talk' ? `Talk to ${fname}` : `${ctaVerb} with ${fname}`
+  const quickFacts = [
+    { label: 'Experience', value: member.experience },
+    { label: 'Languages', value: member.languages?.join(', ') },
+    {
+      label: member.modeLabel ?? 'Training Mode',
+      value: member.mode,
+      description: member.modeDescription,
+    },
+    { label: 'Session', value: member.sessionLength, description: member.sessionDescription },
+  ].filter((fact) => fact.value)
+  const quickFactsGrid =
+    quickFacts.length === 1
+      ? 'max-w-md grid-cols-1'
+      : quickFacts.length === 2
+        ? 'max-w-3xl grid-cols-1 sm:grid-cols-2'
+        : quickFacts.length === 3
+          ? 'max-w-5xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+          : 'max-w-6xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'
 
   return (
     <>
@@ -280,11 +319,10 @@ export default function TeamMember({ slug }) {
       {/* QUICK FACTS — forest strip. */}
       <Section tone="forest" className="py-section-sm">
         <div className="container-x">
-          <RevealGroup className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4" gap={0.08}>
-            <Fact label="Experience" value={member.experience} />
-            <Fact label="Languages" value={member.languages?.join(', ')} />
-            <Fact label={member.modeLabel ?? 'Training Mode'} value={member.mode} />
-            <Fact label="Session" value={member.sessionLength} description={member.sessionDescription} />
+          <RevealGroup className={`mx-auto grid w-full justify-items-center gap-8 ${quickFactsGrid}`} gap={0.08}>
+            {quickFacts.map((fact) => (
+              <Fact key={fact.label} {...fact} />
+            ))}
           </RevealGroup>
         </div>
       </Section>
@@ -378,11 +416,15 @@ export default function TeamMember({ slug }) {
 
       {/* CREDENTIALS + PERSONAL — paperAlt. */}
       <Section tone="paperAlt">
-        <div className="container-x grid gap-14 lg:grid-cols-12 lg:gap-16">
+        <div className={`container-x grid gap-14 ${isAanchal ? '' : 'lg:grid-cols-12 lg:gap-16'}`}>
           {member.credentials?.length > 0 && (
-            <div className={hasPersonal ? 'lg:col-span-5' : 'lg:col-span-12'}>
+            <div className={isAanchal ? '' : hasPersonal ? 'lg:col-span-5' : 'lg:col-span-12'}>
               <SectionHeading eyebrow="Qualifications" title="Certifications & training" />
-              <RevealGroup as="ul" className="mt-8 space-y-3" gap={0.05}>
+              <RevealGroup
+                as="ul"
+                className={isAanchal ? 'mt-8 grid gap-3 sm:grid-cols-2' : 'mt-8 space-y-3'}
+                gap={0.05}
+              >
                 {member.credentials.map((c) => (
                   <Credential key={normaliseCredential(c).title} credential={c} />
                 ))}
@@ -391,7 +433,7 @@ export default function TeamMember({ slug }) {
           )}
 
           {hasPersonal && (
-            <div className="lg:col-span-7">
+            <div className={isAanchal ? '' : 'lg:col-span-7'}>
               {(member.hobbies?.length > 0 || member.aboutMore || member.funFact || member.whisper) && (
                 <>
                   <SectionHeading
