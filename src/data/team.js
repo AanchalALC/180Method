@@ -86,6 +86,7 @@ export const team = [
     socials: {
       linkedin: 'https://www.linkedin.com/in/arya-talwalkar-2ba1253b0/',
       instagram: 'https://www.instagram.com/aryatalwalkar_',
+      youtube: 'https://youtube.com/@aryatalwalkar',
     },
     seoTitle: 'Arya Talwalkar — Head Trainer | 180 Method',
     seoDescription: 'Meet Arya Talwalkar, co-founder and head trainer at 180 Method, Bandra. Seven years coaching personal training, rehab, Pilates, mobility and strength.',

@@ -1,5 +1,5 @@
 import { Link, Navigate } from 'react-router-dom'
-import { ArrowUpRight, ArrowLeft, Linkedin, Instagram } from 'lucide-react'
+import { ArrowUpRight, ArrowLeft, Linkedin, Instagram, Youtube } from 'lucide-react'
 
 import { Seo } from '@/components/ui/Widgets'
 import {
@@ -223,29 +223,46 @@ export default function TeamMember({ slug }) {
 
             {member.socials && (
               <Reveal delay={0.28}>
-                <div className="mt-6 flex items-center justify-center gap-4">
-                  {member.socials.linkedin && (
-                    <a
-                      href={member.socials.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`${fname} on LinkedIn`}
-                      className="text-paper-200/60 transition-colors hover:text-lime"
-                    >
-                      <Linkedin className="h-5 w-5" aria-hidden="true" />
-                    </a>
-                  )}
-                  {member.socials.instagram && (
-                    <a
-                      href={member.socials.instagram}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`${fname} on Instagram`}
-                      className="text-paper-200/60 transition-colors hover:text-lime"
-                    >
-                      <Instagram className="h-5 w-5" aria-hidden="true" />
-                    </a>
-                  )}
+                <div className="mt-8 flex flex-col items-center gap-3">
+                  <p className="eyebrow text-lime">Find me on</p>
+                  <div className="flex flex-wrap items-center justify-center gap-3">
+                    {member.socials.linkedin && (
+                      <a
+                        href={member.socials.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${fname} on LinkedIn`}
+                        className="inline-flex min-h-12 items-center gap-2 rounded-full border border-lime/50 bg-lime px-5 py-3 font-display text-fluid-xs uppercase tracking-[0.12em] text-ink shadow-lg transition duration-200 hover:-translate-y-0.5 hover:border-paper hover:bg-paper focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-paper focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950"
+                      >
+                        <Linkedin className="h-5 w-5" aria-hidden="true" />
+                        <span>LinkedIn</span>
+                      </a>
+                    )}
+                    {member.socials.instagram && (
+                      <a
+                        href={member.socials.instagram}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${fname} on Instagram`}
+                        className="inline-flex min-h-12 items-center gap-2 rounded-full border border-lime/50 bg-lime px-5 py-3 font-display text-fluid-xs uppercase tracking-[0.12em] text-ink shadow-lg transition duration-200 hover:-translate-y-0.5 hover:border-paper hover:bg-paper focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-paper focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950"
+                      >
+                        <Instagram className="h-5 w-5" aria-hidden="true" />
+                        <span>Instagram</span>
+                      </a>
+                    )}
+                    {member.socials.youtube && (
+                      <a
+                        href={member.socials.youtube}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${fname} on YouTube`}
+                        className="inline-flex min-h-12 items-center gap-2 rounded-full border border-lime/50 bg-lime px-5 py-3 font-display text-fluid-xs uppercase tracking-[0.12em] text-ink shadow-lg transition duration-200 hover:-translate-y-0.5 hover:border-paper hover:bg-paper focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-paper focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950"
+                      >
+                        <Youtube className="h-5 w-5" aria-hidden="true" />
+                        <span>YouTube</span>
+                      </a>
+                    )}
+                  </div>
                 </div>
               </Reveal>
             )}
