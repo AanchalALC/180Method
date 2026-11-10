@@ -392,7 +392,7 @@ export default function TeamMember({ slug }) {
 
           {hasPersonal && (
             <div className="lg:col-span-7">
-              {(member.hobbies?.length > 0 || member.aboutMore) && (
+              {(member.hobbies?.length > 0 || member.aboutMore || member.funFact || member.whisper) && (
                 <>
                   <SectionHeading
                     eyebrow={member.personalEyebrow ?? 'Off the floor'}
