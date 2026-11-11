@@ -272,18 +272,6 @@ export default function TeamMember({ slug }) {
                 <div className="mt-8 flex flex-col items-center gap-3">
                   <p className="eyebrow text-lime">Find me on</p>
                   <div className="flex flex-wrap items-center justify-center gap-3">
-                    {member.socials.linkedin && (
-                      <a
-                        href={member.socials.linkedin}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`${fname} on LinkedIn`}
-                        className="inline-flex min-h-12 items-center gap-2 rounded-full border border-lime/50 bg-lime px-5 py-3 font-display text-fluid-xs uppercase tracking-[0.12em] text-ink shadow-lg transition duration-200 hover:-translate-y-0.5 hover:border-paper hover:bg-paper focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-paper focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950"
-                      >
-                        <Linkedin className="h-5 w-5" aria-hidden="true" />
-                        <span>LinkedIn</span>
-                      </a>
-                    )}
                     {member.socials.instagram && (
                       <a
                         href={member.socials.instagram}
@@ -294,6 +282,18 @@ export default function TeamMember({ slug }) {
                       >
                         <Instagram className="h-5 w-5" aria-hidden="true" />
                         <span>Instagram</span>
+                      </a>
+                    )}
+                    {member.socials.linkedin && (
+                      <a
+                        href={member.socials.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${fname} on LinkedIn`}
+                        className="inline-flex min-h-12 items-center gap-2 rounded-full border border-lime/50 bg-lime px-5 py-3 font-display text-fluid-xs uppercase tracking-[0.12em] text-ink shadow-lg transition duration-200 hover:-translate-y-0.5 hover:border-paper hover:bg-paper focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-paper focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950"
+                      >
+                        <Linkedin className="h-5 w-5" aria-hidden="true" />
+                        <span>LinkedIn</span>
                       </a>
                     )}
                     {member.socials.youtube && (

@@ -84,8 +84,8 @@ export const team = [
     hobbies: ['Dancing', 'Music', 'Cinema', 'Sports', 'Food'],
     whisper: 'The whole reason I started training was to help people get healthier, happier and reach their full potential — which is exactly what 180 Method stands for.',
     socials: {
-      linkedin: 'https://www.linkedin.com/in/arya-talwalkar-2ba1253b0/',
       instagram: 'https://www.instagram.com/aryatalwalkar_',
+      linkedin: 'https://www.linkedin.com/in/arya-talwalkar-2ba1253b0/',
       youtube: 'https://youtube.com/@aryatalwalkar',
     },
     seoTitle: 'Arya Talwalkar — Head Trainer | 180 Method',
@@ -195,8 +195,8 @@ export const team = [
       href: 'https://www.another-light.com',
     },
     socials: {
-      linkedin: 'https://www.linkedin.com/in/aanchal-narang/',
       instagram: 'https://www.instagram.com/aanchal_therapist_puppy',
+      linkedin: 'https://www.linkedin.com/in/aanchal-narang/',
       youtube: 'https://www.youtube.com/@AnotherLightCounselling',
     },
     seoTitle: 'Aanchal — Head Therapist | 180 Method',
