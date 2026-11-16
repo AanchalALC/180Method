@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom'
 import Navbar from './Navbar'
 import Footer from './Footer'
 import ScrollToTop from './ScrollToTop'
+import StickySocials from './StickySocials'
 
 /* Every route renders inside this. One navbar, one footer, always.
    ScrollToTop resets scroll on every route change (it renders nothing) — without
@@ -12,6 +13,7 @@ export default function Layout() {
     <div className="flex min-h-screen flex-col">
       <ScrollToTop />
       <Navbar />
+      <StickySocials />
       <main id="main" className="flex-1">
         <Outlet />
       </main>

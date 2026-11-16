@@ -22,6 +22,7 @@ export const site = {
 
   instagram: 'https://www.instagram.com/180.method',
   instagramHandle: '@180.method',
+  youtube: 'https://www.youtube.com/@aryatalwalkar',
 
   /* LinkedIn — supplied by Naveen, Aug 2026.
      `company` is the one that belongs in the footer / Contact / schema sameAs.
@@ -84,6 +85,7 @@ export const links = {
   mailto: `mailto:${site.email}`,
   instagram: site.instagram,
   linkedin: site.linkedin.company,
+  youtube: site.youtube,
 }
 
 /* ---------------------------------------------------------------------------
