@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback, Children } from 'react'
+import { useEffect, useRef, useState, useCallback, Children, cloneElement, isValidElement } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useInView, animate } from 'framer-motion'
 import { ChevronDown, Star } from 'lucide-react'
@@ -45,17 +45,107 @@ export function Counter({ value, suffix = '', duration = 2, className }) {
 
 /* ============================================================================
    MARQUEE — infinite logo/word strip.
-   The track is duplicated and translated -50%, which is why the loop is
-   seamless. Pauses on hover, stops dead under reduced motion (where it
-   becomes a plain, scrollable row).
+   The track loops seamlessly. Scrollable marquees use repeated sets so
+   native horizontal scrolling can wrap in either direction.
    ========================================================================== */
-export function Marquee({ children, speed = 'normal', className, pauseOnHover = true }) {
+export function Marquee({
+  children,
+  speed = 'normal',
+  className,
+  pauseOnHover = true,
+  scrollable = false,
+  'aria-label': ariaLabel,
+}) {
   const reduced = usePrefersReducedMotion()
   const items = Children.toArray(children)
+  const viewportRef = useRef(null)
+  const trackRef = useRef(null)
+  const pointerInsideRef = useRef(false)
+  const focusWithinRef = useRef(false)
+
+  const wrapScroll = useCallback(() => {
+    const viewport = viewportRef.current
+    const cycleWidth = trackRef.current?.firstElementChild?.getBoundingClientRect().width
+    if (!viewport || !cycleWidth) return
+
+    if (viewport.scrollLeft < cycleWidth) viewport.scrollLeft += cycleWidth
+    else if (viewport.scrollLeft >= cycleWidth * 2) viewport.scrollLeft -= cycleWidth
+  }, [])
+
+  useEffect(() => {
+    if (!scrollable) return
+
+    const viewport = viewportRef.current
+    const track = trackRef.current
+    const cycleWidth = track?.firstElementChild?.getBoundingClientRect().width
+    if (!viewport || !track || !cycleWidth) return
+
+    if (viewport.scrollLeft < cycleWidth || viewport.scrollLeft >= cycleWidth * 2) {
+      viewport.scrollLeft = cycleWidth
+    }
+    if (reduced) return
+
+    let previousTime
+    let frame
+    const duration = speed === 'slow' ? 70000 : 40000
+    const tick = (time) => {
+      if (
+        previousTime !== undefined &&
+        !(pauseOnHover && pointerInsideRef.current) &&
+        !focusWithinRef.current
+      ) {
+        viewport.scrollLeft += ((time - previousTime) * cycleWidth) / duration
+      }
+      previousTime = time
+      frame = requestAnimationFrame(tick)
+    }
+
+    frame = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(frame)
+  }, [pauseOnHover, reduced, scrollable, speed])
+
+  if (scrollable) {
+    return (
+      <div
+        ref={viewportRef}
+        onScroll={wrapScroll}
+        onPointerEnter={() => { pointerInsideRef.current = true }}
+        onPointerLeave={() => { pointerInsideRef.current = false }}
+        onFocus={() => { focusWithinRef.current = true }}
+        onBlur={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget)) focusWithinRef.current = false
+        }}
+        className={cn('group relative flex overflow-x-auto overflow-y-hidden mask-fade-x', className)}
+        role="region"
+        aria-label={ariaLabel}
+        tabIndex={0}
+      >
+        <div ref={trackRef} className="flex w-max min-w-max">
+          {[-1, 0, 1].map((copy) => (
+            <div
+              key={copy}
+              className="flex shrink-0 items-center gap-12 pr-12"
+              aria-hidden={copy !== 0}
+            >
+              {items.map((child, i) => (
+                <div key={i} className="shrink-0">
+                  {copy !== 0 && isValidElement(child) && child.type === 'a'
+                    ? cloneElement(child, { tabIndex: -1 })
+                    : child}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
 
   if (reduced) {
     return (
-      <div className={cn('flex gap-12 overflow-x-auto pb-2', className)}>
+      <div
+        className={cn('flex gap-12 overflow-x-auto pb-2', className)}
+      >
         {items.map((child, i) => (
           <div key={i} className="shrink-0">
             {child}
@@ -66,7 +156,9 @@ export function Marquee({ children, speed = 'normal', className, pauseOnHover = 
   }
 
   return (
-    <div className={cn('group relative flex overflow-hidden mask-fade-x', className)}>
+    <div
+      className={cn('group relative flex overflow-hidden mask-fade-x', className)}
+    >
       <div
         className={cn(
           'flex shrink-0 items-center gap-12 pr-12',

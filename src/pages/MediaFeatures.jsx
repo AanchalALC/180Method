@@ -200,7 +200,12 @@ export default function MediaFeatures() {
           </Reveal>
         </div>
 
-        <Marquee speed="slow">
+        <Marquee
+          speed="slow"
+          scrollable
+          aria-label="Scroll through media feature logos"
+          className="press-logo-scroll press-logo-scroll--dark"
+        >
           {pressLogos.map((logo, i) => (
             <a
               key={`${logo.name}-${i}`}

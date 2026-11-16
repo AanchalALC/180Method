@@ -68,6 +68,30 @@
 @layer components {
   .container-x { @apply container; }
 
+  .press-logo-scroll {
+    scrollbar-color: #275442 rgba(39, 84, 66, 0.14);
+    scrollbar-width: thin;
+  }
+  .press-logo-scroll::-webkit-scrollbar { height: 10px; }
+  .press-logo-scroll::-webkit-scrollbar-track {
+    background: rgba(39, 84, 66, 0.1);
+    border-radius: 9999px;
+    margin-inline: 5vw;
+  }
+  .press-logo-scroll::-webkit-scrollbar-thumb {
+    background: #275442;
+    border: 2px solid #f3f5e6;
+    border-radius: 9999px;
+  }
+  .press-logo-scroll::-webkit-scrollbar-thumb:hover { background: #DCE576; }
+  .press-logo-scroll--dark { scrollbar-color: #DCE576 rgba(220, 229, 118, 0.2); }
+  .press-logo-scroll--dark::-webkit-scrollbar-track { background: rgba(220, 229, 118, 0.16); }
+  .press-logo-scroll--dark::-webkit-scrollbar-thumb {
+    background: #DCE576;
+    border-color: #0B0D0B;
+  }
+  .press-logo-scroll--dark::-webkit-scrollbar-thumb:hover { background: #F1F5C8; }
+
   .eyebrow {
     @apply font-display text-fluid-xs uppercase tracking-[0.24em] text-forest-600;
   }

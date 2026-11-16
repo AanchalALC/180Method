@@ -481,7 +481,12 @@ function PressStrip() {
         </Reveal>
       </div>
 
-      <Marquee className="py-2">
+      <Marquee
+        speed="slow"
+        scrollable
+        aria-label="Scroll through featured media logos"
+        className="press-logo-scroll py-2"
+      >
         {pressLogos.map((logo, i) => (
           <a
             key={`${logo.name}-${i}`}
