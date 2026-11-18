@@ -44,13 +44,30 @@ jobs:
         run: echo "::add-mask::${{ steps.sync.outputs.new_token }}"
 
       # Option A — automatic. Requires a fine-grained PAT (`IG_PAT`) scoped to
-      # this repo with Secrets: read and write. GITHUB_TOKEN cannot write
-      # secrets, so this step is skipped entirely when IG_PAT isn't set.
+      # this repo with Actions: write. GITHUB_TOKEN cannot write secrets, so
+      # this step is skipped entirely when IG_PAT isn't set.
       - name: Persist refreshed token to secrets
+        id: persist_token
         if: steps.sync.outputs.new_token != '' && env.IG_PAT_CONFIGURED == 'true'
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.IG_PAT }}
-        run: gh secret set IG_ACCESS_TOKEN --body "${{ steps.sync.outputs.new_token }}" --repo ${{ github.repository }}
+          NEW_IG_ACCESS_TOKEN: ${{ steps.sync.outputs.new_token }}
+        run: printf '%s' "$NEW_IG_ACCESS_TOKEN" | gh secret set IG_ACCESS_TOKEN --repo "$GITHUB_REPOSITORY"
+
+      - name: Report token persistence failure
+        if: steps.persist_token.outcome == 'failure'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          open_issues=$(gh issue list --state open --search "Instagram token persistence failed in:title" --json number --jq 'length')
+          if [ "$open_issues" = "0" ]; then
+            gh issue create \
+              --title "Instagram token persistence failed" \
+              --body "The Instagram sync refreshed the feed, but GitHub rejected the IG_PAT credential while saving the new IG_ACCESS_TOKEN. Check that IG_PAT is valid, has access to this repository, and has Actions read/write permission. Update the IG_PAT Actions secret; otherwise token rotation will not persist and future feed syncs may stop when IG_ACCESS_TOKEN expires." \
+              --repo "$GITHUB_REPOSITORY"
+          fi
 
       # Option B — fallback, only when there's no PAT to do this automatically.
       # An already-expired token cannot be refreshed at all — the account has
