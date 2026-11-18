@@ -37,12 +37,6 @@ jobs:
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
         run: node scripts/sync-instagram.mjs
 
-      # Registers the refreshed token with the runner's log masker before it
-      # is ever used again in this job, so it can't leak into step output.
-      - name: Mask refreshed token
-        if: steps.sync.outputs.new_token != ''
-        run: echo "::add-mask::${{ steps.sync.outputs.new_token }}"
-
       # Option A — automatic. Requires a fine-grained PAT (`IG_PAT`) scoped to
       # this repo with Actions: write. GITHUB_TOKEN cannot write secrets, so
       # this step is skipped entirely when IG_PAT isn't set.

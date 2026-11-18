@@ -254,6 +254,9 @@ export default ${JSON.stringify(posts, null, 2)}
     const refreshed = await refreshToken()
     const daysRemaining = Math.floor(refreshed.expires_in / 86400)
     console.log(`sync-instagram: refreshed access token, expires in ${daysRemaining} day(s).`)
+    if (process.env.GITHUB_ACTIONS === 'true') {
+      process.stdout.write(`::add-mask::${refreshed.access_token}\n`)
+    }
     setOutput('new_token', refreshed.access_token)
     setOutput('days_remaining', daysRemaining)
   } catch (err) {
