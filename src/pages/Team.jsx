@@ -19,11 +19,10 @@ import { links } from '@/data/site'
 
    Data shape (src/data/team.js):
      • published:false  → card is NOT linked and the member is kept out of the
-       sitemap. Used for Aanchal until her mental-health wording is signed off
-       in writing (§9). Her card still shows; it just doesn't navigate.
+       profile links.
      • image:null       → no headshot yet → lime monogram (initials), so the
-       card reads deliberate instead of broken. Used for Vishal until a photo
-       arrives. Fill `image` in the data and the card upgrades itself.
+       card reads deliberate instead of broken. Fill `image` in the data and
+       the card upgrades itself.
      • blurb            → one-line summary shown under the card.
 
    IMAGES: shown RAW — no `.duotone`, no colour layer, matching the rest of the
@@ -186,8 +185,8 @@ export default function Team() {
   return (
     <>
       <Seo
-        title="Our Trainers | Arya Talwalkar & Aanchal Narang | 180 Method"
-        description="Meet our trainers Arya Talwalkar & Aanchal Narang, who are dedicated to helping you achieve your fitness goals with expert guidance."
+        title="Our Team | Coaches, Therapists & Nutritionists | 180 Method"
+        description="Meet the coaches, therapists and nutritionists at 180 Method in Mumbai, and find the support that fits your goals."
         path="/team/"
       />
 
@@ -197,7 +196,7 @@ export default function Team() {
         <div className="container-x">
           <SectionHeading
             eyebrow="Train with the best"
-            title="Coaches, a nutritionist, and a therapist"
+            title="Coaches, therapists, and nutritionists"
             lede="Everyone here works to the same method, which is why nothing falls through the gaps between them."
             className="mb-14"
           />

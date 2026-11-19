@@ -29,10 +29,10 @@ export const mediaFeatures = [
     logo: '/images/press/livemint.png',
     featured: true,
     syndicated: [
-      { outlet: 'Khabar On Demand', url: 'https://khabarondemand.com/aanchal-narang-and-arya-talwalkar-on-the-mind-body-collaboration-at-180-method-studio/' },
-      { outlet: 'Today Now', url: 'https://todaynow.in/aanchal-narang-and-arya-talwalkar-on-the-mind-body-collaboration-at-180-method-studio/' },
-      { outlet: 'Tycoon World', url: 'https://tycoonworld.in/aanchal-narang-and-arya-talwalkar-on-the-mind-body-collaboration-at-180-method-studio/' },
-      { outlet: 'Daily Tribune', url: 'https://dailytribune.in/aanchal-narang-and-arya-talwalkar-on-the-mind-body-collaboration-at-180-method-studio/' },
+      { outlet: 'Khabar On Demand', url: 'https://khabarondemand.com/aanchal-narang-and-arya-talwalkar-on-the-mind-body-collaboration-at-180-method-studio/', logo: '/images/press/ondemand.png' },
+      { outlet: 'Today Now', url: 'https://todaynow.in/aanchal-narang-and-arya-talwalkar-on-the-mind-body-collaboration-at-180-method-studio/', logo: '/images/press/todaynow.png' },
+      { outlet: 'Tycoon World', url: 'https://tycoonworld.in/aanchal-narang-and-arya-talwalkar-on-the-mind-body-collaboration-at-180-method-studio/', logo: '/images/press/tyoonworld.png' },
+      { outlet: 'Daily Tribune', url: 'https://dailytribune.in/aanchal-narang-and-arya-talwalkar-on-the-mind-body-collaboration-at-180-method-studio/', logo: '/images/press/dailytribune.png' },
     ],
   },
   {
@@ -47,10 +47,10 @@ export const mediaFeatures = [
     logo: '/images/press/asiantalks.png',
     featured: true,
     syndicated: [
-      { outlet: 'Daily Pioneer', url: 'https://dailypioneer.in/breaking-the-shame-cycle-how-aanchal-narang-and-arya-talwalkar-are-redefining-fitness-and-therapy-spaces-in-india/' },
-      { outlet: 'The Asian Age', url: 'https://theasianage.com/breaking-the-shame-cycle-how-aanchal-narang-and-arya-talwalkar-are-redefining-fitness-and-therapy-spaces-in-india/' },
-      { outlet: 'Mumbai Times', url: 'https://mumbaitimes.org/breaking-the-shame-cycle-how-aanchal-narang-and-arya-talwalkar-are-redefining-fitness-and-therapy-spaces-in-india/' },
-      { outlet: 'The Cover Magazine', url: 'https://thecovermagazine.com/breaking-the-shame-cycle-how-aanchal-narang-and-arya-talwalkar-are-redefining-fitness-and-therapy-spaces-in-india/' },
+      { outlet: 'Daily Pioneer', url: 'https://dailypioneer.in/breaking-the-shame-cycle-how-aanchal-narang-and-arya-talwalkar-are-redefining-fitness-and-therapy-spaces-in-india/', logo: '/images/press/dailypioneer.png' },
+      { outlet: 'The Asian Age', url: 'https://theasianage.com/breaking-the-shame-cycle-how-aanchal-narang-and-arya-talwalkar-are-redefining-fitness-and-therapy-spaces-in-india/', logo: '/images/press/asianage.webp' },
+      { outlet: 'Mumbai Times', url: 'https://mumbaitimes.org/breaking-the-shame-cycle-how-aanchal-narang-and-arya-talwalkar-are-redefining-fitness-and-therapy-spaces-in-india/', logo: '/images/press/mumbaitimes.png' },
+      { outlet: 'The Cover Magazine', url: 'https://thecovermagazine.com/breaking-the-shame-cycle-how-aanchal-narang-and-arya-talwalkar-are-redefining-fitness-and-therapy-spaces-in-india/', logo: '/images/press/covermagazine.webp' },
     ],
   },
   {
@@ -65,10 +65,10 @@ export const mediaFeatures = [
     logo: '/images/press/forbesstory.png',
     featured: true,
     syndicated: [
-      { outlet: 'Entrepreneur View', url: 'https://entrepreneurview.in/aanchal-narang-and-arya-talwalkar-on-why-mental-health-and-physical-health-are-equally-important-for-senior-citizens/' },
-      { outlet: 'Herald Post', url: 'https://heraldpost.in/aanchal-narang-and-arya-talwalkar-on-why-mental-health-and-physical-health-are-equally-important-for-senior-citizens/' },
-      { outlet: 'The Bharat Now', url: 'https://thebharatnow.com/aanchal-narang-and-arya-talwalkar-on-why-mental-health-and-physical-health-are-equally-important-for-senior-citizens/' },
-      { outlet: 'Dainik Hunt', url: 'http://dhunt.in/14Uf3F' },
+      { outlet: 'Entrepreneur View', url: 'https://entrepreneurview.in/aanchal-narang-and-arya-talwalkar-on-why-mental-health-and-physical-health-are-equally-important-for-senior-citizens/', logo: '/images/press/etview.png' },
+      { outlet: 'Herald Post', url: 'https://heraldpost.in/aanchal-narang-and-arya-talwalkar-on-why-mental-health-and-physical-health-are-equally-important-for-senior-citizens/', logo: '/images/press/heraldpost.png' },
+      { outlet: 'The Bharat Now', url: 'https://thebharatnow.com/aanchal-narang-and-arya-talwalkar-on-why-mental-health-and-physical-health-are-equally-important-for-senior-citizens/', logo: '/images/press/bharatnow.jpg' },
+      { outlet: 'Dainik Hunt', url: 'http://dhunt.in/14Uf3F', logo: '/images/press/Daily_hunt.png' },
     ],
   },
 ]

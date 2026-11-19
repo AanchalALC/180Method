@@ -144,8 +144,24 @@ function FeatureCard({ feature, index }) {
             </p>
             <div className="flex flex-wrap gap-2">
               {feature.syndicated.map((s, i) => (
-                <Tag key={s.url} href={s.url} variant={CHIP_CYCLE[i % CHIP_CYCLE.length]} size="sm">
-                  {s.outlet}
+                <Tag
+                  key={s.url}
+                  href={s.url}
+                  variant={CHIP_CYCLE[i % CHIP_CYCLE.length]}
+                  size="sm"
+                >
+                  <span className="flex items-center gap-2">
+                    <img
+                      src={s.logo}
+                      alt=""
+                      aria-hidden="true"
+                      loading="lazy"
+                      width={80}
+                      height={24}
+                      className="h-6 w-16 shrink-0 rounded bg-white p-1 object-contain"
+                    />
+                    <span>{s.outlet}</span>
+                  </span>
                 </Tag>
               ))}
             </div>

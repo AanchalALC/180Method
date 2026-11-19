@@ -27,9 +27,8 @@ import { links } from '@/data/site'
    about Arya" are gone; the CTA is now an instruction to the visitor
    ("Train with Arya"), not narration about him.
 
-   The approach heading and the CTA verb come from team.js, so Aanchal and
-   Moyna get "work / talk" instead of "train" without a single name being
-   hardcoded here.
+   The approach heading and CTA verb come from team.js, so therapists get
+   "talk" and Moyna gets "work" without names being hardcoded here.
 
    ---------------------------------------------------------------------------
    TAGS (Naveen's note — "the title colour and the tag colours all blend in")
@@ -180,9 +179,10 @@ export default function TeamMember({ slug }) {
   if (!member) return <Navigate to="/team/" replace />
 
   const fname = firstName(member.name)
-  const isAanchal = member.slug === 'aanchal'
+  const credentialsGrid = member.credentialsLayout === 'grid'
   const hasProfessional =
     (member.specialisations?.length ?? 0) > 0 ||
+    (member.therapeuticApproaches?.length ?? 0) > 0 ||
     (member.clientGroups?.length ?? 0) > 0 ||
     Boolean(member.clientDescription)
   const hasPersonal =
@@ -202,7 +202,7 @@ export default function TeamMember({ slug }) {
       value: member.mode,
       description: member.modeDescription,
     },
-    { label: 'Session Duration', value: '60 minutes' },
+    { label: 'Session Duration', value: member.sessionDuration ?? '60 minutes' },
   ].filter((fact) => fact.value)
   const quickFactsGrid =
     quickFacts.length === 1
@@ -344,6 +344,17 @@ export default function TeamMember({ slug }) {
                 </div>
               </div>
             )}
+            {member.therapeuticApproaches?.length > 0 && (
+              <div>
+                <SectionHeading
+                  eyebrow="Therapeutic approaches"
+                  title="Approaches that inform my work"
+                />
+                <div className="mt-8">
+                  <TagRow items={member.therapeuticApproaches} cycle={['forest', 'aloe', 'lime', 'quiet']} />
+                </div>
+              </div>
+            )}
             {(member.clientGroups?.length > 0 || member.clientDescription) && (
               <div>
                 <SectionHeading
@@ -416,13 +427,13 @@ export default function TeamMember({ slug }) {
 
       {/* CREDENTIALS + PERSONAL — paperAlt. */}
       <Section tone="paperAlt">
-        <div className={`container-x grid gap-14 ${isAanchal ? '' : 'lg:grid-cols-12 lg:gap-16'}`}>
+        <div className="container-x grid gap-14 lg:grid-cols-12 lg:gap-16">
           {member.credentials?.length > 0 && (
-            <div className={isAanchal ? '' : hasPersonal ? 'lg:col-span-5' : 'lg:col-span-12'}>
+            <div className={hasPersonal ? 'lg:col-span-5' : 'lg:col-span-12'}>
               <SectionHeading eyebrow="Qualifications" title="Certifications & training" />
               <RevealGroup
                 as="ul"
-                className={isAanchal ? 'mt-8 grid gap-3 sm:grid-cols-2' : 'mt-8 space-y-3'}
+                className={credentialsGrid ? 'mt-8 grid gap-3 sm:grid-cols-2' : 'mt-8 space-y-3'}
                 gap={0.05}
               >
                 {member.credentials.map((c) => (
@@ -433,7 +444,7 @@ export default function TeamMember({ slug }) {
           )}
 
           {hasPersonal && (
-            <div className={isAanchal ? '' : 'lg:col-span-7'}>
+            <div className="lg:col-span-7">
               {(member.hobbies?.length > 0 || member.aboutMore || member.funFact || member.whisper) && (
                 <>
                   <SectionHeading
