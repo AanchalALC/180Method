@@ -98,5 +98,71 @@ export default [
     "srcSmall": "/instagram/17981459901075645-640.webp",
     "width": 720,
     "height": 1280
+  },
+  {
+    "id": "17899379682574326",
+    "permalink": "https://www.instagram.com/reel/Dci_jK-ItIv/",
+    "caption": "THE MOST FUN GROUP CLASSES JUST GOT MORE SLOTS 🎃",
+    "mediaType": "VIDEO",
+    "timestamp": "2026-08-27T14:23:49+0000",
+    "src": "/instagram/17899379682574326-1280.webp",
+    "srcSmall": "/instagram/17899379682574326-640.webp",
+    "width": 720,
+    "height": 1280
+  },
+  {
+    "id": "18015825221874629",
+    "permalink": "https://www.instagram.com/reel/DbxkyEvuB5j/",
+    "caption": "If you've been waiting for the right time to start, this might be it. I've opened up a few Personal Training slots:…",
+    "mediaType": "VIDEO",
+    "timestamp": "2026-08-08T09:47:16+0000",
+    "src": "/instagram/18015825221874629-1280.webp",
+    "srcSmall": "/instagram/18015825221874629-640.webp",
+    "width": 640,
+    "height": 1136
+  },
+  {
+    "id": "17872293477554229",
+    "permalink": "https://www.instagram.com/reel/DbAmkriOVpv/",
+    "caption": "Our NEW 8:30 AM Group Training Batch is now open at 180 Method. Perfect if early mornings are too rushed but you still…",
+    "mediaType": "VIDEO",
+    "timestamp": "2026-07-20T09:20:27+0000",
+    "src": "/instagram/17872293477554229-1280.webp",
+    "srcSmall": "/instagram/17872293477554229-640.webp",
+    "width": 540,
+    "height": 960
+  },
+  {
+    "id": "17960642675966053",
+    "permalink": "https://www.instagram.com/reel/Da7XYFEhIfl/",
+    "caption": "Based on true events 🦄",
+    "mediaType": "VIDEO",
+    "timestamp": "2026-07-18T08:30:09+0000",
+    "src": "/instagram/17960642675966053-1280.webp",
+    "srcSmall": "/instagram/17960642675966053-640.webp",
+    "width": 941,
+    "height": 1672
+  },
+  {
+    "id": "18108516365049221",
+    "permalink": "https://www.instagram.com/reel/Dax1-j9oWdx/",
+    "caption": "Be honest... have you ever thought, \"Do online workouts actually help?\" It can—when every workout is personalised, your…",
+    "mediaType": "VIDEO",
+    "timestamp": "2026-07-14T15:59:24+0000",
+    "src": "/instagram/18108516365049221-1280.webp",
+    "srcSmall": "/instagram/18108516365049221-640.webp",
+    "width": 540,
+    "height": 960
+  },
+  {
+    "id": "18137184817497013",
+    "permalink": "https://www.instagram.com/reel/DacL4GUIu-U/",
+    "caption": "Looking for a fitness community you'll actually enjoy coming back to? Join us for a FREE Group Training Trial at 180…",
+    "mediaType": "VIDEO",
+    "timestamp": "2026-07-06T05:54:54+0000",
+    "src": "/instagram/18137184817497013-1280.webp",
+    "srcSmall": "/instagram/18137184817497013-640.webp",
+    "width": 640,
+    "height": 1136
   }
 ]
