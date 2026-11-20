@@ -2,12 +2,15 @@ import { ArrowUpRight, Instagram } from 'lucide-react'
 import { Button, Section, Reveal, RevealGroup, RevealItem, SectionHeading } from '@/components/ui/Primitives'
 import { site } from '@/data/site'
 import posts from '@/data/instagram'
+import collaborations from '@/data/instagram-collaborations'
 import instagramProfile from '@/data/instagram-profile'
+
+const FEED_LIMIT = 15
 
 /* ============================================================================
    INSTAGRAM FEED
-   Content is 100% data-driven from src/data/instagram.js, written by
-   scripts/sync-instagram.mjs in CI — never hardcode a post here.
+   Original posts are synced by scripts/sync-instagram.mjs in CI. Collaboration
+   posts use official Instagram embeds because the API omits coauthored media.
 
    No skeleton/placeholder tiles when the array is empty: an honest "follow
    us" card is correct, a feed of fabricated posts is not.
@@ -16,9 +19,20 @@ import instagramProfile from '@/data/instagram-profile'
    being rendered from Home.
    ========================================================================== */
 export default function InstagramFeed() {
-  const newestFirst = [...posts].sort(
-    (a, b) => Date.parse(b.timestamp) - Date.parse(a.timestamp),
-  )
+  const profileOrder = [
+    ...posts.map((post) => ({ ...post, kind: 'media' })),
+    ...collaborations.map((post) => ({ ...post, kind: 'collaboration' })),
+  ].sort(
+    (a, b) => {
+      const aPinnedOrder = a.pinnedOrder ?? 0
+      const bPinnedOrder = b.pinnedOrder ?? 0
+
+      if (aPinnedOrder && bPinnedOrder) return aPinnedOrder - bPinnedOrder
+      if (aPinnedOrder) return -1
+      if (bPinnedOrder) return 1
+      return Date.parse(b.timestamp) - Date.parse(a.timestamp)
+    },
+  ).slice(0, FEED_LIMIT)
 
   return (
     <Section tone="paper">
@@ -76,7 +90,7 @@ export default function InstagramFeed() {
           </div>
         </Reveal>
 
-        {newestFirst.length === 0 ? (
+        {profileOrder.length === 0 ? (
           <Reveal className="mt-12 flex flex-col items-start gap-5 rounded-4xl border border-ink/10 bg-paper-100 p-10">
             <p className="font-display text-fluid-xs uppercase tracking-[0.2em] text-forest-600">{site.instagramHandle}</p>
             <p className="max-w-prose leading-relaxed text-ink/65">
@@ -87,28 +101,43 @@ export default function InstagramFeed() {
             </Button>
           </Reveal>
         ) : (
-          <RevealGroup className="mt-12 grid grid-cols-2 gap-4 lg:grid-cols-3" gap={0.06}>
-            {newestFirst.map((post) => (
+          <RevealGroup className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2 2xl:grid-cols-3" gap={0.06}>
+            {profileOrder.map((post) => (
               <RevealItem key={post.id}>
-                <a
-                  href={post.permalink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`View "${post.caption || 'Instagram post'}" on Instagram (opens in a new tab)`}
-                  className="group block aspect-square overflow-hidden rounded-3xl"
-                >
-                  <img
-                    src={post.src}
-                    srcSet={`${post.srcSmall} 640w, ${post.src} 1280w`}
-                    sizes="(min-width: 1024px) 33vw, 50vw"
-                    width={post.width}
-                    height={post.height}
-                    alt=""
-                    loading="lazy"
-                    decoding="async"
-                    className="h-full w-full object-cover transition-transform duration-[900ms] ease-brand group-hover:scale-105"
-                  />
-                </a>
+                {post.kind === 'collaboration' ? (
+                  <div className="aspect-square overflow-hidden rounded-3xl bg-white">
+                    <iframe
+                      src={`${post.permalink}embed/`}
+                      title={`Instagram collaboration with @${post.collaborator}`}
+                      width="100%"
+                      height="100%"
+                      loading="lazy"
+                      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"
+                      allowFullScreen
+                      className="h-full w-full border-0"
+                    />
+                  </div>
+                ) : (
+                  <a
+                    href={post.permalink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`View "${post.caption || 'Instagram post'}" on Instagram (opens in a new tab)`}
+                    className="group block aspect-square overflow-hidden rounded-3xl"
+                  >
+                    <img
+                      src={post.src}
+                      srcSet={`${post.srcSmall} 640w, ${post.src} 1280w`}
+                      sizes="(min-width: 1536px) 33vw, 50vw"
+                      width={post.width}
+                      height={post.height}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-cover transition-transform duration-[900ms] ease-brand group-hover:scale-105"
+                    />
+                  </a>
+                )}
               </RevealItem>
             ))}
           </RevealGroup>

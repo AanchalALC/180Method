@@ -19,7 +19,7 @@ import sharp from 'sharp'
 import instagramProfile from '../src/data/instagram-profile.js'
 
 // --- Tuning knobs ----------------------------------------------------------
-const POST_LIMIT = 9          // how many recent posts, Reels included, to show
+const POST_LIMIT = 15         // recent account-owned items to fetch for the 15-tile profile grid
 const IMAGE_WIDTHS = [640, 1280] // srcset widths generated per post, px
 const WEBP_QUALITY = 78
 const CAPTION_MAX_LENGTH = 120   // characters, truncated on a word boundary
