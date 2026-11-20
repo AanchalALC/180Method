@@ -185,6 +185,9 @@ export default ${JSON.stringify(profile, null, 2)}
     console.warn(err?.message || err)
     return
   }
+  console.log(
+    `sync-instagram: Meta returned ${media.length} post(s); newest timestamp: ${media[0]?.timestamp ?? 'none'}.`,
+  )
 
   // Build everything in memory first. Nothing on disk changes unless every
   // post in this batch is processed successfully — a failure partway through
